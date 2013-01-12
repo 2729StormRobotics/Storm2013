@@ -4,8 +4,11 @@
  */
 package storm2013.commands;
 
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Command;
+import storm2013.Robot;
+import storm2013.subsystems.DriveTrain;
 
 /**
  *
@@ -15,74 +18,45 @@ import edu.wpi.first.wpilibj.command.Command;
 public class EncoderDrive extends Command {
 
     
-    private double _leftGoal;
-    private double _rightGoal;
-    private double _leftDist;
-    private double _rightDist;
+    private double _goal;
+    private double _dist;
     private double _driveSpeed;
-    private IDriveTrainEncoders _encoders;
-    private SpeedController _leftController;
-    private SpeedController _rightController;
+    private IDriveTrainEncoder _encoder;
+    private DriveTrain _driveTrain = Robot.driveTrain;
     
-    public EncoderDrive(double leftGoal, double rightGoal, double driveSpeed,
-            IDriveTrainEncoders encoders, SpeedController leftController,
-            SpeedController rightController){ 
-        _leftGoal = leftGoal;
-        _rightGoal = rightGoal;
+    public EncoderDrive(double goal, double driveSpeed,IDriveTrainEncoder encoder){ 
+        _goal = goal;
         _driveSpeed = driveSpeed;
-        _leftDist = 0;
-        _rightDist = 0;
-        _encoders = encoders;
-        _leftController = leftController;
-        _rightController = rightController;
+        _encoder = encoder;
+        requires(Robot.driveTrain);
     }
     
-    public void setLeftDist_(double leftDist) {
-        _leftDist = leftDist;
-    }
-    public void setRightDist_(double rightDist) {
-        _rightDist = rightDist;
-    }
-    public void setLeftGoal_(double leftGoal){
-        _leftGoal = leftGoal;
-    }
-    public void setRightGoal_(double rightGoal){
-        _rightGoal = rightGoal;
-    }
-    public double getLeftGoal() {
-        return _leftGoal;
-    }
-    public double getRightGoal() {
-        return _rightGoal;
-    }
-    public double getLeftDist() {
-        return _leftDist;
-    }
-    public double getRightDist() {
-        return _rightDist;
-    }
     
     public void execute() {
-        _leftDist = _encoders.getLeftDistance();
-        _rightDist = _encoders.getRightDistance();
+        _dist = _encoder.getDistance();
         
-        if(_leftDist < _leftGoal){
-            _leftController.set(_driveSpeed); //I'll get to acceleration and that other stuff later
+        if (Math.abs(_dist) < Math.abs(_goal)){
+            if (_goal > 0){
+                _driveTrain.tankDrive(_driveSpeed, _driveSpeed);
+            }
+            else{
+                _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);
+            }
         }
-        else if(_leftDist > _leftGoal){
-            _leftController.set(-_driveSpeed);
+        else if (Math.abs(_dist) > Math.abs(_goal)){
+            if (_goal > 0){
+                _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);
+            }
+            else{
+                _driveTrain.tankDrive(_driveSpeed, _driveSpeed);
+            }
         }
-        
-        if(_rightDist < _rightGoal){
-            _rightController.set(_driveSpeed);
+        else{
+            _driveTrain.tankDrive(0, 0);
         }
-        else if(_rightDist > _rightGoal){
-            _rightController.set(-_driveSpeed);
-        }
-        
     }
     public boolean isFinished() {
-        return (_leftDist == _leftGoal && _rightDist == _rightGoal);
+        return (_dist == _goal);
     }
     public void end() {
     }

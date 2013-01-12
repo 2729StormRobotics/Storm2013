@@ -4,8 +4,6 @@
  */
 package storm2013.utilities;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.parsing.IUtility;
@@ -34,10 +32,18 @@ public class BangBangController implements IUtility, LiveWindowSendable {
     
     private ITableListener _listener = new ITableListener(){
         public void valueChanged(ITable itable, String key, Object value, boolean isNew) {
-            if      (key.equals("setPoint"))      setSetPoint   (_table.getNumber("setPoint"));
-            else if (key.equals("spinUpPoint"))   setSpinUpPoint(_table.getNumber("spinUpPoint"));
-            else if (key.equals("spinUpSpeed"))   setSpinUpSpeed(_table.getNumber("spinUpSpeed"));
-            else if (key.equals("maxSpeed"))      setMaxSpeed   (_table.getNumber("maxSpeed"));
+            if (key.equals("setPoint")) {
+                setSetPoint(_table.getNumber("setPoint"));
+            }
+            else if (key.equals("spinUpPoint")) {
+                setSpinUpPoint(_table.getNumber("spinUpPoint"));
+            }
+            else if (key.equals("spinUpSpeed")) {
+                setSpinUpSpeed(_table.getNumber("spinUpSpeed"));
+            }
+            else if (key.equals("maxSpeed")) {
+                setMaxSpeed   (_table.getNumber("maxSpeed"));
+            }
         }
     };
 
@@ -61,10 +67,10 @@ public class BangBangController implements IUtility, LiveWindowSendable {
     public void go() {
 	double currSpeed = _SpeedCalculator.getRPM();
 	if (!(currSpeed == _lastSpeed)){
-	    if (currSpeed < _spinUpPoint){
+	    if (Math.abs(currSpeed) < Math.abs(_spinUpPoint)){
                 _PIDOut.pidWrite(_spinUpSpeed);
 	    }
-	    else if (currSpeed < _setPoint){
+	    else if (Math.abs(currSpeed) < Math.abs(_setPoint)){
 		_PIDOut.pidWrite(_maxSpeed);
 	    }
 	    else{
@@ -75,7 +81,9 @@ public class BangBangController implements IUtility, LiveWindowSendable {
     }
     
     public void initTable(ITable table){
-        if(_table != null) _table.removeTableListener(_listener);
+        if(_table != null) {
+            _table.removeTableListener(_listener);
+        }
         _table = table;
         
         if (table != null){

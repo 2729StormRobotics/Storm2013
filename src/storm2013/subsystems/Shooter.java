@@ -20,6 +20,10 @@ public class Shooter implements IEncoderSpeed{
     
     DigitalInput hallEffect;
     Counter counter;
+    
+    /**
+     * @see IEncoder
+     */
     public Shooter(){
 	
 	hallEffect = new DigitalInput(RobotMap.PORT_HALL_EFFECT);
@@ -34,7 +38,10 @@ public class Shooter implements IEncoderSpeed{
     }
     
     
-    
+    /**
+     * 
+     * @return revolutions per minute
+     */
     public double getRPM() {
 	return 60 /counter.getPeriod();
     }

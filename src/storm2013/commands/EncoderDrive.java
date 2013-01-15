@@ -9,7 +9,7 @@ import storm2013.Robot;
 import storm2013.subsystems.DriveTrain;
 
 /**
- *Drives a certain number of wheel rotations based on an encoder. The encoder values
+ * Drives a certain number of wheel rotations based on an encoder. The encoder values
  * are supplied by the {@link IDriveTrainEncoder}, which is implemented by some other class
  * to supply values in rotations. It then drives at the specified drive speed until
  * until it reaches the goal.
@@ -40,6 +40,11 @@ public class EncoderDrive extends Command {
      */
     public EncoderDrive(double goal, double driveSpeed, IDriveTrainEncoder encoder,
             double decelThreshold, double stopThreshold){ 
+        
+        if (encoder == null){
+            throw new NullPointerException("The DriveTrainEncoder cannot be null.");
+        }
+        
         _goal = goal;
         _driveSpeed = driveSpeed;
         _encoder = encoder;
@@ -86,6 +91,7 @@ public class EncoderDrive extends Command {
     public boolean isFinished() {
         return (Math.abs(_goal) - Math.abs(_dist) <= _stopThreshold);
     }
+    
     /**
      * Implemented from {@link Command}. This is the last thing run before the command
      * stops running. At the moment, it doesn't actually do anything.

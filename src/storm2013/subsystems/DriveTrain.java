@@ -28,7 +28,7 @@ public class DriveTrain extends Subsystem {
 
     public DriveTrain() {
         LiveWindow.addActuator("Drive Train", "Left Motor", _left);
-        LiveWindow.addActuator("Drive Train", "Left Motor", _right);
+        LiveWindow.addActuator("Drive Train", "Right Motor", _right);
     }
     
     public void initDefaultCommand() {

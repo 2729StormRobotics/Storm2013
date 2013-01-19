@@ -6,9 +6,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.Autonomous;
 import storm2013.commands.Teleop;
+import storm2013.commands.TestShooter;
 import storm2013.subsystems.DriveTrain;
+import storm2013.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,23 +23,29 @@ import storm2013.subsystems.DriveTrain;
 public class Robot extends IterativeRobot {
     public static OI oi;
     public static DriveTrain driveTrain;
-
+    public static Shooter shooter;
+    
     Command   teleop;
     String[]  autonomiceNames;
-    Command[] autonomice;
+    Command[] autonomice = new Command[0];
     SendableChooser chooser = new SendableChooser();
     Command   autonomouse;
+    
+    
+    
 
     public void robotInit() {
         oi = new OI();
-        driveTrain = new DriveTrain();
+        //driveTrain = new DriveTrain();
         
-        teleop = new Teleop();
+	shooter = new Shooter();
+	
+        teleop = new TestShooter();
         autonomice = new Command[]{ new Autonomous() };
-        for(int i=0;i<autonomice.length;++i) {
-            chooser.addObject(autonomiceNames[i],autonomice[i]);
-        }
-        
+//        for(int i=0;i<autonomice.length;++i) {
+//            chooser.addObject(autonomiceNames[i],autonomice[i]);
+//        }
+	SmartDashboard.putData(teleop);
     }
 
     public void autonomousInit() {
@@ -51,7 +60,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-        autonomouse.cancel();
+//        autonomouse.cancel();
+	teleop.start();
     }
 
     /**

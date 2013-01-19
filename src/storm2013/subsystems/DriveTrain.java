@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import storm2013.RobotMap;
 import storm2013.commands.ArcadeDrive;
 import storm2013.utilities.AccelerationLimiter;
 
@@ -20,7 +21,8 @@ public class DriveTrain extends Subsystem {
     private double ACCEL_RATE = 1;
     private double DECEL_RATE = 1;
     
-    Victor _left,_right;
+    Victor _left = new Victor(RobotMap.PORT_MOTOR_DRIVE_LEFT),_right = new Victor(RobotMap.PORT_MOTOR_DRIVE_RIGHT);
+    
     AccelerationLimiter _leftControl = new AccelerationLimiter(_left, ACCEL_RATE, DECEL_RATE);
     AccelerationLimiter _rightControl = new AccelerationLimiter(_right, ACCEL_RATE, DECEL_RATE);
     RobotDrive _drive = new RobotDrive(_leftControl,_rightControl);

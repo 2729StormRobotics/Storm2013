@@ -16,7 +16,7 @@ public class ArcadeDrive extends Command {
     protected void initialize() {}
 
     protected void execute() {
-        driveTrain.arcadeDrive(oi.driveJoystick.getY(), oi.driveJoystick.getX());
+        driveTrain.arcadeDrive(oi.getDriveAxis(), oi.getTurnAxis());
     }
 
     protected boolean isFinished() {

@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import storm2013.commands.Autonomous;
-import storm2013.commands.Teleop;
-import storm2013.commands.TestShooter;
+import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.Shooter;
 
@@ -27,7 +25,7 @@ public class Robot extends IterativeRobot {
     
     Command   teleop;
     String[]  autonomiceNames;
-    Command[] autonomice = new Command[0];
+    Command[] autonomice;
     SendableChooser chooser = new SendableChooser();
     Command   autonomouse;
     
@@ -36,20 +34,26 @@ public class Robot extends IterativeRobot {
 
     public void robotInit() {
         oi = new OI();
-        //driveTrain = new DriveTrain();
+        driveTrain = new DriveTrain();
         
 	shooter = new Shooter();
 	
-        teleop = new TestShooter();
-        autonomice = new Command[]{ new Autonomous() };
-//        for(int i=0;i<autonomice.length;++i) {
-//            chooser.addObject(autonomiceNames[i],autonomice[i]);
-//        }
-	SmartDashboard.putData(teleop);
+        teleop = new ArcadeDrive();
+//	teleop = new TestShooter();
+	autonomiceNames = new String[]{"Do Nothing", "Dance!"};
+	autonomice = new Command[]{new DoNothing(),new DonaldDance()};
+	System.out.println(autonomice.length);
+        for(int i=0;i<autonomice.length;++i) {
+            chooser.addObject(autonomiceNames[i],autonomice[i]);
+        }
+	SmartDashboard.putData("Which Autonomouse?",chooser);
     }
 
     public void autonomousInit() {
         autonomouse = (Command)chooser.getSelected();
+	if(autonomouse != null) {
+	    autonomouse.start();
+	}
     }
 
     /**
@@ -60,7 +64,9 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-//        autonomouse.cancel();
+	if(autonomouse != null) {
+	    autonomouse.cancel();
+	}
 	teleop.start();
     }
 
@@ -76,5 +82,6 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+	System.out.println(shooter.counter.getPeriod());
     }
 }

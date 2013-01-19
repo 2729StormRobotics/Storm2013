@@ -1,24 +1,20 @@
 package storm2013.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import storm2013.Robot;
-import storm2013.subsystems.Shooter;
 
 /**
  *
  * @author Storm
  */
-public class TestShooter extends Command {
+public class DoNothing extends Command {
     
-    public TestShooter() {
-	requires(Robot.shooter);
+    public DoNothing() {
     }
 
     protected void initialize() {
     }
 
     protected void execute() {
-	Robot.shooter.setPower(-Robot.oi.driveJoystick.getRawAxis(1));
     }
 
     protected boolean isFinished() {
@@ -29,6 +25,5 @@ public class TestShooter extends Command {
     }
 
     protected void interrupted() {
-	end();
     }
 }

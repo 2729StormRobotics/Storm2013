@@ -44,5 +44,25 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
     
     public Joystick driveJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK_PORT);
+    
+    private double _zeroDeadzone(double joyValue) {
+	return Math.abs(joyValue) > 0.1 ? joyValue : 0;
+    }
+    
+    private double _applyExponential(double joyValue) {
+	if(joyValue == 0) {
+	    return 0;
+	}
+	double sign = (joyValue > 0) ? 1 : -1;
+	return sign*joyValue*joyValue/Math.sqrt(Math.abs(joyValue));
+    }
+    
+    public double getDriveAxis() {
+	return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(2)));
+    }
+    
+    public double getTurnAxis() {
+	return _zeroDeadzone(driveJoystick.getRawAxis(3));
+    }
 }
 

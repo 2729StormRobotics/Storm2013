@@ -2,23 +2,25 @@ package storm2013.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
-import storm2013.subsystems.Shooter;
 
 /**
  *
  * @author Storm
  */
-public class TestShooter extends Command {
+public class Drive extends Command {
+    private double _power,_turn;
     
-    public TestShooter() {
-	requires(Robot.shooter);
+    public Drive(double power,double turn) {
+	requires(Robot.driveTrain);
+	_power = power;
+	_turn = turn;
     }
 
     protected void initialize() {
     }
 
     protected void execute() {
-	Robot.shooter.setPower(-Robot.oi.driveJoystick.getRawAxis(1));
+	Robot.driveTrain.arcadeDrive(_power, _turn);
     }
 
     protected boolean isFinished() {
@@ -26,6 +28,7 @@ public class TestShooter extends Command {
     }
 
     protected void end() {
+	Robot.driveTrain.arcadeDrive(0, 0);
     }
 
     protected void interrupted() {

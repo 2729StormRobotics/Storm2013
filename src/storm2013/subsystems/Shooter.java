@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import storm2013.utilities.IEncoderSpeed;
@@ -23,8 +24,10 @@ import storm2013.RobotMap;
 public class Shooter extends Subsystem implements IEncoderSpeed{
     
     DigitalInput hallEffect;
-    Counter counter;
+    public Counter counter;
     Jaguar wheelMotor = new Jaguar(RobotMap.PORT_MOTOR_SHOOTER);
+    
+    double counterPeriod;
     
     /**
      * @see IEncoder
@@ -40,8 +43,9 @@ public class Shooter extends Subsystem implements IEncoderSpeed{
         counter.setUpSourceEdge(true, false); //TODO Check without this
 	counter.start();
 	
-	
 	LiveWindow.addActuator("Shooter", "wheelMotor", wheelMotor);
+	LiveWindow.addSensor("Shooter", "wheelMotorRawCounter", counter);
+	
     }
     
     
@@ -50,13 +54,25 @@ public class Shooter extends Subsystem implements IEncoderSpeed{
      * @return revolutions per minute
      */
     public double getRPM() {
-	return 0.0;
-	//return 60 /counter.getPeriod();
+	double tempPeriod = counter.getPeriod();
+	if (counterPeriod != tempPeriod && !Double.isInfinite(tempPeriod)){
+	    counterPeriod = counter.getPeriod();
+	    return 60 / counterPeriod;
+	}else{
+	    return counterPeriod;
+	}
+	
+    
     }
     
     public void setPower(double power) {
 	wheelMotor.set(power);
 	SmartDashboard.putNumber("Wheel Motor Power", power);
+	
+	SmartDashboard.putNumber("Raw Counter", counter.get());
+	SmartDashboard.putNumber("Counter Period", counter.getPeriod());
+	SmartDashboard.putNumber("Supposed Wheel RPM", getRPM());
+	
     }
 
     protected void initDefaultCommand() {

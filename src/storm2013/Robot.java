@@ -28,60 +28,52 @@ public class Robot extends IterativeRobot {
     Command[] autonomice;
     SendableChooser chooser = new SendableChooser();
     Command   autonomouse;
-    
-    
-    
 
     public void robotInit() {
         oi = new OI();
         driveTrain = new DriveTrain();
-        
-	shooter = new Shooter();
+        shooter = new Shooter();
 	
         teleop = new ArcadeDrive();
-//	teleop = new TestShooter();
-	autonomiceNames = new String[]{"Do Nothing", "Dance!"};
-	autonomice = new Command[]{new DoNothing(),new DonaldDance()};
-	System.out.println(autonomice.length);
+//    	teleop = new TestShooter();
+        
+        autonomiceNames = new String[]{"Do Nothing", "Dance!"};
+        autonomice = new Command[]{new DoNothing(),new DonaldDance()};
+        
+        System.out.println(autonomice.length);
         for(int i=0;i<autonomice.length;++i) {
             chooser.addObject(autonomiceNames[i],autonomice[i]);
         }
-	SmartDashboard.putData("Which Autonomouse?",chooser);
+        SmartDashboard.putData("Which Autonomouse?",chooser);
     }
 
     public void autonomousInit() {
         autonomouse = (Command)chooser.getSelected();
-	if(autonomouse != null) {
-	    autonomouse.start();
-	}
+        if(autonomouse != null) {
+            autonomouse.start();
+        }
     }
 
-    /**
-     * This function is called periodically during autonomous
-     */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
     }
 
     public void teleopInit() {
-	if(autonomouse != null) {
-	    autonomouse.cancel();
-	}
-	teleop.start();
+        if(autonomouse != null) {
+            autonomouse.cancel();
+        }
+        teleop.start();
     }
 
-    /**
-     * This function is called periodically during operator control
-     */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
     
-    /**
-     * This function is called periodically during test mode
-     */
     public void testPeriodic() {
         LiveWindow.run();
-	System.out.println(shooter.counter.getPeriod());
     }
+
+    // Eliminates "Overload me!" messages
+    public void disabledInit() {}
+    public void disabledPeriodic() {}
 }

@@ -28,7 +28,7 @@ import java.util.TimerTask;
 public class BangBangController implements IUtility, LiveWindowSendable {
     
     private PIDOutput     _PIDOut;
-    private IEncoderSpeed _SpeedCalculator;
+    private ISpeedSensor _SpeedCalculator;
     private double        _setPoint;
     private double        _spinUpPoint;
     private double        _lastSpeed;
@@ -69,7 +69,7 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      * @see IEncoderSpeed
      * @see ITable
      */
-    public BangBangController(PIDOutput PIDOut, IEncoderSpeed SpeedCalculator, ITable table,
+    public BangBangController(PIDOutput PIDOut, ISpeedSensor SpeedCalculator, ITable table,
             double setPoint, double spinUpPoint, double spinUpSpeed, double maxSpeed, 
             double period){
         
@@ -83,12 +83,12 @@ public class BangBangController implements IUtility, LiveWindowSendable {
             throw new NullPointerException("The network table cannot be null.");
         }
         
-	_PIDOut          = PIDOut;
-	_SpeedCalculator = SpeedCalculator;
-	_setPoint        = setPoint;
-	_spinUpPoint     = spinUpPoint;
-	_spinUpSpeed     = spinUpSpeed;
-	_maxSpeed        = maxSpeed;
+        _PIDOut          = PIDOut;
+        _SpeedCalculator = SpeedCalculator;
+        _setPoint        = setPoint;
+        _spinUpPoint     = spinUpPoint;
+        _spinUpSpeed     = spinUpSpeed;
+        _maxSpeed        = maxSpeed;
         _timer           = new Timer();
         
         _timer.schedule(new BangBangTask(this), 0L, (long)(period * 1000));
@@ -99,19 +99,19 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      * this yourself, let the {@link Timer} do it for you.
      */
     public void go() {
-	double currSpeed = _SpeedCalculator.getRPM();
-	if (!(currSpeed == _lastSpeed)){
-	    if (Math.abs(currSpeed) < Math.abs(_spinUpPoint)){
+        double currSpeed = _SpeedCalculator.getSpeedRpm();
+        if (!(currSpeed == _lastSpeed)){
+            if (Math.abs(currSpeed) < Math.abs(_spinUpPoint)){
                 _PIDOut.pidWrite(_spinUpSpeed);
-	    }
-	    else if (Math.abs(currSpeed) < Math.abs(_setPoint)){
-		_PIDOut.pidWrite(_maxSpeed);
-	    }
-	    else{
-		_PIDOut.pidWrite(0);
-	    }
-	    _lastSpeed = currSpeed;
-	}
+            }
+            else if (Math.abs(currSpeed) < Math.abs(_setPoint)){
+                _PIDOut.pidWrite(_maxSpeed);
+            }
+            else{
+                _PIDOut.pidWrite(0);
+            }
+            _lastSpeed = currSpeed;
+        }
     }
     
     /**
@@ -229,20 +229,17 @@ public class BangBangController implements IUtility, LiveWindowSendable {
     /**
      * {@inheritDoc}
      */
-    public void updateTable() {
-    }
+    public void updateTable() {}
 
     /**
      * {@inheritDoc}
      */
-    public void startLiveWindowMode() {
-    }
+    public void startLiveWindowMode() {}
 
     /**
      * {@inheritDoc}
      */
-    public void stopLiveWindowMode() {
-    }
+    public void stopLiveWindowMode() {}
     
     private class BangBangTask extends TimerTask{
 

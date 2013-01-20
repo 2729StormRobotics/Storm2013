@@ -11,27 +11,27 @@ public class Drive extends Command {
     private double _power,_turn;
     
     public Drive(double power,double turn) {
-	requires(Robot.driveTrain);
-	_power = power;
-	_turn = turn;
+        requires(Robot.driveTrain);
+        _power = power;
+        _turn = turn;
     }
 
     protected void initialize() {
     }
 
     protected void execute() {
-	Robot.driveTrain.arcadeDrive(_power, _turn);
+        Robot.driveTrain.arcadeDrive(_power, _turn);
     }
 
     protected boolean isFinished() {
-	return false;
+        return false;
     }
 
     protected void end() {
-	Robot.driveTrain.arcadeDrive(0, 0);
+        Robot.driveTrain.arcadeDrive(0, 0);
     }
 
     protected void interrupted() {
-	end();
+        end();
     }
 }

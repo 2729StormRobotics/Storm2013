@@ -43,26 +43,26 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
     
-    public Joystick driveJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK_PORT);
+    public Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);
     
     private double _zeroDeadzone(double joyValue) {
-	return Math.abs(joyValue) > 0.1 ? joyValue : 0;
+        return Math.abs(joyValue) > 0.1 ? joyValue : 0;
     }
     
     private double _applyExponential(double joyValue) {
-	if(joyValue == 0) {
-	    return 0;
+        if(joyValue == 0) {
+            return 0;
 	}
 	double sign = (joyValue > 0) ? 1 : -1;
-	return sign*joyValue*joyValue/Math.sqrt(Math.abs(joyValue));
+        return sign*joyValue*joyValue/Math.sqrt(Math.abs(joyValue));
     }
     
     public double getDriveAxis() {
-	return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(2)));
+        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(2)));
     }
     
     public double getTurnAxis() {
-	return _zeroDeadzone(driveJoystick.getRawAxis(3));
+        return _zeroDeadzone(driveJoystick.getRawAxis(3));
     }
 }
 

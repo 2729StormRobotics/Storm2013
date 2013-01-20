@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- *
+ * 
  * @author Joe
  */
 public class AccelerationLimiter implements SpeedController,LiveWindowSendable {

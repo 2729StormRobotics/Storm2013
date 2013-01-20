@@ -4,79 +4,30 @@
  */
 package storm2013.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import storm2013.utilities.IEncoderSpeed;
 
 import storm2013.RobotMap;
+import storm2013.utilities.HallEffectSpeedSensor;
 
 /**
  *
  * @author Storm
  */
-public class Shooter extends Subsystem implements IEncoderSpeed{
-    
-    DigitalInput hallEffect;
-    public Counter counter;
-    Jaguar wheelMotor = new Jaguar(RobotMap.PORT_MOTOR_SHOOTER);
-    
-    double counterPeriod;
-    
-    /**
-     * @see IEncoder
-     */
+public class Shooter extends Subsystem {
+    private HallEffectSpeedSensor _speedSensor = new HallEffectSpeedSensor(RobotMap.PORT_HALL_EFFECT);
+    private Jaguar _wheelMotor = new Jaguar(RobotMap.PORT_MOTOR_SHOOTER);
+
     public Shooter(){
-	hallEffect = new DigitalInput(RobotMap.PORT_HALL_EFFECT);
-	counter = new Counter(	CounterBase.EncodingType.k1X, //Count only rising edge of digital signal
-				hallEffect,
-				hallEffect,
-				false); //inverted
-	
-	counter.clearDownSource();
-        counter.setUpSourceEdge(true, false); //TODO Check without this
-	counter.start();
-	
-	LiveWindow.addActuator("Shooter", "wheelMotor", wheelMotor);
-	LiveWindow.addSensor("Shooter", "wheelMotorRawCounter", counter);
-	
-    }
-    
-    
-    /**
-     * 
-     * @return revolutions per minute
-     */
-    public double getRPM() {
-	double tempPeriod = counter.getPeriod();
-	if (counterPeriod != tempPeriod && !Double.isInfinite(tempPeriod)){
-	    counterPeriod = counter.getPeriod();
-	    return 60 / counterPeriod;
-	}else{
-	    return counterPeriod;
-	}
-	
-    
+        _speedSensor.setMinSpeedRpm(20);
+        LiveWindow.addActuator("Shooter", "Wheel Motor", _wheelMotor);
+        LiveWindow.addSensor("Shooter", "Speed Sensor", _speedSensor);
     }
     
     public void setPower(double power) {
-	wheelMotor.set(power);
-	SmartDashboard.putNumber("Wheel Motor Power", power);
-	
-	SmartDashboard.putNumber("Raw Counter", counter.get());
-	SmartDashboard.putNumber("Counter Period", counter.getPeriod());
-	SmartDashboard.putNumber("Supposed Wheel RPM", getRPM());
-	
+        _wheelMotor.set(power);
     }
 
-    protected void initDefaultCommand() {
-    }
-    
-    
+    protected void initDefaultCommand() {}
 }

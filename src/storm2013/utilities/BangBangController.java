@@ -69,7 +69,7 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      * @see IEncoderSpeed
      * @see ITable
      */
-    public BangBangController(PIDOutput PIDOut, ISpeedSensor SpeedCalculator, ITable table,
+    public BangBangController(PIDOutput PIDOut, ISpeedSensor SpeedCalculator,
             double setPoint, double spinUpPoint, double spinUpSpeed, double maxSpeed, 
             double period){
         
@@ -78,9 +78,6 @@ public class BangBangController implements IUtility, LiveWindowSendable {
         }
         if (SpeedCalculator == null){
             throw new NullPointerException("The speed calculator cannot be null.");
-        }
-        if (table == null){
-            throw new NullPointerException("The network table cannot be null.");
         }
         
         _PIDOut          = PIDOut;
@@ -100,18 +97,15 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      */
     public void go() {
         double currSpeed = _SpeedCalculator.getSpeedRpm();
-        if (!(currSpeed == _lastSpeed)){
-            if (Math.abs(currSpeed) < Math.abs(_spinUpPoint)){
-                _PIDOut.pidWrite(_spinUpSpeed);
-            }
-            else if (Math.abs(currSpeed) < Math.abs(_setPoint)){
-                _PIDOut.pidWrite(_maxSpeed);
-            }
-            else{
-                _PIDOut.pidWrite(0);
-            }
-            _lastSpeed = currSpeed;
-        }
+	if (Math.abs(currSpeed) < Math.abs(_spinUpPoint)){
+	    _PIDOut.pidWrite(_spinUpSpeed);
+	}
+	else if (Math.abs(currSpeed) < Math.abs(_setPoint)){
+	    _PIDOut.pidWrite(_maxSpeed);
+	}
+	else{
+	    _PIDOut.pidWrite(0);
+	}
     }
     
     /**
@@ -152,7 +146,9 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      */
     public void setSetPoint(double setPoint) {
         _setPoint = setPoint;
-        _table.putNumber("setPoint", _setPoint);
+	if(_table != null) {
+	    _table.putNumber("setPoint", _setPoint);
+	}
     }
     
     /**
@@ -171,7 +167,9 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      */
     public void setSpinUpPoint(double spinUpPoint) {
         _spinUpPoint = spinUpPoint;
-        _table.putNumber("spinUpPoint", _spinUpPoint);
+	if(_table != null) {
+	    _table.putNumber("spinUpPoint", _spinUpPoint);
+	}
     }
     
     /**
@@ -190,7 +188,10 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      */
     public void setSpinUpSpeed(double spinUpSpeed) {
         _spinUpSpeed = spinUpSpeed;
-        _table.putNumber("spinUpSpeed", _spinUpSpeed);
+	
+	if(_table != null) {
+	    _table.putNumber("spinUpSpeed", _spinUpSpeed);
+	}
     }
     
     /**
@@ -209,7 +210,10 @@ public class BangBangController implements IUtility, LiveWindowSendable {
      */
     public void setMaxSpeed(double maxSpeed) {
         _maxSpeed = maxSpeed;
-        _table.putNumber("maxSpeed", _maxSpeed);
+	
+	if(_table != null) {
+	    _table.putNumber("maxSpeed", _maxSpeed);
+	}
     }
     
     /**

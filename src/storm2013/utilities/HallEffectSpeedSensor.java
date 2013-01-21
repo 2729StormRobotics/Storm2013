@@ -22,23 +22,23 @@ public class HallEffectSpeedSensor implements LiveWindowSendable,ISpeedSensor {
     public HallEffectSpeedSensor(int port) {
         _hallEffect = new DigitalInput(port);
         // TODO: Try this as a replacement for the rest of the counter initialization
-        //_counter = new Counter(_hallEffect);
-        _counter = new Counter(CounterBase.EncodingType.k1X, //Count only rising edge of digital signal
-                               _hallEffect,
-                               _hallEffect,
-                               false); //inverted
-
-        _counter.clearDownSource();
-        _counter.setUpSourceEdge(true, false); //TODO Check without this
+        _counter = new Counter(_hallEffect);
+//        _counter = new Counter(CounterBase.EncodingType.k1X, //Count only rising edge of digital signal
+//                               _hallEffect,
+//                               _hallEffect,
+//                               false); //inverted
+//
+//        _counter.clearDownSource();
+//        _counter.setUpSourceEdge(true, false); //TODO Check without this
         _counter.start();
     }
     
     public void setMinSpeedRpm(double speedRpm) {
-        _counter.setMaxPeriod(1/speedRpm/60);
+        _counter.setMaxPeriod(60/speedRpm);
     }
     
     public double getSpeedRpm() {
-        return 1/_counter.getPeriod();
+        return 60/_counter.getPeriod();
     }
 
     ITable _table;
@@ -52,12 +52,12 @@ public class HallEffectSpeedSensor implements LiveWindowSendable,ISpeedSensor {
     }
 
     public String getSmartDashboardType() {
-        return "Hall Effect Speed Sensor";
+        return "Analog Input";
     }
 
     public void updateTable() {
         if(_table != null) {
-            _table.putNumber("Speed (RPM)", getSpeedRpm());
+            _table.putNumber("Value", getSpeedRpm());
         }
     }
 

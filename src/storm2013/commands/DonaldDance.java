@@ -8,13 +8,40 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * @author Storm
  */
 public class DonaldDance extends CommandGroup {
-    Command forward  = new Drive(0.7,-0.5),
-	    backward = new Drive(-0.7,0.5),
-	    left     = new Drive(0,-1),
-	    right    = new Drive(0,1);
+    class Forward extends Drive {
+	Forward() {
+	    super(0.7,-0.5);
+	}
+    }
+    class Backward extends Drive {
+	Backward() {
+	    super(-0.7,0.5);
+	}
+    }
+    class Left extends Drive {
+	Left() {
+	    super(0,-1);
+	}
+    }
+    class Right extends Drive {
+	Right() {
+	    super(0,1);
+	}
+    }
+    class Wait extends DoNothing {}
     
     public DonaldDance() {
-	addSequential(forward,3);
-	addSequential(left,3);
+	addSequential(new Forward(),2);
+	addSequential(new Wait(),.5);
+	addSequential(new Right(),.8);
+	addSequential(new Wait(),.5);
+	addSequential(new Left(),1.6);
+	addSequential(new Wait(),.5);
+	addSequential(new Drive(0,0.8),6.2);
+//	addSequential(new Wait(),.5);
+//	addSequential(new Forward(),2);
+//	addSequential(new Wait(),.5);
+//	addSequential(new Backward(),3);
+	
     }
 }

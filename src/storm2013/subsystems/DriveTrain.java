@@ -18,8 +18,8 @@ import storm2013.utilities.AccelerationLimiter;
  */
 public class DriveTrain extends Subsystem {
     
-    private double ACCEL_RATE = 1;
-    private double DECEL_RATE = 1;
+    private double ACCEL_RATE =1.7;
+    private double DECEL_RATE = 1.7;
     
     Victor _left = new Victor(RobotMap.PORT_MOTOR_DRIVE_LEFT),_right = new Victor(RobotMap.PORT_MOTOR_DRIVE_RIGHT);
     

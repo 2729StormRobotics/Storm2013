@@ -34,8 +34,9 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain();
         shooter = new Shooter();
 	
-        teleop = new ArcadeDrive();
-//    	teleop = new TestShooter();
+//	teleop = new DoNothing();
+//        teleop = new ArcadeDrive();
+    	teleop = new TestShooter();
         
         autonomiceNames = new String[]{"Do Nothing", "Dance!"};
         autonomice = new Command[]{new DoNothing(),new DonaldDance()};

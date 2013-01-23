@@ -18,7 +18,7 @@ public class TestShooter extends Command {
     }
 
     protected void execute() {
-	Robot.shooter.setSpeedRpm(2500);
+//	Robot.shooter.setSpeedRpm(2500);
 	SmartDashboard.putNumber("Wheel Speed (RPM)",Robot.shooter.getSpeedRpm());
 	System.out.println("Speed: " + Robot.shooter.getSpeedRpm());
 //        Robot.shooter.setPower(-Robot.oi.driveJoystick.getRawAxis(1));
@@ -29,7 +29,7 @@ public class TestShooter extends Command {
     }
 
     protected void end() {
-	Robot.shooter.setSpeedRpm(0);
+//	Robot.shooter.setSpeedRpm(0);
     }
 
     protected void interrupted() {

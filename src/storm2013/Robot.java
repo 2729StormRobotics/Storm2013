@@ -1,6 +1,8 @@
 package storm2013;
 
 
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -28,6 +30,9 @@ public class Robot extends IterativeRobot {
     Command[] autonomice;
     SendableChooser chooser = new SendableChooser();
     Command   autonomouse;
+    
+    
+    AnalogChannel magEnc;
 
     public void robotInit() {
         oi = new OI();
@@ -46,6 +51,9 @@ public class Robot extends IterativeRobot {
             chooser.addObject(autonomiceNames[i],autonomice[i]);
         }
         SmartDashboard.putData("Which Autonomouse?",chooser);
+	
+	magEnc = new AnalogChannel(2);
+	LiveWindow.addSensor("Thingy", "Magnetic Encoder1", magEnc);
     }
 
     public void autonomousInit() {
@@ -71,6 +79,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void testPeriodic() {
+	System.out.println("Analog 2: " + magEnc.getAverageVoltage());
         LiveWindow.run();
     }
 

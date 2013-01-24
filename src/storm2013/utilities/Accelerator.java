@@ -9,10 +9,15 @@ import java.util.TimerTask;
  *
  * @author Joe
  */
-public class Accelerator  implements SpeedController {
+public class Accelerator implements SpeedController {
     private class _BgTask extends TimerTask {
         public void run() {
-            _controller.set(_controller.get()+_rate*_period);
+	    if(_enabled) {
+		double newSpeed = _controller.get()+_rate*_period;
+		if(newSpeed > _minSpeed && newSpeed < _maxSpeed) {
+		    _controller.set(newSpeed);
+		}
+	    }
         }
     }
     
@@ -21,7 +26,9 @@ public class Accelerator  implements SpeedController {
     SpeedController _controller;
     double _rate = 0;
     double _period;
-    Timer  _timer;
+    Timer  _timer = new Timer();
+    boolean _enabled = true;
+    double _minSpeed = -1,_maxSpeed = 1;
     
     public Accelerator(SpeedController controller) {
         this(controller,DEFAULT_PERIOD);
@@ -52,10 +59,27 @@ public class Accelerator  implements SpeedController {
     }
 
     public void disable() {
-        _controller.disable();
+	_controller.set(0);
+    }
+    
+    public void setEnabled(boolean enabled) {
+	if(_enabled == enabled)
+	    return;
+	if(!enabled) {
+	    _controller.set(0);
+	}
+	_enabled = enabled;
     }
 
     public void pidWrite(double output) {
         set(output);
+    }
+    
+    public void setMinSpeed(double minSpeed) {
+	_minSpeed = minSpeed;
+    }
+    
+    public void setMaxSpeed(double maxSpeed) {
+	_maxSpeed = maxSpeed;
     }
 }

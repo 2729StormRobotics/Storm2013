@@ -32,14 +32,14 @@ public class Robot extends IterativeRobot {
     Command   autonomouse;
     
     
-    AnalogChannel magEnc;
-
+    AnalogChannel loadSensor;
+    Encoder normalEncoder;
+    
     public void robotInit() {
         oi = new OI();
         driveTrain = new DriveTrain();
         shooter = new Shooter();
 	
-//	teleop = new DoNothing();
 //        teleop = new ArcadeDrive();
     	teleop = new TestShooter();
         
@@ -52,8 +52,14 @@ public class Robot extends IterativeRobot {
         }
         SmartDashboard.putData("Which Autonomouse?",chooser);
 	
-	magEnc = new AnalogChannel(2);
-	LiveWindow.addSensor("Thingy", "Magnetic Encoder1", magEnc);
+	normalEncoder = new Encoder(3,4);
+	
+	normalEncoder.start();
+	
+	LiveWindow.addSensor("Misc", "Encoder", normalEncoder);
+	
+	loadSensor = new AnalogChannel(2);
+	LiveWindow.addSensor("Misc","Load Sensor",loadSensor);
     }
 
     public void autonomousInit() {
@@ -79,7 +85,6 @@ public class Robot extends IterativeRobot {
     }
     
     public void testPeriodic() {
-	System.out.println("Analog 2: " + magEnc.getAverageVoltage());
         LiveWindow.run();
     }
 

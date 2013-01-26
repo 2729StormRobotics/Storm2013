@@ -15,13 +15,13 @@ public class TestShooter extends Command {
     }
 
     protected void initialize() {
+	Robot.shooter.disable();
     }
 
     protected void execute() {
-//	Robot.shooter.setSpeedRpm(2500);
 	SmartDashboard.putNumber("Wheel Speed (RPM)",Robot.shooter.getSpeedRpm());
-	System.out.println("Speed: " + Robot.shooter.getSpeedRpm());
-//        Robot.shooter.setPower(-Robot.oi.driveJoystick.getRawAxis(1));
+	Robot.shooter.setMotorValRaw(-(-Robot.oi.driveJoystick.getRawAxis(4)+1)/2);
+	SmartDashboard.putNumber("Power Value", -Robot.shooter.getMotorValRaw());
     }
 
     protected boolean isFinished() {

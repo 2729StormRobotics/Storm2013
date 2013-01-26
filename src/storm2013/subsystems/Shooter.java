@@ -32,8 +32,12 @@ public class Shooter extends PIDSubsystem {
         return _speedSensor.getSpeedRpm();
     }
     
-    public double getMotorVal() {
+    public double getMotorValRaw() {
         return _wheelMotor.get();
+    }
+    
+    public void setMotorValRaw(double val) {
+        _wheelMotor.set(val);
     }
 
     protected void initDefaultCommand() {}

@@ -1,0 +1,125 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package storm2013.commands;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import edu.wpi.first.wpilibj.DigitalInput;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import edu.wpi.first.wpilibj.command.Command;<a name="line.4"></a>
+<FONT color="green">005</FONT>    import storm2013.RobotMap;<a name="line.5"></a>
+<FONT color="green">006</FONT>    <a name="line.6"></a>
+<FONT color="green">007</FONT>    /**<a name="line.7"></a>
+<FONT color="green">008</FONT>     * Moves a ball up the back to get it ready to be fired. All this does is create <a name="line.8"></a>
+<FONT color="green">009</FONT>     * a new {@link ControlLoader}, then it an heros.<a name="line.9"></a>
+<FONT color="green">010</FONT>     * @author evan1026<a name="line.10"></a>
+<FONT color="green">011</FONT>     */<a name="line.11"></a>
+<FONT color="green">012</FONT>    public class LoadBall extends Command {<a name="line.12"></a>
+<FONT color="green">013</FONT>    <a name="line.13"></a>
+<FONT color="green">014</FONT>        private DigitalInput ballLoadedSensor;<a name="line.14"></a>
+<FONT color="green">015</FONT>        private ControlLoader controlLoader;<a name="line.15"></a>
+<FONT color="green">016</FONT>        <a name="line.16"></a>
+<FONT color="green">017</FONT>        /**<a name="line.17"></a>
+<FONT color="green">018</FONT>         * Creates a new instance of the command.<a name="line.18"></a>
+<FONT color="green">019</FONT>         */<a name="line.19"></a>
+<FONT color="green">020</FONT>        public LoadBall(){<a name="line.20"></a>
+<FONT color="green">021</FONT>            ballLoadedSensor = new DigitalInput(RobotMap.PORT_BREAKBEAM_BALL_READY);<a name="line.21"></a>
+<FONT color="green">022</FONT>            controlLoader = new ControlLoader(true);<a name="line.22"></a>
+<FONT color="green">023</FONT>        }<a name="line.23"></a>
+<FONT color="green">024</FONT>        <a name="line.24"></a>
+<FONT color="green">025</FONT>        /**<a name="line.25"></a>
+<FONT color="green">026</FONT>         * {@inheritDoc}<a name="line.26"></a>
+<FONT color="green">027</FONT>         */<a name="line.27"></a>
+<FONT color="green">028</FONT>        protected void initialize() {<a name="line.28"></a>
+<FONT color="green">029</FONT>        }<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>        /**<a name="line.31"></a>
+<FONT color="green">032</FONT>         * {@inheritDoc}<a name="line.32"></a>
+<FONT color="green">033</FONT>         */<a name="line.33"></a>
+<FONT color="green">034</FONT>        protected void execute() {<a name="line.34"></a>
+<FONT color="green">035</FONT>        }<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>        /**<a name="line.37"></a>
+<FONT color="green">038</FONT>         * {@inheritDoc}<a name="line.38"></a>
+<FONT color="green">039</FONT>         * @return {@inheritDoc}<a name="line.39"></a>
+<FONT color="green">040</FONT>         */<a name="line.40"></a>
+<FONT color="green">041</FONT>        protected boolean isFinished() {<a name="line.41"></a>
+<FONT color="green">042</FONT>            return !ballLoadedSensor.get();<a name="line.42"></a>
+<FONT color="green">043</FONT>        }<a name="line.43"></a>
+<FONT color="green">044</FONT>    <a name="line.44"></a>
+<FONT color="green">045</FONT>        /**<a name="line.45"></a>
+<FONT color="green">046</FONT>         * {@inheritDoc}<a name="line.46"></a>
+<FONT color="green">047</FONT>         */<a name="line.47"></a>
+<FONT color="green">048</FONT>        protected void end() {<a name="line.48"></a>
+<FONT color="green">049</FONT>            controlLoader.end();<a name="line.49"></a>
+<FONT color="green">050</FONT>        }<a name="line.50"></a>
+<FONT color="green">051</FONT>        <a name="line.51"></a>
+<FONT color="green">052</FONT>       /**<a name="line.52"></a>
+<FONT color="green">053</FONT>        * {@inheritDoc}<a name="line.53"></a>
+<FONT color="green">054</FONT>        */<a name="line.54"></a>
+<FONT color="green">055</FONT>        protected void interrupted() {<a name="line.55"></a>
+<FONT color="green">056</FONT>            end();<a name="line.56"></a>
+<FONT color="green">057</FONT>        }<a name="line.57"></a>
+<FONT color="green">058</FONT>        <a name="line.58"></a>
+<FONT color="green">059</FONT>    }<a name="line.59"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

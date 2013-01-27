@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * A control group that fires some number of times.
  * @author evan1026
  */
 public class Shoot extends CommandGroup {
     /**
-     * 
+     * Sets up all the commands to do the firing and stuff.
      * @param number The number of times to fire
      */
     public Shoot(int number){

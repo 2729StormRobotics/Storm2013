@@ -31,7 +31,7 @@
 <FONT color="green">028</FONT>    public class BangBangController implements IUtility, LiveWindowSendable {<a name="line.28"></a>
 <FONT color="green">029</FONT>        <a name="line.29"></a>
 <FONT color="green">030</FONT>        private PIDOutput     _PIDOut;<a name="line.30"></a>
-<FONT color="green">031</FONT>        private IEncoderSpeed _SpeedCalculator;<a name="line.31"></a>
+<FONT color="green">031</FONT>        private ISpeedSensor _SpeedCalculator;<a name="line.31"></a>
 <FONT color="green">032</FONT>        private double        _setPoint;<a name="line.32"></a>
 <FONT color="green">033</FONT>        private double        _spinUpPoint;<a name="line.33"></a>
 <FONT color="green">034</FONT>        private double        _lastSpeed;<a name="line.34"></a>
@@ -72,7 +72,7 @@
 <FONT color="green">069</FONT>         * @see IEncoderSpeed<a name="line.69"></a>
 <FONT color="green">070</FONT>         * @see ITable<a name="line.70"></a>
 <FONT color="green">071</FONT>         */<a name="line.71"></a>
-<FONT color="green">072</FONT>        public BangBangController(PIDOutput PIDOut, IEncoderSpeed SpeedCalculator, ITable table,<a name="line.72"></a>
+<FONT color="green">072</FONT>        public BangBangController(PIDOutput PIDOut, ISpeedSensor SpeedCalculator,<a name="line.72"></a>
 <FONT color="green">073</FONT>                double setPoint, double spinUpPoint, double spinUpSpeed, double maxSpeed, <a name="line.73"></a>
 <FONT color="green">074</FONT>                double period){<a name="line.74"></a>
 <FONT color="green">075</FONT>            <a name="line.75"></a>
@@ -82,190 +82,191 @@
 <FONT color="green">079</FONT>            if (SpeedCalculator == null){<a name="line.79"></a>
 <FONT color="green">080</FONT>                throw new NullPointerException("The speed calculator cannot be null.");<a name="line.80"></a>
 <FONT color="green">081</FONT>            }<a name="line.81"></a>
-<FONT color="green">082</FONT>            if (table == null){<a name="line.82"></a>
-<FONT color="green">083</FONT>                throw new NullPointerException("The network table cannot be null.");<a name="line.83"></a>
-<FONT color="green">084</FONT>            }<a name="line.84"></a>
-<FONT color="green">085</FONT>            <a name="line.85"></a>
-<FONT color="green">086</FONT>            _PIDOut          = PIDOut;<a name="line.86"></a>
-<FONT color="green">087</FONT>            _SpeedCalculator = SpeedCalculator;<a name="line.87"></a>
-<FONT color="green">088</FONT>            _setPoint        = setPoint;<a name="line.88"></a>
-<FONT color="green">089</FONT>            _spinUpPoint     = spinUpPoint;<a name="line.89"></a>
-<FONT color="green">090</FONT>            _spinUpSpeed     = spinUpSpeed;<a name="line.90"></a>
-<FONT color="green">091</FONT>            _maxSpeed        = maxSpeed;<a name="line.91"></a>
-<FONT color="green">092</FONT>            _timer           = new Timer();<a name="line.92"></a>
-<FONT color="green">093</FONT>            <a name="line.93"></a>
-<FONT color="green">094</FONT>            _timer.schedule(new BangBangTask(this), 0L, (long)(period * 1000));<a name="line.94"></a>
-<FONT color="green">095</FONT>        }<a name="line.95"></a>
-<FONT color="green">096</FONT>    <a name="line.96"></a>
-<FONT color="green">097</FONT>        /**<a name="line.97"></a>
-<FONT color="green">098</FONT>         * Does the calculations and sets the output. It would be really weird if you called<a name="line.98"></a>
-<FONT color="green">099</FONT>         * this yourself, let the {@link Timer} do it for you.<a name="line.99"></a>
-<FONT color="green">100</FONT>         */<a name="line.100"></a>
-<FONT color="green">101</FONT>        public void go() {<a name="line.101"></a>
-<FONT color="green">102</FONT>            double currSpeed = _SpeedCalculator.getRPM();<a name="line.102"></a>
-<FONT color="green">103</FONT>            if (!(currSpeed == _lastSpeed)){<a name="line.103"></a>
-<FONT color="green">104</FONT>                if (Math.abs(currSpeed) &lt; Math.abs(_spinUpPoint)){<a name="line.104"></a>
-<FONT color="green">105</FONT>                    _PIDOut.pidWrite(_spinUpSpeed);<a name="line.105"></a>
-<FONT color="green">106</FONT>                }<a name="line.106"></a>
-<FONT color="green">107</FONT>                else if (Math.abs(currSpeed) &lt; Math.abs(_setPoint)){<a name="line.107"></a>
-<FONT color="green">108</FONT>                    _PIDOut.pidWrite(_maxSpeed);<a name="line.108"></a>
-<FONT color="green">109</FONT>                }<a name="line.109"></a>
-<FONT color="green">110</FONT>                else{<a name="line.110"></a>
-<FONT color="green">111</FONT>                    _PIDOut.pidWrite(0);<a name="line.111"></a>
-<FONT color="green">112</FONT>                }<a name="line.112"></a>
-<FONT color="green">113</FONT>                _lastSpeed = currSpeed;<a name="line.113"></a>
-<FONT color="green">114</FONT>            }<a name="line.114"></a>
-<FONT color="green">115</FONT>        }<a name="line.115"></a>
-<FONT color="green">116</FONT>        <a name="line.116"></a>
-<FONT color="green">117</FONT>        /**<a name="line.117"></a>
-<FONT color="green">118</FONT>         * SmartDashboard wants it, so SmartDashboard gets it. Basically this just ends up<a name="line.118"></a>
-<FONT color="green">119</FONT>         * initializing the table values associated with this controller. Don't call it<a name="line.119"></a>
-<FONT color="green">120</FONT>         * yourself. That's just weird.<a name="line.120"></a>
-<FONT color="green">121</FONT>         * <a name="line.121"></a>
-<FONT color="green">122</FONT>         * @param table The table that the controller should output its values to.<a name="line.122"></a>
-<FONT color="green">123</FONT>         */<a name="line.123"></a>
-<FONT color="green">124</FONT>        public void initTable(ITable table){<a name="line.124"></a>
-<FONT color="green">125</FONT>            if(_table != null) {<a name="line.125"></a>
-<FONT color="green">126</FONT>                _table.removeTableListener(_listener);<a name="line.126"></a>
-<FONT color="green">127</FONT>            }<a name="line.127"></a>
-<FONT color="green">128</FONT>            _table = table;<a name="line.128"></a>
-<FONT color="green">129</FONT>            <a name="line.129"></a>
-<FONT color="green">130</FONT>            if (table != null){<a name="line.130"></a>
-<FONT color="green">131</FONT>                _table.putNumber("setPoint",    _setPoint);<a name="line.131"></a>
-<FONT color="green">132</FONT>                _table.putNumber("spinUpPoint", _spinUpPoint);<a name="line.132"></a>
-<FONT color="green">133</FONT>                _table.putNumber("spinUpSpeed", _spinUpSpeed);<a name="line.133"></a>
-<FONT color="green">134</FONT>                _table.putNumber("maxSpeed",    _maxSpeed);<a name="line.134"></a>
-<FONT color="green">135</FONT>                _table.addTableListener(_listener, false);<a name="line.135"></a>
-<FONT color="green">136</FONT>            }<a name="line.136"></a>
-<FONT color="green">137</FONT>        }<a name="line.137"></a>
-<FONT color="green">138</FONT>    <a name="line.138"></a>
-<FONT color="green">139</FONT>        /**<a name="line.139"></a>
-<FONT color="green">140</FONT>         * Gets the current set point.<a name="line.140"></a>
-<FONT color="green">141</FONT>         * <a name="line.141"></a>
-<FONT color="green">142</FONT>         * @return The set point.<a name="line.142"></a>
-<FONT color="green">143</FONT>         */<a name="line.143"></a>
-<FONT color="green">144</FONT>        public double getSetPoint() {<a name="line.144"></a>
-<FONT color="green">145</FONT>            return _setPoint;<a name="line.145"></a>
-<FONT color="green">146</FONT>        }<a name="line.146"></a>
-<FONT color="green">147</FONT>        <a name="line.147"></a>
-<FONT color="green">148</FONT>        /**<a name="line.148"></a>
-<FONT color="green">149</FONT>         * Sets a new set point.<a name="line.149"></a>
-<FONT color="green">150</FONT>         * <a name="line.150"></a>
-<FONT color="green">151</FONT>         * @param setPoint The new set point.<a name="line.151"></a>
-<FONT color="green">152</FONT>         */<a name="line.152"></a>
-<FONT color="green">153</FONT>        public void setSetPoint(double setPoint) {<a name="line.153"></a>
-<FONT color="green">154</FONT>            _setPoint = setPoint;<a name="line.154"></a>
-<FONT color="green">155</FONT>            _table.putNumber("setPoint", _setPoint);<a name="line.155"></a>
-<FONT color="green">156</FONT>        }<a name="line.156"></a>
-<FONT color="green">157</FONT>        <a name="line.157"></a>
-<FONT color="green">158</FONT>        /**<a name="line.158"></a>
-<FONT color="green">159</FONT>         * Gets the current spin up point.<a name="line.159"></a>
-<FONT color="green">160</FONT>         * <a name="line.160"></a>
-<FONT color="green">161</FONT>         * @return The current spin up point.<a name="line.161"></a>
-<FONT color="green">162</FONT>         */<a name="line.162"></a>
-<FONT color="green">163</FONT>        public double getSpinUpPoint() {<a name="line.163"></a>
-<FONT color="green">164</FONT>            return _spinUpPoint;<a name="line.164"></a>
-<FONT color="green">165</FONT>        }<a name="line.165"></a>
-<FONT color="green">166</FONT>        <a name="line.166"></a>
-<FONT color="green">167</FONT>        /**<a name="line.167"></a>
-<FONT color="green">168</FONT>         * Sets a new spin up point.<a name="line.168"></a>
-<FONT color="green">169</FONT>         * <a name="line.169"></a>
-<FONT color="green">170</FONT>         * @param spinUpPoint The new spin up point.<a name="line.170"></a>
-<FONT color="green">171</FONT>         */<a name="line.171"></a>
-<FONT color="green">172</FONT>        public void setSpinUpPoint(double spinUpPoint) {<a name="line.172"></a>
-<FONT color="green">173</FONT>            _spinUpPoint = spinUpPoint;<a name="line.173"></a>
-<FONT color="green">174</FONT>            _table.putNumber("spinUpPoint", _spinUpPoint);<a name="line.174"></a>
-<FONT color="green">175</FONT>        }<a name="line.175"></a>
-<FONT color="green">176</FONT>        <a name="line.176"></a>
-<FONT color="green">177</FONT>        /**<a name="line.177"></a>
-<FONT color="green">178</FONT>         * Gets the current spin up speed.<a name="line.178"></a>
-<FONT color="green">179</FONT>         * <a name="line.179"></a>
-<FONT color="green">180</FONT>         * @return The current spin up speed.<a name="line.180"></a>
-<FONT color="green">181</FONT>         */<a name="line.181"></a>
-<FONT color="green">182</FONT>        public double getSpinUpSpeed() {<a name="line.182"></a>
-<FONT color="green">183</FONT>            return _spinUpSpeed;<a name="line.183"></a>
-<FONT color="green">184</FONT>        }<a name="line.184"></a>
-<FONT color="green">185</FONT>        <a name="line.185"></a>
-<FONT color="green">186</FONT>        /**<a name="line.186"></a>
-<FONT color="green">187</FONT>         * Sets a new spin up speed.<a name="line.187"></a>
-<FONT color="green">188</FONT>         * <a name="line.188"></a>
-<FONT color="green">189</FONT>         * @param spinUpSpeed The new spin up speed.<a name="line.189"></a>
-<FONT color="green">190</FONT>         */<a name="line.190"></a>
-<FONT color="green">191</FONT>        public void setSpinUpSpeed(double spinUpSpeed) {<a name="line.191"></a>
-<FONT color="green">192</FONT>            _spinUpSpeed = spinUpSpeed;<a name="line.192"></a>
-<FONT color="green">193</FONT>            _table.putNumber("spinUpSpeed", _spinUpSpeed);<a name="line.193"></a>
-<FONT color="green">194</FONT>        }<a name="line.194"></a>
-<FONT color="green">195</FONT>        <a name="line.195"></a>
-<FONT color="green">196</FONT>        /**<a name="line.196"></a>
-<FONT color="green">197</FONT>         * Gets the current maximum speed.<a name="line.197"></a>
-<FONT color="green">198</FONT>         * <a name="line.198"></a>
-<FONT color="green">199</FONT>         * @return The current maximum speed.<a name="line.199"></a>
-<FONT color="green">200</FONT>         */<a name="line.200"></a>
-<FONT color="green">201</FONT>        public double getMaxSpeed() {<a name="line.201"></a>
-<FONT color="green">202</FONT>            return _maxSpeed;<a name="line.202"></a>
-<FONT color="green">203</FONT>        }<a name="line.203"></a>
-<FONT color="green">204</FONT>        <a name="line.204"></a>
-<FONT color="green">205</FONT>        /**<a name="line.205"></a>
-<FONT color="green">206</FONT>         * Sets a new maximum speed.<a name="line.206"></a>
-<FONT color="green">207</FONT>         * <a name="line.207"></a>
-<FONT color="green">208</FONT>         * @param maxSpeed The new maximum speed.<a name="line.208"></a>
-<FONT color="green">209</FONT>         */<a name="line.209"></a>
-<FONT color="green">210</FONT>        public void setMaxSpeed(double maxSpeed) {<a name="line.210"></a>
-<FONT color="green">211</FONT>            _maxSpeed = maxSpeed;<a name="line.211"></a>
-<FONT color="green">212</FONT>            _table.putNumber("maxSpeed", _maxSpeed);<a name="line.212"></a>
-<FONT color="green">213</FONT>        }<a name="line.213"></a>
-<FONT color="green">214</FONT>        <a name="line.214"></a>
-<FONT color="green">215</FONT>        /**<a name="line.215"></a>
-<FONT color="green">216</FONT>         * {@inheritDoc}<a name="line.216"></a>
-<FONT color="green">217</FONT>         */<a name="line.217"></a>
-<FONT color="green">218</FONT>        public ITable getTable(){<a name="line.218"></a>
-<FONT color="green">219</FONT>            return _table;<a name="line.219"></a>
-<FONT color="green">220</FONT>        }<a name="line.220"></a>
-<FONT color="green">221</FONT>        <a name="line.221"></a>
-<FONT color="green">222</FONT>        /**<a name="line.222"></a>
-<FONT color="green">223</FONT>         * {@inheritDoc}<a name="line.223"></a>
-<FONT color="green">224</FONT>         */<a name="line.224"></a>
-<FONT color="green">225</FONT>        public String getSmartDashboardType(){<a name="line.225"></a>
-<FONT color="green">226</FONT>            return "BangBangController";<a name="line.226"></a>
-<FONT color="green">227</FONT>        }<a name="line.227"></a>
-<FONT color="green">228</FONT>    <a name="line.228"></a>
-<FONT color="green">229</FONT>        /**<a name="line.229"></a>
-<FONT color="green">230</FONT>         * {@inheritDoc}<a name="line.230"></a>
-<FONT color="green">231</FONT>         */<a name="line.231"></a>
-<FONT color="green">232</FONT>        public void updateTable() {<a name="line.232"></a>
-<FONT color="green">233</FONT>        }<a name="line.233"></a>
-<FONT color="green">234</FONT>    <a name="line.234"></a>
-<FONT color="green">235</FONT>        /**<a name="line.235"></a>
-<FONT color="green">236</FONT>         * {@inheritDoc}<a name="line.236"></a>
-<FONT color="green">237</FONT>         */<a name="line.237"></a>
-<FONT color="green">238</FONT>        public void startLiveWindowMode() {<a name="line.238"></a>
-<FONT color="green">239</FONT>        }<a name="line.239"></a>
-<FONT color="green">240</FONT>    <a name="line.240"></a>
-<FONT color="green">241</FONT>        /**<a name="line.241"></a>
-<FONT color="green">242</FONT>         * {@inheritDoc}<a name="line.242"></a>
-<FONT color="green">243</FONT>         */<a name="line.243"></a>
-<FONT color="green">244</FONT>        public void stopLiveWindowMode() {<a name="line.244"></a>
-<FONT color="green">245</FONT>        }<a name="line.245"></a>
-<FONT color="green">246</FONT>        <a name="line.246"></a>
-<FONT color="green">247</FONT>        private class BangBangTask extends TimerTask{<a name="line.247"></a>
-<FONT color="green">248</FONT>    <a name="line.248"></a>
-<FONT color="green">249</FONT>            private BangBangController _controller;<a name="line.249"></a>
-<FONT color="green">250</FONT>            <a name="line.250"></a>
-<FONT color="green">251</FONT>            public BangBangTask(BangBangController controller) {<a name="line.251"></a>
-<FONT color="green">252</FONT>                if (controller == null) {<a name="line.252"></a>
-<FONT color="green">253</FONT>                    throw new NullPointerException("The BangBangController cannot be null.");<a name="line.253"></a>
-<FONT color="green">254</FONT>                }<a name="line.254"></a>
-<FONT color="green">255</FONT>                _controller = controller;<a name="line.255"></a>
-<FONT color="green">256</FONT>            }<a name="line.256"></a>
-<FONT color="green">257</FONT>            <a name="line.257"></a>
-<FONT color="green">258</FONT>            public void run() {<a name="line.258"></a>
-<FONT color="green">259</FONT>                _controller.go();<a name="line.259"></a>
-<FONT color="green">260</FONT>            }<a name="line.260"></a>
-<FONT color="green">261</FONT>        <a name="line.261"></a>
-<FONT color="green">262</FONT>        }<a name="line.262"></a>
-<FONT color="green">263</FONT>    }<a name="line.263"></a>
-<FONT color="green">264</FONT>    <a name="line.264"></a>
+<FONT color="green">082</FONT>            <a name="line.82"></a>
+<FONT color="green">083</FONT>            _PIDOut          = PIDOut;<a name="line.83"></a>
+<FONT color="green">084</FONT>            _SpeedCalculator = SpeedCalculator;<a name="line.84"></a>
+<FONT color="green">085</FONT>            _setPoint        = setPoint;<a name="line.85"></a>
+<FONT color="green">086</FONT>            _spinUpPoint     = spinUpPoint;<a name="line.86"></a>
+<FONT color="green">087</FONT>            _spinUpSpeed     = spinUpSpeed;<a name="line.87"></a>
+<FONT color="green">088</FONT>            _maxSpeed        = maxSpeed;<a name="line.88"></a>
+<FONT color="green">089</FONT>            _timer           = new Timer();<a name="line.89"></a>
+<FONT color="green">090</FONT>            <a name="line.90"></a>
+<FONT color="green">091</FONT>            _timer.schedule(new BangBangTask(this), 0L, (long)(period * 1000));<a name="line.91"></a>
+<FONT color="green">092</FONT>        }<a name="line.92"></a>
+<FONT color="green">093</FONT>    <a name="line.93"></a>
+<FONT color="green">094</FONT>        /**<a name="line.94"></a>
+<FONT color="green">095</FONT>         * Does the calculations and sets the output. It would be really weird if you called<a name="line.95"></a>
+<FONT color="green">096</FONT>         * this yourself, let the {@link Timer} do it for you.<a name="line.96"></a>
+<FONT color="green">097</FONT>         */<a name="line.97"></a>
+<FONT color="green">098</FONT>        public void go() {<a name="line.98"></a>
+<FONT color="green">099</FONT>            double currSpeed = _SpeedCalculator.getSpeedRpm();<a name="line.99"></a>
+<FONT color="green">100</FONT>            if (Math.abs(currSpeed) &lt; Math.abs(_spinUpPoint)){<a name="line.100"></a>
+<FONT color="green">101</FONT>                _PIDOut.pidWrite(_spinUpSpeed);<a name="line.101"></a>
+<FONT color="green">102</FONT>            }<a name="line.102"></a>
+<FONT color="green">103</FONT>            else if (Math.abs(currSpeed) &lt; Math.abs(_setPoint)){<a name="line.103"></a>
+<FONT color="green">104</FONT>                _PIDOut.pidWrite(_maxSpeed);<a name="line.104"></a>
+<FONT color="green">105</FONT>            }<a name="line.105"></a>
+<FONT color="green">106</FONT>            else{<a name="line.106"></a>
+<FONT color="green">107</FONT>                _PIDOut.pidWrite(0);<a name="line.107"></a>
+<FONT color="green">108</FONT>            }<a name="line.108"></a>
+<FONT color="green">109</FONT>        }<a name="line.109"></a>
+<FONT color="green">110</FONT>        <a name="line.110"></a>
+<FONT color="green">111</FONT>        /**<a name="line.111"></a>
+<FONT color="green">112</FONT>         * SmartDashboard wants it, so SmartDashboard gets it. Basically this just ends up<a name="line.112"></a>
+<FONT color="green">113</FONT>         * initializing the table values associated with this controller. Don't call it<a name="line.113"></a>
+<FONT color="green">114</FONT>         * yourself. That's just weird.<a name="line.114"></a>
+<FONT color="green">115</FONT>         * <a name="line.115"></a>
+<FONT color="green">116</FONT>         * @param table The table that the controller should output its values to.<a name="line.116"></a>
+<FONT color="green">117</FONT>         */<a name="line.117"></a>
+<FONT color="green">118</FONT>        public void initTable(ITable table){<a name="line.118"></a>
+<FONT color="green">119</FONT>            if(_table != null) {<a name="line.119"></a>
+<FONT color="green">120</FONT>                _table.removeTableListener(_listener);<a name="line.120"></a>
+<FONT color="green">121</FONT>            }<a name="line.121"></a>
+<FONT color="green">122</FONT>            _table = table;<a name="line.122"></a>
+<FONT color="green">123</FONT>            <a name="line.123"></a>
+<FONT color="green">124</FONT>            if (table != null){<a name="line.124"></a>
+<FONT color="green">125</FONT>                _table.putNumber("setPoint",    _setPoint);<a name="line.125"></a>
+<FONT color="green">126</FONT>                _table.putNumber("spinUpPoint", _spinUpPoint);<a name="line.126"></a>
+<FONT color="green">127</FONT>                _table.putNumber("spinUpSpeed", _spinUpSpeed);<a name="line.127"></a>
+<FONT color="green">128</FONT>                _table.putNumber("maxSpeed",    _maxSpeed);<a name="line.128"></a>
+<FONT color="green">129</FONT>                _table.addTableListener(_listener, false);<a name="line.129"></a>
+<FONT color="green">130</FONT>            }<a name="line.130"></a>
+<FONT color="green">131</FONT>        }<a name="line.131"></a>
+<FONT color="green">132</FONT>    <a name="line.132"></a>
+<FONT color="green">133</FONT>        /**<a name="line.133"></a>
+<FONT color="green">134</FONT>         * Gets the current set point.<a name="line.134"></a>
+<FONT color="green">135</FONT>         * <a name="line.135"></a>
+<FONT color="green">136</FONT>         * @return The set point.<a name="line.136"></a>
+<FONT color="green">137</FONT>         */<a name="line.137"></a>
+<FONT color="green">138</FONT>        public double getSetPoint() {<a name="line.138"></a>
+<FONT color="green">139</FONT>            return _setPoint;<a name="line.139"></a>
+<FONT color="green">140</FONT>        }<a name="line.140"></a>
+<FONT color="green">141</FONT>        <a name="line.141"></a>
+<FONT color="green">142</FONT>        /**<a name="line.142"></a>
+<FONT color="green">143</FONT>         * Sets a new set point.<a name="line.143"></a>
+<FONT color="green">144</FONT>         * <a name="line.144"></a>
+<FONT color="green">145</FONT>         * @param setPoint The new set point.<a name="line.145"></a>
+<FONT color="green">146</FONT>         */<a name="line.146"></a>
+<FONT color="green">147</FONT>        public void setSetPoint(double setPoint) {<a name="line.147"></a>
+<FONT color="green">148</FONT>            _setPoint = setPoint;<a name="line.148"></a>
+<FONT color="green">149</FONT>            if(_table != null) {<a name="line.149"></a>
+<FONT color="green">150</FONT>                _table.putNumber("setPoint", _setPoint);<a name="line.150"></a>
+<FONT color="green">151</FONT>            }<a name="line.151"></a>
+<FONT color="green">152</FONT>        }<a name="line.152"></a>
+<FONT color="green">153</FONT>        <a name="line.153"></a>
+<FONT color="green">154</FONT>        /**<a name="line.154"></a>
+<FONT color="green">155</FONT>         * Gets the current spin up point.<a name="line.155"></a>
+<FONT color="green">156</FONT>         * <a name="line.156"></a>
+<FONT color="green">157</FONT>         * @return The current spin up point.<a name="line.157"></a>
+<FONT color="green">158</FONT>         */<a name="line.158"></a>
+<FONT color="green">159</FONT>        public double getSpinUpPoint() {<a name="line.159"></a>
+<FONT color="green">160</FONT>            return _spinUpPoint;<a name="line.160"></a>
+<FONT color="green">161</FONT>        }<a name="line.161"></a>
+<FONT color="green">162</FONT>        <a name="line.162"></a>
+<FONT color="green">163</FONT>        /**<a name="line.163"></a>
+<FONT color="green">164</FONT>         * Sets a new spin up point.<a name="line.164"></a>
+<FONT color="green">165</FONT>         * <a name="line.165"></a>
+<FONT color="green">166</FONT>         * @param spinUpPoint The new spin up point.<a name="line.166"></a>
+<FONT color="green">167</FONT>         */<a name="line.167"></a>
+<FONT color="green">168</FONT>        public void setSpinUpPoint(double spinUpPoint) {<a name="line.168"></a>
+<FONT color="green">169</FONT>            _spinUpPoint = spinUpPoint;<a name="line.169"></a>
+<FONT color="green">170</FONT>            if(_table != null) {<a name="line.170"></a>
+<FONT color="green">171</FONT>                _table.putNumber("spinUpPoint", _spinUpPoint);<a name="line.171"></a>
+<FONT color="green">172</FONT>            }<a name="line.172"></a>
+<FONT color="green">173</FONT>        }<a name="line.173"></a>
+<FONT color="green">174</FONT>        <a name="line.174"></a>
+<FONT color="green">175</FONT>        /**<a name="line.175"></a>
+<FONT color="green">176</FONT>         * Gets the current spin up speed.<a name="line.176"></a>
+<FONT color="green">177</FONT>         * <a name="line.177"></a>
+<FONT color="green">178</FONT>         * @return The current spin up speed.<a name="line.178"></a>
+<FONT color="green">179</FONT>         */<a name="line.179"></a>
+<FONT color="green">180</FONT>        public double getSpinUpSpeed() {<a name="line.180"></a>
+<FONT color="green">181</FONT>            return _spinUpSpeed;<a name="line.181"></a>
+<FONT color="green">182</FONT>        }<a name="line.182"></a>
+<FONT color="green">183</FONT>        <a name="line.183"></a>
+<FONT color="green">184</FONT>        /**<a name="line.184"></a>
+<FONT color="green">185</FONT>         * Sets a new spin up speed.<a name="line.185"></a>
+<FONT color="green">186</FONT>         * <a name="line.186"></a>
+<FONT color="green">187</FONT>         * @param spinUpSpeed The new spin up speed.<a name="line.187"></a>
+<FONT color="green">188</FONT>         */<a name="line.188"></a>
+<FONT color="green">189</FONT>        public void setSpinUpSpeed(double spinUpSpeed) {<a name="line.189"></a>
+<FONT color="green">190</FONT>            _spinUpSpeed = spinUpSpeed;<a name="line.190"></a>
+<FONT color="green">191</FONT>            <a name="line.191"></a>
+<FONT color="green">192</FONT>            if(_table != null) {<a name="line.192"></a>
+<FONT color="green">193</FONT>                _table.putNumber("spinUpSpeed", _spinUpSpeed);<a name="line.193"></a>
+<FONT color="green">194</FONT>            }<a name="line.194"></a>
+<FONT color="green">195</FONT>        }<a name="line.195"></a>
+<FONT color="green">196</FONT>        <a name="line.196"></a>
+<FONT color="green">197</FONT>        /**<a name="line.197"></a>
+<FONT color="green">198</FONT>         * Gets the current maximum speed.<a name="line.198"></a>
+<FONT color="green">199</FONT>         * <a name="line.199"></a>
+<FONT color="green">200</FONT>         * @return The current maximum speed.<a name="line.200"></a>
+<FONT color="green">201</FONT>         */<a name="line.201"></a>
+<FONT color="green">202</FONT>        public double getMaxSpeed() {<a name="line.202"></a>
+<FONT color="green">203</FONT>            return _maxSpeed;<a name="line.203"></a>
+<FONT color="green">204</FONT>        }<a name="line.204"></a>
+<FONT color="green">205</FONT>        <a name="line.205"></a>
+<FONT color="green">206</FONT>        /**<a name="line.206"></a>
+<FONT color="green">207</FONT>         * Sets a new maximum speed.<a name="line.207"></a>
+<FONT color="green">208</FONT>         * <a name="line.208"></a>
+<FONT color="green">209</FONT>         * @param maxSpeed The new maximum speed.<a name="line.209"></a>
+<FONT color="green">210</FONT>         */<a name="line.210"></a>
+<FONT color="green">211</FONT>        public void setMaxSpeed(double maxSpeed) {<a name="line.211"></a>
+<FONT color="green">212</FONT>            _maxSpeed = maxSpeed;<a name="line.212"></a>
+<FONT color="green">213</FONT>            <a name="line.213"></a>
+<FONT color="green">214</FONT>            if(_table != null) {<a name="line.214"></a>
+<FONT color="green">215</FONT>                _table.putNumber("maxSpeed", _maxSpeed);<a name="line.215"></a>
+<FONT color="green">216</FONT>            }<a name="line.216"></a>
+<FONT color="green">217</FONT>        }<a name="line.217"></a>
+<FONT color="green">218</FONT>        <a name="line.218"></a>
+<FONT color="green">219</FONT>        /**<a name="line.219"></a>
+<FONT color="green">220</FONT>         * {@inheritDoc}<a name="line.220"></a>
+<FONT color="green">221</FONT>         */<a name="line.221"></a>
+<FONT color="green">222</FONT>        public ITable getTable(){<a name="line.222"></a>
+<FONT color="green">223</FONT>            return _table;<a name="line.223"></a>
+<FONT color="green">224</FONT>        }<a name="line.224"></a>
+<FONT color="green">225</FONT>        <a name="line.225"></a>
+<FONT color="green">226</FONT>        /**<a name="line.226"></a>
+<FONT color="green">227</FONT>         * {@inheritDoc}<a name="line.227"></a>
+<FONT color="green">228</FONT>         */<a name="line.228"></a>
+<FONT color="green">229</FONT>        public String getSmartDashboardType(){<a name="line.229"></a>
+<FONT color="green">230</FONT>            return "BangBangController";<a name="line.230"></a>
+<FONT color="green">231</FONT>        }<a name="line.231"></a>
+<FONT color="green">232</FONT>    <a name="line.232"></a>
+<FONT color="green">233</FONT>        /**<a name="line.233"></a>
+<FONT color="green">234</FONT>         * {@inheritDoc}<a name="line.234"></a>
+<FONT color="green">235</FONT>         */<a name="line.235"></a>
+<FONT color="green">236</FONT>        public void updateTable() {}<a name="line.236"></a>
+<FONT color="green">237</FONT>    <a name="line.237"></a>
+<FONT color="green">238</FONT>        /**<a name="line.238"></a>
+<FONT color="green">239</FONT>         * {@inheritDoc}<a name="line.239"></a>
+<FONT color="green">240</FONT>         */<a name="line.240"></a>
+<FONT color="green">241</FONT>        public void startLiveWindowMode() {}<a name="line.241"></a>
+<FONT color="green">242</FONT>    <a name="line.242"></a>
+<FONT color="green">243</FONT>        /**<a name="line.243"></a>
+<FONT color="green">244</FONT>         * {@inheritDoc}<a name="line.244"></a>
+<FONT color="green">245</FONT>         */<a name="line.245"></a>
+<FONT color="green">246</FONT>        public void stopLiveWindowMode() {}<a name="line.246"></a>
+<FONT color="green">247</FONT>        <a name="line.247"></a>
+<FONT color="green">248</FONT>        private class BangBangTask extends TimerTask{<a name="line.248"></a>
+<FONT color="green">249</FONT>    <a name="line.249"></a>
+<FONT color="green">250</FONT>            private BangBangController _controller;<a name="line.250"></a>
+<FONT color="green">251</FONT>            <a name="line.251"></a>
+<FONT color="green">252</FONT>            public BangBangTask(BangBangController controller) {<a name="line.252"></a>
+<FONT color="green">253</FONT>                if (controller == null) {<a name="line.253"></a>
+<FONT color="green">254</FONT>                    throw new NullPointerException("The BangBangController cannot be null.");<a name="line.254"></a>
+<FONT color="green">255</FONT>                }<a name="line.255"></a>
+<FONT color="green">256</FONT>                _controller = controller;<a name="line.256"></a>
+<FONT color="green">257</FONT>            }<a name="line.257"></a>
+<FONT color="green">258</FONT>            <a name="line.258"></a>
+<FONT color="green">259</FONT>            public void run() {<a name="line.259"></a>
+<FONT color="green">260</FONT>                _controller.go();<a name="line.260"></a>
+<FONT color="green">261</FONT>            }<a name="line.261"></a>
+<FONT color="green">262</FONT>        <a name="line.262"></a>
+<FONT color="green">263</FONT>        }<a name="line.263"></a>
+<FONT color="green">264</FONT>    }<a name="line.264"></a>
 <FONT color="green">265</FONT>    <a name="line.265"></a>
+<FONT color="green">266</FONT>    <a name="line.266"></a>
 
 
 

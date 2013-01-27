@@ -11,41 +11,43 @@
 <FONT color="green">008</FONT>    import edu.wpi.first.wpilibj.Victor;<a name="line.8"></a>
 <FONT color="green">009</FONT>    import edu.wpi.first.wpilibj.command.Subsystem;<a name="line.9"></a>
 <FONT color="green">010</FONT>    import edu.wpi.first.wpilibj.livewindow.LiveWindow;<a name="line.10"></a>
-<FONT color="green">011</FONT>    import storm2013.commands.ArcadeDrive;<a name="line.11"></a>
-<FONT color="green">012</FONT>    import storm2013.utilities.AccelerationLimiter;<a name="line.12"></a>
-<FONT color="green">013</FONT>    <a name="line.13"></a>
-<FONT color="green">014</FONT>    /**<a name="line.14"></a>
-<FONT color="green">015</FONT>     *<a name="line.15"></a>
-<FONT color="green">016</FONT>     * @author Joe<a name="line.16"></a>
-<FONT color="green">017</FONT>     */<a name="line.17"></a>
-<FONT color="green">018</FONT>    public class DriveTrain extends Subsystem {<a name="line.18"></a>
-<FONT color="green">019</FONT>        <a name="line.19"></a>
-<FONT color="green">020</FONT>        private double ACCEL_RATE = 1;<a name="line.20"></a>
-<FONT color="green">021</FONT>        private double DECEL_RATE = 1;<a name="line.21"></a>
-<FONT color="green">022</FONT>        <a name="line.22"></a>
-<FONT color="green">023</FONT>        Victor _left,_right;<a name="line.23"></a>
-<FONT color="green">024</FONT>        AccelerationLimiter _leftControl = new AccelerationLimiter(_left, ACCEL_RATE, DECEL_RATE);<a name="line.24"></a>
-<FONT color="green">025</FONT>        AccelerationLimiter _rightControl = new AccelerationLimiter(_right, ACCEL_RATE, DECEL_RATE);<a name="line.25"></a>
-<FONT color="green">026</FONT>        RobotDrive _drive = new RobotDrive(_leftControl,_rightControl);<a name="line.26"></a>
-<FONT color="green">027</FONT>        <a name="line.27"></a>
-<FONT color="green">028</FONT>    <a name="line.28"></a>
-<FONT color="green">029</FONT>        public DriveTrain() {<a name="line.29"></a>
-<FONT color="green">030</FONT>            LiveWindow.addActuator("Drive Train", "Left Motor", _left);<a name="line.30"></a>
-<FONT color="green">031</FONT>            LiveWindow.addActuator("Drive Train", "Left Motor", _right);<a name="line.31"></a>
-<FONT color="green">032</FONT>        }<a name="line.32"></a>
-<FONT color="green">033</FONT>        <a name="line.33"></a>
-<FONT color="green">034</FONT>        public void initDefaultCommand() {<a name="line.34"></a>
-<FONT color="green">035</FONT>            setDefaultCommand(new ArcadeDrive());<a name="line.35"></a>
-<FONT color="green">036</FONT>        }<a name="line.36"></a>
-<FONT color="green">037</FONT>        <a name="line.37"></a>
-<FONT color="green">038</FONT>        public void arcadeDrive(double speed,double turn) {<a name="line.38"></a>
-<FONT color="green">039</FONT>            _drive.arcadeDrive(speed, turn);<a name="line.39"></a>
-<FONT color="green">040</FONT>        }<a name="line.40"></a>
-<FONT color="green">041</FONT>        <a name="line.41"></a>
-<FONT color="green">042</FONT>        public void tankDrive(double leftValue, double rightValue){<a name="line.42"></a>
-<FONT color="green">043</FONT>            _drive.tankDrive(leftValue, rightValue);<a name="line.43"></a>
-<FONT color="green">044</FONT>        }<a name="line.44"></a>
-<FONT color="green">045</FONT>    }<a name="line.45"></a>
+<FONT color="green">011</FONT>    import storm2013.RobotMap;<a name="line.11"></a>
+<FONT color="green">012</FONT>    import storm2013.commands.ArcadeDrive;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import storm2013.utilities.AccelerationLimiter;<a name="line.13"></a>
+<FONT color="green">014</FONT>    <a name="line.14"></a>
+<FONT color="green">015</FONT>    /**<a name="line.15"></a>
+<FONT color="green">016</FONT>     *<a name="line.16"></a>
+<FONT color="green">017</FONT>     * @author Joe<a name="line.17"></a>
+<FONT color="green">018</FONT>     */<a name="line.18"></a>
+<FONT color="green">019</FONT>    public class DriveTrain extends Subsystem {<a name="line.19"></a>
+<FONT color="green">020</FONT>        <a name="line.20"></a>
+<FONT color="green">021</FONT>        private double ACCEL_RATE =1.7;<a name="line.21"></a>
+<FONT color="green">022</FONT>        private double DECEL_RATE = 1.7;<a name="line.22"></a>
+<FONT color="green">023</FONT>        <a name="line.23"></a>
+<FONT color="green">024</FONT>        Victor _left = new Victor(RobotMap.PORT_MOTOR_DRIVE_LEFT),_right = new Victor(RobotMap.PORT_MOTOR_DRIVE_RIGHT);<a name="line.24"></a>
+<FONT color="green">025</FONT>        <a name="line.25"></a>
+<FONT color="green">026</FONT>        AccelerationLimiter _leftControl = new AccelerationLimiter(_left, ACCEL_RATE, DECEL_RATE);<a name="line.26"></a>
+<FONT color="green">027</FONT>        AccelerationLimiter _rightControl = new AccelerationLimiter(_right, ACCEL_RATE, DECEL_RATE);<a name="line.27"></a>
+<FONT color="green">028</FONT>        RobotDrive _drive = new RobotDrive(_leftControl,_rightControl);<a name="line.28"></a>
+<FONT color="green">029</FONT>        <a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>        public DriveTrain() {<a name="line.31"></a>
+<FONT color="green">032</FONT>            LiveWindow.addActuator("Drive Train", "Left Motor", _left);<a name="line.32"></a>
+<FONT color="green">033</FONT>            LiveWindow.addActuator("Drive Train", "Right Motor", _right);<a name="line.33"></a>
+<FONT color="green">034</FONT>        }<a name="line.34"></a>
+<FONT color="green">035</FONT>        <a name="line.35"></a>
+<FONT color="green">036</FONT>        public void initDefaultCommand() {<a name="line.36"></a>
+<FONT color="green">037</FONT>            setDefaultCommand(new ArcadeDrive());<a name="line.37"></a>
+<FONT color="green">038</FONT>        }<a name="line.38"></a>
+<FONT color="green">039</FONT>        <a name="line.39"></a>
+<FONT color="green">040</FONT>        public void arcadeDrive(double speed,double turn) {<a name="line.40"></a>
+<FONT color="green">041</FONT>            _drive.arcadeDrive(-speed, turn);<a name="line.41"></a>
+<FONT color="green">042</FONT>        }<a name="line.42"></a>
+<FONT color="green">043</FONT>        <a name="line.43"></a>
+<FONT color="green">044</FONT>        public void tankDrive(double leftValue, double rightValue){<a name="line.44"></a>
+<FONT color="green">045</FONT>            _drive.tankDrive(leftValue, rightValue);<a name="line.45"></a>
+<FONT color="green">046</FONT>        }<a name="line.46"></a>
+<FONT color="green">047</FONT>    }<a name="line.47"></a>
 
 
 

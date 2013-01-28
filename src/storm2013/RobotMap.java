@@ -19,4 +19,5 @@ public class RobotMap {
     public static final int PORT_MOTOR_FEEDER = 4;
     
     public static final int PORT_HALL_EFFECT = 5; //5 on Donald Duct
+    public static final int PORT_VOLTAGE_LOAD = 2;
 }

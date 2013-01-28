@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.Shooter;
+import storm2013.utilities.HallEffectSpeedSensor;
+import storm2013.utilities.LoadSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,9 +33,7 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser = new SendableChooser();
     Command   autonomouse;
     
-    
-    AnalogChannel loadSensor;
-    Encoder normalEncoder;
+    LoadSensor loadSensor;
     
     public void robotInit() {
         oi = new OI();
@@ -43,6 +43,9 @@ public class Robot extends IterativeRobot {
 //        teleop = new ArcadeDrive();
     	teleop = new TestShooter();
         
+	loadSensor = new LoadSensor(RobotMap.PORT_VOLTAGE_LOAD);
+	
+	
         autonomiceNames = new String[]{"Do Nothing", "Dance!"};
         autonomice = new Command[]{new DoNothing(),new DonaldDance()};
         
@@ -52,13 +55,6 @@ public class Robot extends IterativeRobot {
         }
         SmartDashboard.putData("Which Autonomouse?",chooser);
 	
-	normalEncoder = new Encoder(3,4);
-	
-	normalEncoder.start();
-	
-	LiveWindow.addSensor("Misc", "Encoder", normalEncoder);
-	
-	loadSensor = new AnalogChannel(2);
 	LiveWindow.addSensor("Misc","Load Sensor",loadSensor);
     }
 

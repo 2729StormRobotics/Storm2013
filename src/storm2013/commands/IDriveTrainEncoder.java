@@ -12,5 +12,9 @@ public interface IDriveTrainEncoder {
      * Will calculate the total distance traveled based on encoder data
      * @return The total distance traveled, in revolutions.
      */
-    public double getDistance();
+    public double getStraightDistance();
+    public double getTurnDistance();
+    public double getLeftDistance();
+    public double getRightDistance();
+    public void clearEncoder(); //Use encoder.reset();
 }

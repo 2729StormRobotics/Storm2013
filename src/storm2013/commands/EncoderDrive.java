@@ -18,7 +18,7 @@ public class EncoderDrive extends Command {
     private double _dist;
     private double _driveSpeed;
     private double _decelThreshold;
-    private double _stopThreshold;
+    private double _tolerance;
     private IDriveTrainEncoder _encoder;
     private DriveTrain _driveTrain = Robot.driveTrain;
     
@@ -30,11 +30,11 @@ public class EncoderDrive extends Command {
      * @param driveSpeed      The speed at which you want to travel (also in rotations).
      * @param encoder         The class that implements {@link IDriveTrainEncoder}.
      * @param decelThreshold  The threshold to determine when to start to decelerate.
-     * @param stopThreshold   The threshold to determine when to stop the command.
+     * @param tolerance   The threshold to determine when to stop the command.
      * @see   IDriveTrainEncoder
      */
     public EncoderDrive(double goal, double driveSpeed, IDriveTrainEncoder encoder,
-            double decelThreshold, double stopThreshold){ 
+            double decelThreshold, double tolerance){ 
         
         if (encoder == null){
             throw new NullPointerException("The DriveTrainEncoder cannot be null.");
@@ -44,7 +44,7 @@ public class EncoderDrive extends Command {
         _driveSpeed = driveSpeed;
         _encoder = encoder;
         _decelThreshold = decelThreshold;
-        _stopThreshold = stopThreshold;
+        _tolerance = tolerance;
         requires(Robot.driveTrain);
     }
     
@@ -62,7 +62,7 @@ public class EncoderDrive extends Command {
      * @see DriveTrain
      */
     public void execute() {
-        _dist = _encoder.getDistance();
+        _dist = _encoder.getStraightDistance();
         
         if(Math.abs(_goal) - Math.abs(_dist) > _decelThreshold){
             if (_dist < _goal){
@@ -81,10 +81,10 @@ public class EncoderDrive extends Command {
      * Implemented from {@link Command}. When it returns true, it runs {@link #end()},
      * and then stops running the command.
      * 
-     * @return true if it is within the stopping threshold ({@link #_stopThreshold}) and false otherwise.
+     * @return true if it is within the stopping threshold ({@link #_tolerance}) and false otherwise.
      */
     public boolean isFinished() {
-        return (Math.abs(_goal) - Math.abs(_dist) <= _stopThreshold);
+        return (Math.abs(_goal) - Math.abs(_dist) <= _tolerance);
     }
     
     /**
@@ -163,16 +163,16 @@ public class EncoderDrive extends Command {
      * Gets the threshold at which the robot will stop executing the command.
      * @return The threshold, in revolutions.
      */
-    public double getStopThreshold() {
-        return _stopThreshold;
+    public double getTolerance() {
+        return _tolerance;
     }
     
     /**
      * Sets a new threshold at which the robot will stop.
-     * @param stopThreshold The new threshold, in revolutions
+     * @param tolerance The new threshold, in revolutions
      */
-    public void setStopThreshold(double stopThreshold) {
-        _stopThreshold = stopThreshold;
+    public void setTolerance(double tolerance) {
+        _tolerance = tolerance;
     }
     
     

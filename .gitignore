@@ -2,4 +2,4 @@
 suite/*
 build/
 __MACOSX/
-/nbproject/private/
+*nbproject/*

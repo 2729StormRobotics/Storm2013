@@ -19,51 +19,48 @@ public class EncoderTurn extends Command {
     private double _turnSpeed;
     private double _decelThreshold;
     private double _tolerance;
-    private IDriveTrainEncoder _encoder;
+    
     private DriveTrain _driveTrain = Robot.driveTrain;
     
-    public EncoderTurn(double goal, double turnSpeed, IDriveTrainEncoder encoder,
-            double decelThreshold, double tolerance){ 
-        
-        if (encoder == null){
-            throw new NullPointerException("The DriveTrainEncoder cannot be null.");
-        }
+    public EncoderTurn(double goal, double turnSpeed, double decelThreshold, double tolerance){ 
         
         _goal = goal;
         _turnSpeed = turnSpeed;
-        _encoder = encoder;
         _decelThreshold = decelThreshold;
         _tolerance = tolerance;
         requires(Robot.driveTrain);
     }
     
     protected void initialize() {
+	 Robot.driveTrain.clearEncoder();
     }
 
     protected void execute() {
-        _dist = _encoder.getTurnDistance();
+        _dist = Robot.driveTrain.getRightDistance()
+		-Robot.driveTrain.getLeftDistance();
         
-        if(Math.abs(_goal) - Math.abs(_dist) > _decelThreshold){
-            if (_dist < _goal){
-                _driveTrain.tankDrive(-_turnSpeed, _turnSpeed);
-            }
-            else if (_dist > _goal){
-                _driveTrain.tankDrive(_turnSpeed, -_turnSpeed);
-            }
-        }
-        else{
-            _driveTrain.tankDrive(0, 0);
-        }
+	if (_dist < _goal){
+	    _driveTrain.tankDrive(-_turnSpeed, _turnSpeed);
+	}
+	else if (_dist > _goal){
+	    _driveTrain.tankDrive(_turnSpeed, -_turnSpeed);
+	}
     }
 
     protected boolean isFinished() {
-        return (Math.abs(_goal) - Math.abs(_dist) <= _tolerance);
+	if(_goal < 0) {
+	    return _dist - _tolerance <= _goal;
+	} else {
+	    return _dist + _tolerance >= _goal;
+	}
     }
 
     protected void end() {
+	Robot.driveTrain.tankDrive(0, 0);
     }
 
     protected void interrupted() {
+	end();
     }
     
     public double getGoal() {

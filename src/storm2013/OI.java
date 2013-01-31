@@ -4,7 +4,9 @@ package storm2013;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import storm2013.commands.PrintEncoders;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,7 +45,13 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
     
-    public Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);
+    private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);
+    
+    private JoystickButton recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.PORT_JOYSTICK_ENCODER_BUTTON);
+    
+    public OI() {
+	recordEncoderButton.whenPressed(new PrintEncoders(0.6, 0.5, 0.5, 0.5));
+    }
     
     private double _zeroDeadzone(double joyValue) {
         return Math.abs(joyValue) > 0.1 ? joyValue : 0;
@@ -63,6 +71,10 @@ public class OI {
     
     public double getTurnAxis() {
         return _zeroDeadzone(driveJoystick.getRawAxis(3));
+    }
+    
+    public double getFlipperAxis() {
+	return driveJoystick.getRawAxis(4);
     }
 }
 

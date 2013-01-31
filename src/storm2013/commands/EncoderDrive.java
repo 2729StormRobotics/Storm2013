@@ -19,7 +19,6 @@ public class EncoderDrive extends Command {
     private double _driveSpeed;
     private double _decelThreshold;
     private double _tolerance;
-    private IDriveTrainEncoder _encoder;
     private DriveTrain _driveTrain = Robot.driveTrain;
     
     /**
@@ -28,21 +27,14 @@ public class EncoderDrive extends Command {
      * 
      * @param goal            How far you want to go (use rotations for units, just to make a standard).
      * @param driveSpeed      The speed at which you want to travel (also in rotations).
-     * @param encoder         The class that implements {@link IDriveTrainEncoder}.
      * @param decelThreshold  The threshold to determine when to start to decelerate.
      * @param tolerance   The threshold to determine when to stop the command.
      * @see   IDriveTrainEncoder
      */
-    public EncoderDrive(double goal, double driveSpeed, IDriveTrainEncoder encoder,
-            double decelThreshold, double tolerance){ 
-        
-        if (encoder == null){
-            throw new NullPointerException("The DriveTrainEncoder cannot be null.");
-        }
+    public EncoderDrive(double goal, double driveSpeed, double decelThreshold, double tolerance){ 
         
         _goal = goal;
         _driveSpeed = driveSpeed;
-        _encoder = encoder;
         _decelThreshold = decelThreshold;
         _tolerance = tolerance;
         requires(Robot.driveTrain);
@@ -52,6 +44,7 @@ public class EncoderDrive extends Command {
      * Implemented from {@link Command}, but it doesn't actually do anything at the moment.
      */
      protected void initialize() {
+	 Robot.driveTrain.clearEncoder();
     }
     
     /**
@@ -62,19 +55,20 @@ public class EncoderDrive extends Command {
      * @see DriveTrain
      */
     public void execute() {
-        _dist = _encoder.getStraightDistance();
+	double left  = Robot.driveTrain.getLeftDistance(),
+	       right = Robot.driveTrain.getRightDistance();
+	if(Math.abs(_goal-left) > Math.abs(_goal-right)) {
+	    _dist = left;
+	} else {
+	    _dist = right;
+	}
+	
         
-        if(Math.abs(_goal) - Math.abs(_dist) > _decelThreshold){
-            if (_dist < _goal){
-                _driveTrain.tankDrive(_driveSpeed, _driveSpeed);
-            }
-            else if (_dist > _goal){
-                _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);
-            }
-        }
-        else{
-            _driveTrain.tankDrive(0, 0);
-        }  
+	if (_goal > 0) {
+	    _driveTrain.tankDrive(_driveSpeed, _driveSpeed);
+	} else {
+	    _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);
+	}
     }
     
     /**
@@ -84,7 +78,11 @@ public class EncoderDrive extends Command {
      * @return true if it is within the stopping threshold ({@link #_tolerance}) and false otherwise.
      */
     public boolean isFinished() {
-        return (Math.abs(_goal) - Math.abs(_dist) <= _tolerance);
+	if(_goal < 0) {
+	    return _dist - _tolerance <= _goal;
+	} else {
+	    return _dist + _tolerance >= _goal;
+	}
     }
     
     /**
@@ -92,6 +90,7 @@ public class EncoderDrive extends Command {
      * stops running. At the moment, it doesn't actually do anything.
      */
     public void end() {
+	Robot.driveTrain.tankDrive(0, 0);
     }
     
     /**
@@ -99,6 +98,7 @@ public class EncoderDrive extends Command {
      * this is first called, then {@link #end()}.
      */
     public void interrupted() {
+	end();
     }
 
     /**

@@ -40,14 +40,13 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain();
         shooter = new Shooter();
 	
-//        teleop = new ArcadeDrive();
-    	teleop = new TestShooter();
+	
+	teleop = new ArcadeDrive();
+//    	teleop = new TestShooter();
         
-	loadSensor = new LoadSensor(RobotMap.PORT_VOLTAGE_LOAD);
-	
-	
-        autonomiceNames = new String[]{"Do Nothing", "Dance!"};
-        autonomice = new Command[]{new DoNothing(),new DonaldDance()};
+        autonomiceNames = new String[]{"Do Nothing", "Dance!", "DriveStuff"};
+        
+	autonomice = new Command[]{new DoNothing(),new DonaldDance(), new DriveStuff()};
         
         System.out.println(autonomice.length);
         for(int i=0;i<autonomice.length;++i) {
@@ -55,7 +54,7 @@ public class Robot extends IterativeRobot {
         }
         SmartDashboard.putData("Which Autonomouse?",chooser);
 	
-	LiveWindow.addSensor("Misc","Load Sensor",loadSensor);
+//	SmartDashboard.putData(Scheduler.getInstance());
     }
 
     public void autonomousInit() {
@@ -77,7 +76,12 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
+        SmartDashboard.putNumber("LGet", Robot.driveTrain.getLeftDistance());
+	SmartDashboard.putNumber("RGet", Robot.driveTrain.getRightDistance());
+	
+//	driveTrain.tankDrive(oi.getDriveAxis(), oi.getDriveAxis());
+	
+	Scheduler.getInstance().run();
     }
     
     public void testPeriodic() {

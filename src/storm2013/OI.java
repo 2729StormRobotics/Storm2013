@@ -1,4 +1,3 @@
-
 package storm2013;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -50,7 +49,7 @@ public class OI {
     private JoystickButton recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.PORT_JOYSTICK_ENCODER_BUTTON);
     
     public OI() {
-	recordEncoderButton.whenPressed(new PrintEncoders(0.6, 0.5, 0.5, 0.5));
+	recordEncoderButton.whenPressed(new PrintEncoders(0.6, 0.5, 0.5));
     }
     
     private double _zeroDeadzone(double joyValue) {

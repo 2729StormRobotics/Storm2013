@@ -4,10 +4,8 @@
  */
 package storm2013.commands;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
-import storm2013.subsystems.DriveTrain;
 
 /**
  *
@@ -16,15 +14,12 @@ import storm2013.subsystems.DriveTrain;
 public class PrintEncoders extends Command {
 
     private double _speed;
-    private double _decelThreshold;
     private double _tolerance;
     private double _waitTime;
     
-    public PrintEncoders( double speed, 
-            double decelThreshold, double tolerance,
+    public PrintEncoders( double speed, double tolerance,
 	    double waitTime){
         _speed = speed;
-        _decelThreshold = decelThreshold;
         _tolerance = tolerance;
         _waitTime = waitTime;
     }
@@ -44,7 +39,7 @@ public class PrintEncoders extends Command {
         out += (right < 0) ? "-" : "";
         
         out += (Math.min(Math.abs(left), Math.abs(right)));
-        out += ", " + _speed + ", " + _decelThreshold + ", " + _tolerance + "));";
+        out += ", " + _speed + ", " + _tolerance + "));";
         System.out.println(out);
 	
 	System.out.println("addSequential(new DoNothing()," + _waitTime + ");");

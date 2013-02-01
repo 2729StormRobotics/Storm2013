@@ -17,7 +17,6 @@ public class EncoderDrive extends Command {
     private double _goal;
     private double _dist;
     private double _driveSpeed;
-    private double _decelThreshold;
     private double _tolerance;
     private DriveTrain _driveTrain = Robot.driveTrain;
     
@@ -31,11 +30,10 @@ public class EncoderDrive extends Command {
      * @param tolerance   The threshold to determine when to stop the command.
      * @see   IDriveTrainEncoder
      */
-    public EncoderDrive(double goal, double driveSpeed, double decelThreshold, double tolerance){ 
+    public EncoderDrive(double goal, double driveSpeed, double tolerance){ 
         
         _goal = goal;
         _driveSpeed = driveSpeed;
-        _decelThreshold = decelThreshold;
         _tolerance = tolerance;
         requires(Robot.driveTrain);
     }
@@ -87,7 +85,7 @@ public class EncoderDrive extends Command {
     
     /**
      * Implemented from {@link Command}. This is the last thing run before the command
-     * stops running. At the moment, it doesn't actually do anything.
+     * stops running. Stops the robot.
      */
     public void end() {
 	Robot.driveTrain.tankDrive(0, 0);
@@ -125,8 +123,6 @@ public class EncoderDrive extends Command {
         return _dist;
     }
    
-    //No set distance. You should implement that in the encoder.
-   
     /**
      * Returns the speed at which the robot it set to drive.
      * @return The drive speed, in RPM.
@@ -141,22 +137,6 @@ public class EncoderDrive extends Command {
      */
     public void setDriveSpeed(double driveSpeed) {
         _driveSpeed = driveSpeed;
-    }
-    
-    /**
-     * Gets the threshold at which the robot will start to decelerate.
-     * @return The threshold, a distance, in revolutions.
-     */
-    public double getDecelThreshold() {
-        return _decelThreshold;
-    }
-    
-    /**
-     * Sets a new threshold to decide when the robot will decelerate.
-     * @param decelThreshold The new deceleration threshold, in revolutions.
-     */
-    public void setDecelThreshold(double decelThreshold) {
-        _decelThreshold = decelThreshold;
     }
     
     /**

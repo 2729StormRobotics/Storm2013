@@ -17,16 +17,14 @@ public class EncoderTurn extends Command {
     private double _goal;
     private double _dist;
     private double _turnSpeed;
-    private double _decelThreshold;
     private double _tolerance;
     
     private DriveTrain _driveTrain = Robot.driveTrain;
     
-    public EncoderTurn(double goal, double turnSpeed, double decelThreshold, double tolerance){ 
+    public EncoderTurn(double goal, double turnSpeed, double tolerance){ 
         
         _goal = goal;
         _turnSpeed = turnSpeed;
-        _decelThreshold = decelThreshold;
         _tolerance = tolerance;
         requires(Robot.driveTrain);
     }
@@ -81,14 +79,6 @@ public class EncoderTurn extends Command {
     
     public void setTurnSpeed(double driveSpeed) {
         _turnSpeed = driveSpeed;
-    }
-    
-    public double getDecelThreshold() {
-        return _decelThreshold;
-    }
-    
-    public void setDecelThreshold(double decelThreshold) {
-        _decelThreshold = decelThreshold;
     }
     
     public double getTolerance() {

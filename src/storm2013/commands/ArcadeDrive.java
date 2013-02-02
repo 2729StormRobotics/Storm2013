@@ -1,6 +1,7 @@
 package storm2013.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.OI;
 import storm2013.Robot;
 import storm2013.subsystems.DriveTrain;
@@ -16,7 +17,11 @@ public class ArcadeDrive extends Command {
     protected void initialize() {}
 
     protected void execute() {
-        driveTrain.arcadeDrive(oi.getDriveAxis(), oi.getTurnAxis());
+	double drive = oi.getDriveAxis(),
+	       turn  = oi.getTurnAxis();
+	SmartDashboard.putNumber("Drive",drive);
+	SmartDashboard.putNumber("Turn", turn);
+        driveTrain.arcadeDrive(drive, turn);
     }
 
     protected boolean isFinished() {

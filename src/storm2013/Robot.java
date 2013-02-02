@@ -1,9 +1,10 @@
 package storm2013;
 
-
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -27,68 +28,86 @@ public class Robot extends IterativeRobot {
     public static DriveTrain driveTrain;
     public static Shooter shooter;
     
-    Command   teleop;
-    String[]  autonomiceNames;
+    
+    Command teleop;
+    String[] autonomiceNames;
     Command[] autonomice;
     SendableChooser chooser = new SendableChooser();
-    Command   autonomouse;
+    Command autonomouse;
     
+    Jaguar testJag;
     LoadSensor loadSensor;
-    
+
     public void robotInit() {
         oi = new OI();
         driveTrain = new DriveTrain();
         shooter = new Shooter();
-	
-	
-	teleop = new ArcadeDrive();
-//    	teleop = new TestShooter();
-        
+
+        loadSensor = new LoadSensor(1);
+        testJag = new Jaguar(6);
+
+
+    	teleop = new TestShooter();
+
         autonomiceNames = new String[]{"Do Nothing", "Dance!", "DriveStuff"};
-        
-	autonomice = new Command[]{new DoNothing(),new DonaldDance(), new DriveStuff()};
-        
+
+        autonomice = new Command[]{new DoNothing(), new DonaldDance(), new DriveStuff()};
+
         System.out.println(autonomice.length);
-        for(int i=0;i<autonomice.length;++i) {
-            chooser.addObject(autonomiceNames[i],autonomice[i]);
+        for (int i = 0; i < autonomice.length; ++i) {
+            chooser.addObject(autonomiceNames[i], autonomice[i]);
         }
-        SmartDashboard.putData("Which Autonomouse?",chooser);
-	
+        SmartDashboard.putData("Which Autonomouse?", chooser);
+
 //	SmartDashboard.putData(Scheduler.getInstance());
+
+        LiveWindow.addSensor("Load Sensor", "Load Sensor 1", loadSensor);
+        
+        shooter.setAcceleratorEnabled(true);
     }
 
     public void autonomousInit() {
-        autonomouse = (Command)chooser.getSelected();
-        if(autonomouse != null) {
+        if (teleop != null) {
+            teleop.cancel();
+        }
+        autonomouse = (Command) chooser.getSelected();
+        if (autonomouse != null) {
             autonomouse.start();
         }
     }
 
     public void autonomousPeriodic() {
+        SmartDashboard.putData("Load Sensor", loadSensor);
         Scheduler.getInstance().run();
     }
 
     public void teleopInit() {
-        if(autonomouse != null) {
+        if (autonomouse != null) {
             autonomouse.cancel();
         }
-        teleop.start();
+        if (teleop != null) {
+            teleop.start();
+        }
     }
 
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("LGet", Robot.driveTrain.getLeftDistance());
-	SmartDashboard.putNumber("RGet", Robot.driveTrain.getRightDistance());
-	
-//	driveTrain.tankDrive(oi.getDriveAxis(), oi.getDriveAxis());
-	
-	Scheduler.getInstance().run();
+        Scheduler.getInstance().run();
     }
-    
+
     public void testPeriodic() {
         LiveWindow.run();
     }
 
     // Eliminates "Overload me!" messages
-    public void disabledInit() {}
-    public void disabledPeriodic() {}
+    public void disabledInit() {
+        if(autonomouse != null) {
+            autonomouse.cancel();
+        }
+        if(teleop != null) {
+            teleop.cancel();
+        }
+    }
+
+    public void disabledPeriodic() {
+    }
 }

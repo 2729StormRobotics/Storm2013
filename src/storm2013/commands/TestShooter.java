@@ -15,13 +15,14 @@ public class TestShooter extends Command {
     }
 
     protected void initialize() {
-	Robot.shooter.disable();
+        Robot.shooter.disable();
     }
 
     protected void execute() {
-	SmartDashboard.putNumber("Wheel Speed (RPM)",Robot.shooter.getSpeedRpm());
-	Robot.shooter.setMotorValRaw(-(-Robot.oi.getFlipperAxis()+1)/2);
-	SmartDashboard.putNumber("Power Value", -Robot.shooter.getMotorValRaw());
+        SmartDashboard.putNumber("Wheel Speed (RPM)",Robot.shooter.getSpeedRpm());
+    	Robot.shooter.setMotorValRaw(-(-Robot.oi.getFlipperAxis()+1)/2);
+//        Robot.shooter.setMotorValRaw(Robot.oi.getFlipperAxis());
+        SmartDashboard.putNumber("Power Value", -Robot.shooter.getMotorValRaw());
     }
 
     protected boolean isFinished() {

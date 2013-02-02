@@ -20,15 +20,16 @@ import storm2013.utilities.AccelerationLimiter;
 
 public class DriveTrain extends Subsystem{
     
-    private double ACCEL_RATE =1.7;
-    private double DECEL_RATE = 1.7;
+//    private double ACCEL_RATE =1.7;
+//    private double DECEL_RATE = 1.7;
     
-    Victor _left = new Victor(RobotMap.PORT_MOTOR_DRIVE_LEFT),_right = new Victor(RobotMap.PORT_MOTOR_DRIVE_RIGHT);
+    Victor _left  = new Victor(RobotMap.PORT_MOTOR_DRIVE_LEFT),
+	   _right = new Victor(RobotMap.PORT_MOTOR_DRIVE_RIGHT);
     
-    AccelerationLimiter _leftControl = new AccelerationLimiter(_left, ACCEL_RATE, DECEL_RATE);
-    AccelerationLimiter _rightControl = new AccelerationLimiter(_right, ACCEL_RATE, DECEL_RATE);
+//    AccelerationLimiter _leftControl = new AccelerationLimiter(_left, ACCEL_RATE, DECEL_RATE);
+//    AccelerationLimiter _rightControl = new AccelerationLimiter(_right, ACCEL_RATE, DECEL_RATE);
     
-    RobotDrive _drive = new RobotDrive(_leftControl,_rightControl);
+    RobotDrive _drive = new RobotDrive(_left,_right);
     
     Encoder _leftEncoder =  new Encoder(RobotMap.PORT_ENCODER_LEFT_1, RobotMap.PORT_ENCODER_LEFT_2);
     Encoder _rightEncoder = new Encoder(RobotMap.PORT_ENCODER_RIGHT_1, RobotMap.PORT_ENCODER_RIGHT_2);
@@ -47,7 +48,8 @@ public class DriveTrain extends Subsystem{
     }
     
     public void arcadeDrive(double speed,double turn) {
-        _drive.arcadeDrive(-speed, turn);
+        _drive.arcadeDrive(-speed, turn, false);
+//	_drive.tankDrive(-speed, -speed);
     }
     
     public void tankDrive(double leftValue, double rightValue){

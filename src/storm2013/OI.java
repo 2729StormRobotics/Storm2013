@@ -52,8 +52,8 @@ public class OI {
 	recordEncoderButton.whenPressed(new PrintEncoders(0.6, 0.5, 0.5));
     }
     
-    private double _zeroDeadzone(double joyValue) {
-        return Math.abs(joyValue) > 0.1 ? joyValue : 0;
+    private double _zeroDeadzone(double joyValue,double dead) {
+        return Math.abs(joyValue) > dead ? joyValue : 0;
     }
     
     private double _applyExponential(double joyValue) {
@@ -65,15 +65,15 @@ public class OI {
     }
     
     public double getDriveAxis() {
-        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(2)));
+        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(2),0.1));
     }
     
     public double getTurnAxis() {
-        return _zeroDeadzone(driveJoystick.getRawAxis(3));
+        return _applyExponential(_zeroDeadzone(driveJoystick.getRawAxis(3),0.3));
     }
     
     public double getFlipperAxis() {
-	return driveJoystick.getRawAxis(4);
+        return driveJoystick.getRawAxis(4);
     }
 }
 

@@ -56,6 +56,7 @@ public class Accelerator implements SpeedController {
 
     public void set(double speed) {
         _rate = speed;
+        System.out.println("New rate: " + _rate);
     }
 
     public void disable() {
@@ -63,12 +64,12 @@ public class Accelerator implements SpeedController {
     }
     
     public void setEnabled(boolean enabled) {
-	if(_enabled == enabled)
-	    return;
-	if(!enabled) {
-	    _controller.set(0);
-	}
-	_enabled = enabled;
+        if(_enabled == enabled)
+            return;
+        if(!enabled) {
+            _controller.set(0);
+        }
+        _enabled = enabled;
     }
 
     public void pidWrite(double output) {

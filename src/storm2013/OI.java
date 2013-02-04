@@ -1,11 +1,11 @@
 package storm2013;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.command.Command;
+import storm2013.commands.LowerTilter;
 import storm2013.commands.PrintEncoders;
+import storm2013.commands.RaiseTilter;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -46,10 +46,14 @@ public class OI {
     
     private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);
     
-    private JoystickButton recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.PORT_JOYSTICK_ENCODER_BUTTON);
+    private JoystickButton recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
+                           tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
+                           tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN);
     
     public OI() {
-	recordEncoderButton.whenPressed(new PrintEncoders(0.6, 0.5, 0.5));
+        recordEncoderButton.whenPressed(new PrintEncoders(0.6, 0.5, 0.5));
+        tilterUpButton.whileHeld(new RaiseTilter());
+        tilterDownButton.whileHeld(new LowerTilter());
     }
     
     private double _zeroDeadzone(double joyValue,double dead) {

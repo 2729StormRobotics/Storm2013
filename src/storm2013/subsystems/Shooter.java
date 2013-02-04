@@ -18,7 +18,7 @@ import storm2013.utilities.HallEffectSpeedSensor;
  */
 public class Shooter extends PIDSubsystem {
 
-    private HallEffectSpeedSensor _speedSensor = new HallEffectSpeedSensor(RobotMap.PORT_HALL_EFFECT);
+    private HallEffectSpeedSensor _speedSensor = new HallEffectSpeedSensor(RobotMap.PORT_SENSOR_HALL_EFFECT);
     private Victor _wheelMotor = new Victor(RobotMap.PORT_MOTOR_SHOOTER);
     private Accelerator _accelerator = new Accelerator(_wheelMotor);
     

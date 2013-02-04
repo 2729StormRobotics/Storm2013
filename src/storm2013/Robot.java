@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.Shooter;
+import storm2013.subsystems.Tilter;
 import storm2013.utilities.HallEffectSpeedSensor;
 import storm2013.utilities.LoadSensor;
 
@@ -27,7 +28,7 @@ public class Robot extends IterativeRobot {
     public static OI oi;
     public static DriveTrain driveTrain;
     public static Shooter shooter;
-    
+    public static Tilter tilter;
     
     Command teleop;
     String[] autonomiceNames;
@@ -42,6 +43,7 @@ public class Robot extends IterativeRobot {
         oi = new OI();
         driveTrain = new DriveTrain();
         shooter = new Shooter();
+        tilter  = new Tilter();
 
         loadSensor = new LoadSensor(1);
         testJag = new Jaguar(6);

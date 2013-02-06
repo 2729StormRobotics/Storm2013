@@ -33,6 +33,8 @@ public class CameraPIDTurn extends PIDCommand {
         requires(Robot.driveTrain);
         _source = new CameraPIDSource(table, target);
         _controller = getPIDController();
+        _controller.setAbsoluteTolerance(0.1);
+        _controller.setOutputRange(-0.6, 0.6);
         _table = table;
         _timeout = timeout;
         if (timeout != -1) _willTimeout = true;
@@ -44,11 +46,11 @@ public class CameraPIDTurn extends PIDCommand {
     }
 
     protected void usePIDOutput(double output) {
-        Robot.driveTrain.tankDrive(output, -output);
+        System.out.println("Driving with " + output);
+        Robot.driveTrain.tankDrive(-output, output);
     }
 
     protected void initialize() {
-        _controller.enable();
         _controller.setSetpoint(0);
         _timeyWimey.start();
     }
@@ -57,22 +59,25 @@ public class CameraPIDTurn extends PIDCommand {
         if (_willTimeout){
             if(_table.getBoolean(_targetFoundKey)){
                 _timeyWimey.reset();
-                if (!(_controller.isEnable())) _controller.enable();
+                _controller.enable();
+                System.out.println("Found");
             }
             if(_timeyWimey.get() > _timeout) _controller.disable();
         }
     }
 
     protected boolean isFinished() {
-        return _controller.onTarget();
+        return false;
+//        return _controller.onTarget();
     }
 
-    protected void end() {
-        _controller.disable();
-    }
+    protected void end() {}
 
     protected void interrupted() {
         end();
     }
-    
+
+    public PIDController getPIDController() {
+        return super.getPIDController();
+    }
 }

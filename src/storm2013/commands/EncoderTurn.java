@@ -18,53 +18,51 @@ public class EncoderTurn extends Command {
     private double _dist;
     private double _turnSpeed;
     private double _tolerance;
-    
     private DriveTrain _driveTrain = Robot.driveTrain;
-    
-    public EncoderTurn(double goal, double turnSpeed, double tolerance){ 
-        
+
+    public EncoderTurn(double goal, double turnSpeed, double tolerance) {
+
         _goal = goal;
         _turnSpeed = turnSpeed;
         _tolerance = tolerance;
         requires(Robot.driveTrain);
     }
-    
+
     protected void initialize() {
-	 Robot.driveTrain.clearEncoder();
+        Robot.driveTrain.clearEncoder();
     }
 
     protected void execute() {
         _dist = Robot.driveTrain.getRightDistance()
-		-Robot.driveTrain.getLeftDistance();
-        
-	if (_dist < _goal){
-	    _driveTrain.tankDrive(-_turnSpeed, _turnSpeed);
-	}
-	else if (_dist > _goal){
-	    _driveTrain.tankDrive(_turnSpeed, -_turnSpeed);
-	}
+                - Robot.driveTrain.getLeftDistance();
+
+        if (_dist < _goal) {
+            _driveTrain.tankDrive(-_turnSpeed, _turnSpeed);
+        } else if (_dist > _goal) {
+            _driveTrain.tankDrive(_turnSpeed, -_turnSpeed);
+        }
     }
 
     protected boolean isFinished() {
-	if(_goal < 0) {
-	    return _dist - _tolerance <= _goal;
-	} else {
-	    return _dist + _tolerance >= _goal;
-	}
+        if (_goal < 0) {
+            return _dist - _tolerance <= _goal;
+        } else {
+            return _dist + _tolerance >= _goal;
+        }
     }
 
     protected void end() {
-	Robot.driveTrain.tankDrive(0, 0);
+        Robot.driveTrain.tankDrive(0, 0);
     }
 
     protected void interrupted() {
-	end();
+        end();
     }
-    
+
     public double getGoal() {
         return _goal;
     }
-    
+
     public void setGoal(double goal) {
         _goal = goal;
     }
@@ -72,19 +70,19 @@ public class EncoderTurn extends Command {
     public double getDist() {
         return _dist;
     }
-   
+
     public double getDriveSpeed() {
         return _turnSpeed;
     }
-    
+
     public void setTurnSpeed(double driveSpeed) {
         _turnSpeed = driveSpeed;
     }
-    
+
     public double getTolerance() {
         return _tolerance;
     }
-    
+
     public void setTolerance(double stopThreshold) {
         _tolerance = stopThreshold;
     }

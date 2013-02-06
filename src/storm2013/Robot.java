@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
+import storm2013.utilities.CameraPIDSource;
 import storm2013.utilities.HallEffectSpeedSensor;
 import storm2013.utilities.LoadSensor;
 
@@ -66,6 +68,10 @@ public class Robot extends IterativeRobot {
         LiveWindow.addSensor("Load Sensor", "Load Sensor 1", loadSensor);
         
         shooter.setAcceleratorEnabled(true);
+        
+        CameraPIDTurn turnCommand = new CameraPIDTurn(NetworkTable.getTable("SmartDashboard"), CameraPIDSource.Target.FivePT, 2.0e6);
+        SmartDashboard.putData(turnCommand);
+        SmartDashboard.putData("Turn PID",turnCommand.getPIDController());
     }
 
     public void autonomousInit() {

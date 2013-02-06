@@ -38,7 +38,7 @@ public class PrintEncoders extends Command {
         
         out += (right < 0) ? "-" : "";
         
-        out += (Math.min(Math.abs(left), Math.abs(right)));
+        out += (Math.abs(left) + Math.abs(right))/2;
         out += ", " + _speed + ", " + _tolerance + "));";
         System.out.println(out);
 	

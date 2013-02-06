@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class DriveStuff extends CommandGroup {
     public DriveStuff() {
-        addSequential(new EncoderTurn(2394.0, 0.6, 0.5));
+        addSequential(new GyroTurn(90.0, 0.6));
         addSequential(new DoNothing(),0.5);
     }
 

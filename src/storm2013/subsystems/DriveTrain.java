@@ -6,6 +6,7 @@ package storm2013.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,8 +25,8 @@ public class DriveTrain extends Subsystem{
 //    private double ACCEL_RATE =1.7;
 //    private double DECEL_RATE = 1.7;
     
-    Victor _left  = new Victor(RobotMap.PORT_MOTOR_DRIVE_LEFT),
-	   _right = new Victor(RobotMap.PORT_MOTOR_DRIVE_RIGHT);
+    Jaguar _left  = new Jaguar(RobotMap.PORT_MOTOR_DRIVE_LEFT),
+           _right = new Jaguar(RobotMap.PORT_MOTOR_DRIVE_RIGHT);
     
 //    AccelerationLimiter _leftControl = new AccelerationLimiter(_left, ACCEL_RATE, DECEL_RATE);
 //    AccelerationLimiter _rightControl = new AccelerationLimiter(_right, ACCEL_RATE, DECEL_RATE);
@@ -42,8 +43,9 @@ public class DriveTrain extends Subsystem{
 	_leftEncoder.start();
 	_rightEncoder.start();
 	
-        LiveWindow.addActuator("Drive Train", "Left Motor", _left);
-        LiveWindow.addActuator("Drive Train", "Right Motor", _right);
+//        LiveWindow.addActuator("Drive Train", "Left Motor", _left);
+//        LiveWindow.addActuator("Drive Train", "Right Motor", _right);
+        LiveWindow.addSensor  ("Drive Train", "Gyro", _gyro);
     }
     
     public void initDefaultCommand() {

@@ -59,4 +59,14 @@ public class Shooter extends PIDSubsystem {
     public void setAcceleratorEnabled(boolean enabled) {
         _accelerator.setEnabled(enabled);
     }
+
+    public void enable() {
+        super.enable();
+        _accelerator.setEnabled(true);
+    }
+
+    public void disable() {
+        super.disable();
+        _accelerator.setEnabled(false);
+    }
 }

@@ -10,8 +10,8 @@ import storm2013.RobotMap;
  * @author Joe
  */
 public class Tilter extends Subsystem {
-    private static double UP_SPEED   = 1,
-                          DOWN_SPEED = 1;
+    private static double UP_SPEED   = -0.6,
+                          DOWN_SPEED = 0.6;
     
     private Victor _motor = new Victor(RobotMap.PORT_MOTOR_TILTER);
 

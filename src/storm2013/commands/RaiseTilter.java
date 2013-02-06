@@ -14,6 +14,7 @@ public class RaiseTilter extends Command {
     }
 
     protected void initialize() {
+        System.out.println("Tilting");
         Robot.tilter.moveUp();
     }
 

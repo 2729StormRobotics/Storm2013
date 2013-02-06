@@ -9,14 +9,14 @@ package storm2013;
 public class RobotMap {
     public static final int PORT_JOYSTICK_DRIVE      = 1;
     public static final int BUTTON_PRINT_ENCODER     = 9;
-    public static final int BUTTON_TILTER_UP         = 9;
-    public static final int BUTTON_TILTER_DOWN       = 9;
+    public static final int BUTTON_TILTER_UP         = 6;
+    public static final int BUTTON_TILTER_DOWN       = 4;
     
     public static final int PORT_MOTOR_DRIVE_LEFT    = 1;
     public static final int PORT_MOTOR_DRIVE_RIGHT   = 10;
     
     public static final int PORT_MOTOR_SHOOTER       = 3;
-    public static final int PORT_MOTOR_TILTER        = 5;
+    public static final int PORT_MOTOR_TILTER        = 2;
     public static final int PORT_MOTOR_TOMAHAWK      = 4;
     
     public static final int PORT_SENSOR_HALL_EFFECT  = 5;

@@ -40,10 +40,10 @@ public class Robot extends IterativeRobot {
     LoadSensor loadSensor;
 
     public void robotInit() {
-        oi = new OI();
         driveTrain = new DriveTrain();
         shooter = new Shooter();
         tilter  = new Tilter();
+        oi = new OI();
 
         loadSensor = new LoadSensor(1);
         testJag = new Jaguar(6);

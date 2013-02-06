@@ -4,15 +4,17 @@
  */
 package storm2013.commands;
 
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
+import storm2013.RobotMap;
 import storm2013.subsystems.DriveTrain;
 
 /**
  *
  * @author evan1026
  */
-public class EncoderTurn extends Command {
+public class GyroTurn extends Command {
 
     private double _goal;
     private double _dist;
@@ -21,8 +23,7 @@ public class EncoderTurn extends Command {
     
     private DriveTrain _driveTrain = Robot.driveTrain;
     
-    public EncoderTurn(double goal, double turnSpeed, double tolerance){ 
-        
+    public GyroTurn(double goal, double turnSpeed, double tolerance){
         _goal = goal;
         _turnSpeed = turnSpeed;
         _tolerance = tolerance;
@@ -30,12 +31,11 @@ public class EncoderTurn extends Command {
     }
     
     protected void initialize() {
-	 Robot.driveTrain.clearEncoder();
+        Robot.driveTrain.clearGyro();
     }
 
     protected void execute() {
-        _dist = Robot.driveTrain.getRightDistance()
-		-Robot.driveTrain.getLeftDistance();
+        _dist = Robot.driveTrain.getGyroAngle();
         
 	if (_dist < _goal){
 	    _driveTrain.tankDrive(-_turnSpeed, _turnSpeed);
@@ -46,7 +46,7 @@ public class EncoderTurn extends Command {
     }
 
     protected boolean isFinished() {
-	if(_goal < 0) {
+        if(_goal < 0) {
 	    return _dist - _tolerance <= _goal;
 	} else {
 	    return _dist + _tolerance >= _goal;
@@ -58,7 +58,7 @@ public class EncoderTurn extends Command {
     }
 
     protected void interrupted() {
-	end();
+        end();
     }
     
     public double getGoal() {
@@ -88,4 +88,5 @@ public class EncoderTurn extends Command {
     public void setTolerance(double tolerance) {
         _tolerance = tolerance;
     }
+    
 }

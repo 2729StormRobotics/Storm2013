@@ -5,42 +5,41 @@
 package storm2013.commands;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
 import storm2013.Robot;
-import storm2013.utilities.CameraPIDSource;
+import storm2013.utilities.Target;
 
 /**
  *
  * @author evan1026
  */
-public class CameraPIDTurn extends PIDCommand {
+public class CameraPIDTurn extends PIDCommand implements ITableListener {
     
     private PIDController _controller;
-    private CameraPIDSource _source;
     
     private ITable _table;
     private String _targetFoundKey;
+    private String _targetKey;
     private Timer _timeyWimey = new Timer();
     private double _timeout;
     private boolean _willTimeout;
     
-    
-    public CameraPIDTurn(ITable table, CameraPIDSource.Target target, double timeout){
+    public CameraPIDTurn(ITable table, Target target, double timeout){
         super(0, 0, 0);
         requires(Robot.driveTrain);
-        _source = new CameraPIDSource(table, target);
         _controller = getPIDController();
         _table = table;
         _timeout = timeout;
         if (timeout != -1) _willTimeout = true;
         _targetFoundKey = target.getFoundKey();
+        _targetKey = target.getXKey();
     }
     
     protected double returnPIDInput() {
-        return _source.pidGet();
+        return Robot.driveTrain.getGyroAngle();
     }
 
     protected void usePIDOutput(double output) {
@@ -49,8 +48,9 @@ public class CameraPIDTurn extends PIDCommand {
 
     protected void initialize() {
         _controller.enable();
-        _controller.setSetpoint(0);
+        _controller.setSetpoint(_table.getNumber(_targetKey));
         _timeyWimey.start();
+        _table.addTableListener(this);
     }
 
     protected void execute() {
@@ -73,6 +73,12 @@ public class CameraPIDTurn extends PIDCommand {
 
     protected void interrupted() {
         end();
+    }
+
+    public void valueChanged(ITable source, String key, Object value, boolean isNew) {
+        if (key.equals(_targetKey)){
+            _controller.setSetpoint(_table.getNumber(_targetKey));
+        }
     }
     
 }

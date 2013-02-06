@@ -28,17 +28,17 @@ public class PrintEncoders extends Command {
         String out = "addSequential(new ";
         double left = Robot.driveTrain.getLeftDistance();
         double right = Robot.driveTrain.getRightDistance();
+        double turn = Robot.driveTrain.getGyroAngle();
         
         if ((left < 0) != (right < 0)){
-            out += "EncoderTurn(";
+            out += "GyroTurn(";
+            out += turn;
         }
         else {
             out += "EncoderDrive(";
+            out += (right < 0) ? "-" : "";
+            out += (Math.min(Math.abs(left), Math.abs(right)));
         }
-        
-        out += (right < 0) ? "-" : "";
-        
-        out += (Math.min(Math.abs(left), Math.abs(right)));
         out += ", " + _speed + ", " + _tolerance + "));";
         System.out.println(out);
 	

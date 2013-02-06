@@ -21,6 +21,7 @@ public class RobotMap {
     
     public static final int PORT_SENSOR_HALL_EFFECT  = 5;
     public static final int PORT_SENSOR_VOLTAGE_LOAD = 2;
+    public static final int PORT_SENSOR_GYRO         = 0;
     
     public static final int PORT_ENCODER_LEFT_1      = 3;
     public static final int PORT_ENCODER_LEFT_2      = 4;

@@ -17,7 +17,6 @@ public class EncoderDrive extends Command {
     private double _goal;
     private double _dist;
     private double _driveSpeed;
-    private double _tolerance;
     private DriveTrain _driveTrain = Robot.driveTrain;
     
     /**
@@ -30,11 +29,10 @@ public class EncoderDrive extends Command {
      * @param tolerance   The threshold to determine when to stop the command.
      * @see   IDriveTrainEncoder
      */
-    public EncoderDrive(double goal, double driveSpeed, double tolerance){ 
+    public EncoderDrive(double goal, double driveSpeed){ 
         
         _goal = goal;
         _driveSpeed = driveSpeed;
-        _tolerance = tolerance;
         requires(Robot.driveTrain);
     }
     
@@ -77,9 +75,9 @@ public class EncoderDrive extends Command {
      */
     public boolean isFinished() {
 	if(_goal < 0) {
-	    return _dist - _tolerance <= _goal;
+	    return _dist <= _goal;
 	} else {
-	    return _dist + _tolerance >= _goal;
+	    return _dist >= _goal;
 	}
     }
     
@@ -138,22 +136,4 @@ public class EncoderDrive extends Command {
     public void setDriveSpeed(double driveSpeed) {
         _driveSpeed = driveSpeed;
     }
-    
-    /**
-     * Gets the threshold at which the robot will stop executing the command.
-     * @return The threshold, in revolutions.
-     */
-    public double getTolerance() {
-        return _tolerance;
-    }
-    
-    /**
-     * Sets a new threshold at which the robot will stop.
-     * @param tolerance The new threshold, in revolutions
-     */
-    public void setTolerance(double tolerance) {
-        _tolerance = tolerance;
-    }
-    
-    
 }

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.commands.LowerTilter;
-import storm2013.commands.PrintEncoders;
+import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.RaiseTilter;
 
 /**
@@ -51,7 +51,7 @@ public class OI {
                            tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN);
     
     public OI() {
-        recordEncoderButton.whenPressed(new PrintEncoders(0.6, 0.5, 0.5));
+        recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5, 0.5));
         tilterUpButton.whileHeld(new RaiseTilter());
         tilterDownButton.whileHeld(new LowerTilter());
     }

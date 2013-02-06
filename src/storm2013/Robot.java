@@ -15,9 +15,9 @@ import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
-import storm2013.utilities.CameraPIDSource;
 import storm2013.utilities.HallEffectSpeedSensor;
 import storm2013.utilities.LoadSensor;
+import storm2013.utilities.Target;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -69,7 +69,7 @@ public class Robot extends IterativeRobot {
         
         shooter.setAcceleratorEnabled(true);
         
-        CameraPIDTurn turnCommand = new CameraPIDTurn(NetworkTable.getTable("SmartDashboard"), CameraPIDSource.Target.FivePT, 2.0e6);
+        CameraPIDTurn turnCommand = new CameraPIDTurn(NetworkTable.getTable("SmartDashboard"), Target.FivePT, 2.0e6);
         SmartDashboard.putData(turnCommand);
         SmartDashboard.putData("Turn PID",turnCommand.getPIDController());
     }

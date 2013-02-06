@@ -5,6 +5,7 @@
 package storm2013.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -33,6 +34,8 @@ public class DriveTrain extends Subsystem{
     
     Encoder _leftEncoder =  new Encoder(RobotMap.PORT_ENCODER_LEFT_1, RobotMap.PORT_ENCODER_LEFT_2);
     Encoder _rightEncoder = new Encoder(RobotMap.PORT_ENCODER_RIGHT_1, RobotMap.PORT_ENCODER_RIGHT_2);
+     
+    Gyro _gyro = new Gyro(RobotMap.PORT_SENSOR_GYRO);
     
     public DriveTrain() {
 	
@@ -67,7 +70,10 @@ public class DriveTrain extends Subsystem{
 	_leftEncoder.reset();
 	_rightEncoder.reset();
     }
-
-    
-    
+    public void clearGyro(){
+        _gyro.reset();
+    }
+    public double getGyroAngle(){
+        return _gyro.getAngle();
+    }
 }

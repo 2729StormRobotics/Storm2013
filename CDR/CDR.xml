@@ -1,0 +1,81 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="ms per Frame" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="31" y="355"/>
+	</widget>
+	<widget field="2pt Target Y Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="7" y="333"/>
+	</widget>
+	<widget field="2pt Target X Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="7" y="308"/>
+	</widget>
+	<widget field="2pt Target Found?" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="7" y="284"/>
+	</widget>
+	<static-widget class="storm2013.smartdashboard.StormCV">
+		<location x="223" y="13"/>
+		<width>532</width>
+		<height>399</height>
+		<property name="Low Value threshold" value="100"/>
+		<property name="Minimum 2-pt aspect ratio" value="1.5"/>
+	</static-widget>
+	<widget field="Turn PID" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+		<location x="0" y="145"/>
+	</widget>
+	<widget field="Wheel Speed (RPM)" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="124"/>
+	</widget>
+	<widget field="CameraPIDTurn" type="PIDCommand" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="2" y="87"/>
+	</widget>
+	<widget field="Which Autonomouse?" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="0" y="0"/>
+	</widget>
+</dashboard>
+<live-window>
+	<widget field="Load Sensor" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="0"/>
+	</widget>
+	<widget field="Drive Train" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<widget field="Gyro" type="Table" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
+			<location x="6" y="16"/>
+			<height>150</height>
+			<width>250</width>
+		</widget>
+		<location x="0" y="24"/>
+		<width>262</width>
+		<height>173</height>
+	</widget>
+	<widget field="Tilter" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<widget field="Motor" type="Table" class="edu.wpi.first.smartdashboard.livewindow.elements.SpeedController">
+			<location x="6" y="16"/>
+			<height>46</height>
+			<width>293</width>
+		</widget>
+		<location x="0" y="48"/>
+		<width>305</width>
+		<height>69</height>
+	</widget>
+	<widget field="Shooter" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<widget field="PID Control" type="Table" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="16"/>
+			<height>136</height>
+			<width>130</width>
+		</widget>
+		<widget field="Speed Sensor" type="Table" class="edu.wpi.first.smartdashboard.livewindow.elements.SingleNumberDisplay">
+			<location x="6" y="152"/>
+			<height>20</height>
+			<width>130</width>
+		</widget>
+		<location x="0" y="72"/>
+		<width>142</width>
+		<height>179</height>
+	</widget>
+</live-window>
+	<hidden field="3pt Target Y Angle"/>
+	<hidden field="5pt Target Y Angle"/>
+	<hidden field="3pt Target X Angle"/>
+	<hidden field="5pt Target X Angle"/>
+	<hidden field="3pt Target Found?"/>
+	<hidden field="5pt Target Found?"/>
+</xml>

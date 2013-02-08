@@ -11,6 +11,7 @@ public class RobotMap {
     public static final int BUTTON_PRINT_ENCODER     = 9;
     public static final int BUTTON_TILTER_UP         = 6;
     public static final int BUTTON_TILTER_DOWN       = 4;
+    public static final int BUTTON_SHOOT             = 1;
     
     public static final int PORT_MOTOR_DRIVE_LEFT    = 1;
     public static final int PORT_MOTOR_DRIVE_RIGHT   = 10;
@@ -28,4 +29,6 @@ public class RobotMap {
     public static final int PORT_ENCODER_RIGHT_1     = 2;
     public static final int PORT_ENCODER_RIGHT_2     = 1;
     
+    
+    public static final int PORT_LIMIT_TOMAHAWK      = 6;
 }

@@ -16,9 +16,13 @@ public class Accelerator implements SpeedController {
         public void run() {
             if (_enabled) {
                 double newSpeed = _controller.get() + _rate * _period;
-                if (newSpeed > _minSpeed && newSpeed < _maxSpeed) {
-                    _controller.set(newSpeed);
-                    System.out.println("New Speed: " + newSpeed + " RPM");
+                double sign = _negated ? -1 : 1;
+                if (newSpeed < _minSpeed) {
+                    _controller.set(sign*_minSpeed);
+                } else if(newSpeed > _maxSpeed) {
+                    _controller.set(sign*_maxSpeed);
+                } else {
+                    _controller.set(sign*newSpeed);
                 }
             }
         }
@@ -31,9 +35,11 @@ public class Accelerator implements SpeedController {
     Timer _timer = new Timer();
     boolean _enabled = true;
     double _minSpeed = -1, _maxSpeed = 1;
+    boolean _negated = false;
 
-    public Accelerator(SpeedController controller) {
+    public Accelerator(SpeedController controller,boolean negated) {
         this(controller, DEFAULT_PERIOD);
+        _negated = negated;
     }
 
     public Accelerator(SpeedController controller, double period) {

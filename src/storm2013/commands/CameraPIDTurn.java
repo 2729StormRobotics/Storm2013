@@ -28,11 +28,11 @@ public class CameraPIDTurn extends PIDCommand implements ITableListener {
     private boolean _willTimeout;
     
     public CameraPIDTurn(ITable table, Target target, double timeout){
-        super(0, 0, 0);
+        super(0.5, 0.1, 1);
         requires(Robot.driveTrain);
         _controller = getPIDController();
-        _controller.setAbsoluteTolerance(0.1);
-        _controller.setOutputRange(-0.6, 0.6);
+        _controller.setAbsoluteTolerance(5);
+        _controller.setOutputRange(-6, 6);
         _table = table;
         _timeout = timeout;
         if (timeout != -1) _willTimeout = true;
@@ -45,16 +45,21 @@ public class CameraPIDTurn extends PIDCommand implements ITableListener {
     }
 
     protected void usePIDOutput(double output) {
+        output /= 10;
         System.out.println("Driving with " + output);
-        Robot.driveTrain.tankDrive(-output, output);
+        if(!_controller.onTarget()) {
+            Robot.driveTrain.tankDrive(output, -output);
+        } else {
+            Robot.driveTrain.tankDrive(0, 0);
+        }
     }
 
     protected void initialize() {
         Robot.driveTrain.clearGyro();
         _controller.setSetpoint(_table.getNumber(_targetKey));
+        _table.addTableListener(this);
         _controller.enable();
         _timeyWimey.start();
-        _table.addTableListener(this);
     }
 
     protected void execute() {
@@ -85,6 +90,7 @@ public class CameraPIDTurn extends PIDCommand implements ITableListener {
     
     public void valueChanged(ITable source, String key, Object value, boolean isNew) {
         if (key.equals(_targetKey)){
+            Robot.driveTrain.clearGyro();
             _controller.setSetpoint(_table.getNumber(_targetKey));
         }
     }

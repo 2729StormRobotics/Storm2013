@@ -35,12 +35,12 @@ public class GyroTurn extends Command {
     protected void execute() {
         _dist = Robot.driveTrain.getGyroAngle();
         
-	if (_dist < _goal){
-	    _driveTrain.tankDrive(-_turnSpeed, _turnSpeed);
-	}
-	else if (_dist > _goal){
-	    _driveTrain.tankDrive(_turnSpeed, -_turnSpeed);
-	}
+        if (_goal < 0){
+            _driveTrain.tankDrive(-_turnSpeed, _turnSpeed);
+        }
+        else{
+            _driveTrain.tankDrive(_turnSpeed, -_turnSpeed);
+        }
     }
 
     protected boolean isFinished() {

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.RaiseTilter;
+import storm2013.commands.SpinTomahawk;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -46,12 +47,14 @@ public class OI {
     
     private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);
     
-    private JoystickButton recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
+    private JoystickButton tomahawkButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SHOOT),
+                           recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
                            tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
                            tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN);
     
     public OI() {
-        recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5, 0.5));
+        tomahawkButton.whenPressed(new SpinTomahawk());
+        recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         tilterUpButton.whileHeld(new RaiseTilter());
         tilterDownButton.whileHeld(new LowerTilter());
     }
@@ -73,7 +76,7 @@ public class OI {
     }
     
     public double getTurnAxis() {
-        return _applyExponential(_zeroDeadzone(driveJoystick.getRawAxis(3),0.3));
+        return _applyExponential(_zeroDeadzone(driveJoystick.getRawAxis(3)/2,0.3));
     }
     
     public double getFlipperAxis() {

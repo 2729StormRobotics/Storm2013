@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
+import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 import storm2013.RobotMap;
 import storm2013.utilities.Accelerator;
 import storm2013.utilities.HallEffectSpeedSensor;
@@ -20,7 +23,7 @@ public class Shooter extends PIDSubsystem {
 
     private HallEffectSpeedSensor _speedSensor = new HallEffectSpeedSensor(RobotMap.PORT_SENSOR_HALL_EFFECT);
     private Victor _wheelMotor = new Victor(RobotMap.PORT_MOTOR_SHOOTER);
-    private Accelerator _accelerator = new Accelerator(_wheelMotor);
+    private Accelerator _accelerator = new Accelerator(_wheelMotor,true);
     
     private final double OUTPUT_SCALE = 0.1;
 
@@ -68,5 +71,31 @@ public class Shooter extends PIDSubsystem {
     public void disable() {
         super.disable();
         _accelerator.setEnabled(false);
+    }
+    
+    private ITable _table;
+    
+    private ITableListener _listener = new ITableListener() {
+
+        public void valueChanged(ITable source, String key, Object value, boolean isNew) {
+            if(key.equals("enabled")) {
+                setAcceleratorEnabled(((Boolean)value).booleanValue());
+            }
+        }
+    };
+
+    public void initTable(ITable table) {
+        if(_table != null) {
+            _table.removeTableListener(_listener);
+        }
+        super.initTable(table);
+        _table = table;
+        if(_table != null) {
+            table.addTableListener(_listener);
+        }
+    }
+    
+    public boolean isEnabled() {
+        return getPIDController().isEnable();
     }
 }

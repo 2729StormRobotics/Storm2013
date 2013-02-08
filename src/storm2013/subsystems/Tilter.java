@@ -1,6 +1,6 @@
 package storm2013.subsystems;
 
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import storm2013.RobotMap;
@@ -13,7 +13,7 @@ public class Tilter extends Subsystem {
     private static double UP_SPEED   = -0.6,
                           DOWN_SPEED = 0.6;
     
-    private Victor _motor = new Victor(RobotMap.PORT_MOTOR_TILTER);
+    private Jaguar _motor = new Jaguar(RobotMap.PORT_MOTOR_TILTER);
 
     public Tilter() {
         LiveWindow.addActuator("Tilter", "Motor", _motor);

@@ -16,8 +16,7 @@ public class PrintAutonomousMove extends Command {
     private double _speed;
     private double _waitTime;
     
-    public PrintAutonomousMove( double speed, double tolerance,
-	    double waitTime){
+    public PrintAutonomousMove(double speed,double waitTime){
         _speed = speed;
         _waitTime = waitTime;
     }

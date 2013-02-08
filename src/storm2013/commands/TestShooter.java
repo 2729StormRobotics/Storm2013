@@ -22,7 +22,7 @@ public class TestShooter extends Command {
         SmartDashboard.putNumber("Wheel Speed (RPM)",Robot.shooter.getSpeedRpm());
     	Robot.shooter.setMotorValRaw(-(-Robot.oi.getFlipperAxis()+1)/2);
 //        Robot.shooter.setMotorValRaw(Robot.oi.getFlipperAxis());
-        SmartDashboard.putNumber("Power Value", -Robot.shooter.getMotorValRaw());
+//        SmartDashboard.putNumber("Power Value", -Robot.shooter.getMotorValRaw());
     }
 
     protected boolean isFinished() {
@@ -30,6 +30,7 @@ public class TestShooter extends Command {
     }
 
     protected void end() {
+        Robot.shooter.enable();
 //	Robot.shooter.setSpeedRpm(0);
     }
 

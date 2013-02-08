@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -15,6 +16,7 @@ import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
+import storm2013.subsystems.Tomahawk;
 import storm2013.utilities.HallEffectSpeedSensor;
 import storm2013.utilities.LoadSensor;
 import storm2013.utilities.Target;
@@ -31,6 +33,7 @@ public class Robot extends IterativeRobot {
     public static DriveTrain driveTrain;
     public static Shooter shooter;
     public static Tilter tilter;
+    public static Tomahawk tomahawk;
     
     Command teleop;
     String[] autonomiceNames;
@@ -43,9 +46,10 @@ public class Robot extends IterativeRobot {
 
     public void robotInit() {
         driveTrain = new DriveTrain();
-        shooter = new Shooter();
-        tilter  = new Tilter();
-        oi = new OI();
+        shooter    = new Shooter();
+        tilter     = new Tilter();
+        tomahawk   = new Tomahawk();
+        oi         = new OI();
 
         loadSensor = new LoadSensor(1);
         testJag = new Jaguar(6);
@@ -69,7 +73,7 @@ public class Robot extends IterativeRobot {
         
         shooter.setAcceleratorEnabled(true);
         
-        CameraPIDTurn turnCommand = new CameraPIDTurn(NetworkTable.getTable("SmartDashboard"), Target.FivePT, 2.0e6);
+        CameraPIDTurn turnCommand = new CameraPIDTurn(NetworkTable.getTable("SmartDashboard"), Target.TwoPT, 2.0e6);
         SmartDashboard.putData(turnCommand);
         SmartDashboard.putData("Turn PID",turnCommand.getPIDController());
     }
@@ -104,7 +108,6 @@ public class Robot extends IterativeRobot {
 
     public void testPeriodic() {
         LiveWindow.run();
-        System.out.println("Gyro: " + driveTrain.getGyroAngle());
     }
 
     // Eliminates "Overload me!" messages

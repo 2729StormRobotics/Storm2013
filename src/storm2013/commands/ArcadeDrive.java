@@ -17,10 +17,8 @@ public class ArcadeDrive extends Command {
     protected void initialize() {}
 
     protected void execute() {
-	double drive = oi.getDriveAxis(),
-	       turn  = oi.getTurnAxis();
-	SmartDashboard.putNumber("Drive",drive);
-	SmartDashboard.putNumber("Turn", turn);
+        double drive = oi.getDriveAxis(),
+               turn  = oi.getTurnAxis();
         driveTrain.arcadeDrive(drive, turn);
     }
 

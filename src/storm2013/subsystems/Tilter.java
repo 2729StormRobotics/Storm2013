@@ -1,5 +1,6 @@
 package storm2013.subsystems;
 
+import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
@@ -9,7 +10,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import storm2013.RobotMap;
 import storm2013.utilities.LimitSwitchedMotor;
-import storm2013.utilities.TrigLUT;
 
 /**
  *
@@ -81,7 +81,7 @@ public class Tilter extends Subsystem {
     public double getAngle() {
         double y = Math.abs(_accelerometer.getAcceleration(ADXL345_I2C.Axes.kY)), // g*sin(theta)
                z = Math.abs(_accelerometer.getAcceleration(ADXL345_I2C.Axes.kZ)); // g*cos(theta)
-        // assuming y-z axis is forward-back and up-down
-        return Math.toDegrees(TrigLUT.atan(y/z));
+        // assuming y-z plane is forward-back and up-down
+        return Math.toDegrees(MathUtils.atan(y/z));
     }
 }

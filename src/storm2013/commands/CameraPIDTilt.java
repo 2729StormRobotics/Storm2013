@@ -16,7 +16,7 @@ import storm2013.utilities.Target;
  *
  * @author evan1026
  */
-public class CameraPIDTurn extends PIDCommand implements ITableListener {
+public class CameraPIDTilt extends PIDCommand implements ITableListener {
     
     private PIDController _controller;
     
@@ -28,12 +28,12 @@ public class CameraPIDTurn extends PIDCommand implements ITableListener {
     private boolean _willTimeout;
     private boolean _continuous;
     
-    public CameraPIDTurn(ITable table, Target target, double timeout, boolean continuous){
-        super(0.1, 0.1, 1);
-        requires(Robot.driveTrain);
+    public CameraPIDTilt(ITable table, Target target, double timeout, boolean continuous){
+        super(0, 0, 0);
+        requires(Robot.tilter);
         _controller = getPIDController();
-        _controller.setAbsoluteTolerance(2.5);
-        _controller.setOutputRange(-6, 6);
+        _controller.setAbsoluteTolerance(1);
+        _controller.setOutputRange(-10, 10);
         _table = table;
         _timeout = timeout;
         if (timeout != -1) _willTimeout = true;
@@ -43,21 +43,20 @@ public class CameraPIDTurn extends PIDCommand implements ITableListener {
     }
     
     protected double returnPIDInput() {
-        return Robot.driveTrain.getGyroAngle();
+        return Robot.tilter.getAngle();
     }
 
     protected void usePIDOutput(double output) {
         output /= 10;
         if(!_controller.onTarget()) {
-            Robot.driveTrain.tankDrive(output, -output);
+            Robot.tilter.move(output);
         } else {
-            Robot.driveTrain.tankDrive(0, 0);
+            Robot.tilter.stop();
         }
     }
 
     protected void initialize() {
-        Robot.driveTrain.clearGyro();
-        _controller.setSetpoint(_table.getNumber(_targetKey));
+        _controller.setSetpoint(Robot.tilter.getAngle()+_table.getNumber(_targetKey));
         _table.addTableListener(this);
         _controller.enable();
         _timeyWimey.start();
@@ -89,8 +88,7 @@ public class CameraPIDTurn extends PIDCommand implements ITableListener {
     
     public void valueChanged(ITable source, String key, Object value, boolean isNew) {
         if (key.equals(_targetKey)){
-            Robot.driveTrain.clearGyro();
-            _controller.setSetpoint(_table.getNumber(_targetKey));
+            _controller.setSetpoint(Robot.tilter.getAngle()+_table.getNumber(_targetKey));
         }
     }
 }

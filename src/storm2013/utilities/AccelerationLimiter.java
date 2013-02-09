@@ -15,7 +15,7 @@ import java.util.TimerTask;
  * @author Joe
  */
 public class AccelerationLimiter implements SpeedController,LiveWindowSendable {
-    private SpeedController _controller;
+    private final SpeedController _controller;
     private double _maxAccel,_maxDecel;
     private double _target = 0;
     private double _period;

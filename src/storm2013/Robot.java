@@ -70,12 +70,6 @@ public class Robot extends IterativeRobot {
 //	SmartDashboard.putData(Scheduler.getInstance());
 
         LiveWindow.addSensor("Load Sensor", "Load Sensor 1", loadSensor);
-        
-        shooter.setAcceleratorEnabled(true);
-        
-        CameraPIDTurn turnCommand = new CameraPIDTurn(NetworkTable.getTable("SmartDashboard"), Target.TwoPT, 2.0e6);
-        SmartDashboard.putData(turnCommand);
-        SmartDashboard.putData("Turn PID",turnCommand.getPIDController());
     }
 
     public void autonomousInit() {

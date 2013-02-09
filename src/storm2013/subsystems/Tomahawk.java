@@ -35,9 +35,9 @@ public class Tomahawk extends Subsystem {
     }
     
     public void move() {
-//        if(Robot.shooter.isEnabled()) {
+        if(Robot.shooter.isEnabled()) {
             _motor.set(MOTOR_SPEED);
-//        }
+        }
     }
     public void stop() {
         _motor.set(0);

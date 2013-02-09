@@ -3,10 +3,15 @@ package storm2013;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import storm2013.commands.CameraPIDTilt;
+import storm2013.commands.CameraPIDTurn;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.RaiseTilter;
 import storm2013.commands.SpinTomahawk;
+import storm2013.utilities.Target;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -50,13 +55,25 @@ public class OI {
     private JoystickButton tomahawkButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SHOOT),
                            recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
                            tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
-                           tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN);
+                           tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN),
+                           target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT);
     
     public OI() {
         tomahawkButton.whenPressed(new SpinTomahawk());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         tilterUpButton.whileHeld(new RaiseTilter());
         tilterDownButton.whileHeld(new LowerTilter());
+        
+        CameraPIDTurn turnCommand = new CameraPIDTurn(NetworkTable.getTable("SmartDashboard"), Target.TwoPT, 1.0,false);
+        SmartDashboard.putData(turnCommand);
+        SmartDashboard.putData("Turn PID",turnCommand.getPIDController());
+        
+        CameraPIDTilt tiltCommand = new CameraPIDTilt(NetworkTable.getTable("SmartDashboard"), Target.TwoPT, 1.0,false);
+        SmartDashboard.putData(tiltCommand);
+        SmartDashboard.putData("Tilt PID",turnCommand.getPIDController());
+        
+        target2ptButton.whenPressed(turnCommand);
+        target2ptButton.whenPressed(tiltCommand);
     }
     
     private double _zeroDeadzone(double joyValue,double dead) {

@@ -69,13 +69,13 @@ public class Tilter extends Subsystem {
     }
     
     public void moveUp() {
-        _limitedMotor.set(UP_SPEED_DEFAULT);
+        move(UP_SPEED_DEFAULT);
     }
     public void stop() {
-        _limitedMotor.set(0);
+        move(0);
     }
     public void moveDown() {
-        _limitedMotor.set(DOWN_SPEED_DEFAULT);
+        move(DOWN_SPEED_DEFAULT);
     }
     
     public double getAngle() {

@@ -21,7 +21,7 @@ public class Tilter extends Subsystem {
     private static final double UP_SIGN    = -1;
     
     private static final boolean UP_LIMIT_ON_VALUE   = true,
-                                 DOWN_LIMIT_ON_VALUE = true;
+                                 DOWN_LIMIT_ON_VALUE = false;
     
     private Jaguar _motor = new Jaguar(RobotMap.PORT_MOTOR_TILTER);
     private DigitalInput _topLimitSwitch    = new DigitalInput(RobotMap.PORT_LIMIT_TILTER_TOP),
@@ -46,6 +46,7 @@ public class Tilter extends Subsystem {
 
         public void initTable(ITable table) {
             _table = table;
+            updateTable();
         }
 
         public ITable getTable() {

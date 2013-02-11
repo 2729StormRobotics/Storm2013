@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.subsystems;
 
 import edu.wpi.first.wpilibj.Jaguar;
@@ -10,7 +6,6 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
-import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 import storm2013.RobotMap;
 import storm2013.utilities.Accelerator;
 import storm2013.utilities.HallEffectSpeedSensor;

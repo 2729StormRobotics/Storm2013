@@ -57,9 +57,9 @@ public class Robot extends IterativeRobot {
 
     	teleop = new TestShooter();
 
-        autonomiceNames = new String[]{"Do Nothing", "Dance!", "DriveStuff"};
+        autonomiceNames = new String[]{"Do Nothing", "DriveStuff"};
 
-        autonomice = new Command[]{new DoNothing(), new DonaldDance(), new DriveStuff()};
+        autonomice = new Command[]{new DoNothing(), new DriveStuff()};
 
         System.out.println(autonomice.length);
         for (int i = 0; i < autonomice.length; ++i) {

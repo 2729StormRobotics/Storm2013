@@ -1,7 +1,6 @@
 package storm2013.utilities;
 
 import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
@@ -11,7 +10,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
  * of a wheel.
  * @author Joe
  */
-public class HallEffectSpeedSensor implements LiveWindowSendable,ISpeedSensor {
+public class HallEffectSpeedSensor implements LiveWindowSendable {
     private DigitalInput _hallEffect;
     private Counter _counter;
 

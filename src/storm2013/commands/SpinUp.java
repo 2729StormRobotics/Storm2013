@@ -32,13 +32,16 @@ public class SpinUp extends Command {
      * {@inheritDoc}
      */
     protected void execute() {
+        if(!Robot.shooter.onTarget()) {
+            _onTargetTimer.reset();
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     protected boolean isFinished() {
-        return Robot.shooter.getPIDController().onTarget();
+        return _onTargetTimer.get() > 0.3;
     }
 
     /**

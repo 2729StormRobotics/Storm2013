@@ -14,8 +14,8 @@ import storm2013.utilities.Target;
 public class TargetPIDTurn extends TargetPIDCommand {    
     public TargetPIDTurn(Target target, double timeout, boolean continuous){
         super(target,Target.Axis.X,timeout,continuous,
-              0.1, 0.1, 1, // P, I, D
-              2.5,6);
+              0.01, 0, 0.1, // P, I, D
+              2,6);
         requires(Robot.driveTrain);
     }
     
@@ -26,10 +26,6 @@ public class TargetPIDTurn extends TargetPIDCommand {
     protected void writePIDOut(double output) {
         output /= 10;
         Robot.driveTrain.tankDrive(output, -output);
-    }
-
-    protected double computeSetpoint(double newValue) {
-        Robot.driveTrain.clearGyro();
-        return newValue;
+        System.out.println("Turning @ " + output);
     }
 }

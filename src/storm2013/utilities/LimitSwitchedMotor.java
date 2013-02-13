@@ -2,6 +2,7 @@ package storm2013.utilities;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,10 +14,10 @@ public class LimitSwitchedMotor implements SpeedController {
     private static final double DEFAULT_PERIOD = 1.0/50;
     
     private final SpeedController _controller;
-    private final DigitalInput _top,_bottom;
+    private final Trigger _top,_bottom;
     private final boolean      _topOn,_bottomOn;
     private double _value;
-    private Timer _bgThread;
+    private Timer _bgThread = new Timer();
     
     private TimerTask _bgTask = new TimerTask() {
         public void run() {
@@ -26,7 +27,7 @@ public class LimitSwitchedMotor implements SpeedController {
                     output = 0;
                 }
             } else if(output < 0 && _bottom != null) {
-                if(_top.get() == _bottomOn) {
+                if(_bottom.get() == _bottomOn) {
                     output = 0;
                 }
             }
@@ -35,8 +36,8 @@ public class LimitSwitchedMotor implements SpeedController {
     };
 
     // "top" being positive, "bottom" negative
-    public LimitSwitchedMotor(SpeedController controller,DigitalInput top,boolean topOnValue,
-                                                         DigitalInput bottom,boolean bottomOnValue) {
+    public LimitSwitchedMotor(SpeedController controller,Trigger top,boolean topOnValue,
+                                                         Trigger bottom,boolean bottomOnValue) {
         _controller = controller;
         _top = top;
         _bottom = bottom;

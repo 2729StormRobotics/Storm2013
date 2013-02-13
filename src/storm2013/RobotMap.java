@@ -14,6 +14,7 @@ public class RobotMap {
     public static final int BUTTON_TILTER_UP          = 6;
     public static final int BUTTON_PRINT_ENCODER      = 9;
     public static final int BUTTON_TARGET_2PT         = 10;
+    public static final int BUTTON_SPIN_DOWN          = 2;
     
     public static final int PORT_MOTOR_DRIVE_LEFT     = 1;
     public static final int PORT_MOTOR_DRIVE_RIGHT    = 10;
@@ -24,7 +25,7 @@ public class RobotMap {
     
     public static final int PORT_SENSOR_HALL_EFFECT   = 5;
 //    public static final int PORT_SENSOR_VOLTAGE_LOAD = 2;
-    public static final int PORT_SENSOR_GYRO          = 2;
+    public static final int PORT_SENSOR_GYRO          = 1;
     
     public static final int MODULE_SENSOR_ACCELEROMETER = 1; // TODO: make sure this is right
     
@@ -35,6 +36,6 @@ public class RobotMap {
     
     
     public static final int PORT_LIMIT_TOMAHAWK       = 6;
-    public static final int PORT_LIMIT_TILTER_BOTTOM  = 0; // TODO: get this value
-    public static final int PORT_LIMIT_TILTER_TOP     = 0; // TODO: get this value
+    public static final int PORT_LIMIT_TILTER_BOTTOM  = 7; // TODO: get this value
+    public static final int PORT_LIMIT_TILTER_TOP     = 8; // TODO: get this value
 }

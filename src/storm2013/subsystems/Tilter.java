@@ -4,6 +4,7 @@ import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
@@ -20,15 +21,23 @@ public class Tilter extends Subsystem {
                                 DOWN_SPEED_DEFAULT = -0.6;
     private static final double UP_SIGN    = -1;
     
-    private static final boolean UP_LIMIT_ON_VALUE   = true,
-                                 DOWN_LIMIT_ON_VALUE = false;
+    private static final double ANGLE_MAX = 90, // TODO: find actual values for these.
+                                ANGLE_MIN = 0;
     
     private Jaguar _motor = new Jaguar(RobotMap.PORT_MOTOR_TILTER);
-    private DigitalInput _topLimitSwitch    = new DigitalInput(RobotMap.PORT_LIMIT_TILTER_TOP),
-                         _bottomLimitSwitch = new DigitalInput(RobotMap.PORT_LIMIT_TILTER_BOTTOM);
-    private LimitSwitchedMotor _limitedMotor = new LimitSwitchedMotor(_motor,
-                                                                      _topLimitSwitch, UP_LIMIT_ON_VALUE,
-                                                                      _bottomLimitSwitch, DOWN_LIMIT_ON_VALUE);
+    private Trigger _topLimitSwitch    = new Trigger() {
+                                             public boolean get() {
+                                                 return getAngle() >= ANGLE_MAX;
+                                             }
+                                         },
+                    _bottomLimitSwitch = new Trigger() {
+                                             public boolean get() {
+                                                 return getAngle() <= ANGLE_MIN;
+                                             }
+                                         };
+    private LimitSwitchedMotor _limitedMotor;// = new LimitSwitchedMotor(_motor,
+                                             //                         _bottomLimitSwitch, true,
+                                             //                         _topLimitSwitch, true);
     private ADXL345_I2C _accelerometer = new ADXL345_I2C(RobotMap.MODULE_SENSOR_ACCELEROMETER,
                                                          ADXL345_I2C.DataFormat_Range.k2G);
     private LiveWindowSendable _angleSensor = new LiveWindowSendable() {
@@ -60,13 +69,13 @@ public class Tilter extends Subsystem {
 
     public Tilter() {
         LiveWindow.addActuator("Tilter", "Motor", _motor);
-        LiveWindow.addActuator("Tilter", "Angle", _angleSensor);
+        LiveWindow.addSensor("Tilter", "Angle", _angleSensor);
     }
 
     public void initDefaultCommand() {}
     
     public void move(double speed) {
-        _limitedMotor.set(UP_SIGN*speed);
+        _motor.set(UP_SIGN*speed);
     }
     
     public void moveUp() {
@@ -79,10 +88,17 @@ public class Tilter extends Subsystem {
         move(DOWN_SPEED_DEFAULT);
     }
     
+    private double _lerped = 0;
+    private static final double LERP_CONST = 0.3;
+    
     public double getAngle() {
-        double y = Math.abs(_accelerometer.getAcceleration(ADXL345_I2C.Axes.kY)), // g*sin(theta)
-               z = Math.abs(_accelerometer.getAcceleration(ADXL345_I2C.Axes.kZ)); // g*cos(theta)
+        double y = _accelerometer.getAcceleration(ADXL345_I2C.Axes.kY), // g*sin(theta)
+               z = _accelerometer.getAcceleration(ADXL345_I2C.Axes.kZ); // g*cos(theta)
+        if(z == 0) {
+            return 90;
+        }
         // assuming y-z plane is forward-back and up-down
-        return Math.toDegrees(MathUtils.atan(y/z));
+        _lerped = _lerped*(1-LERP_CONST) + LERP_CONST*Math.abs(Math.toDegrees(MathUtils.atan(y/z))-5);
+        return _lerped;
     }
 }

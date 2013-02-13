@@ -9,12 +9,15 @@ package storm2013;
 public class RobotMap {
     public static final int PORT_JOYSTICK_DRIVE       = 1;
     
-    public static final int BUTTON_SHOOT              = 1;
-    public static final int BUTTON_TILTER_DOWN        = 4;
-    public static final int BUTTON_TILTER_UP          = 6;
+    public static final int BUTTON_SHOOT              = 6;
+    public static final int BUTTON_SPIN_DOWN          = 8;
+    public static final int BUTTON_TILTER_DOWN        = 7;
+    public static final int BUTTON_TILTER_UP          = 5;
     public static final int BUTTON_PRINT_ENCODER      = 9;
     public static final int BUTTON_TARGET_2PT         = 10;
-    public static final int BUTTON_SPIN_DOWN          = 2;
+    
+    public static final int AXIS_DRIVE_LEFT           = 2,
+                            AXIS_DRIVE_RIGHT          = 4;
     
     public static final int PORT_MOTOR_DRIVE_LEFT     = 1;
     public static final int PORT_MOTOR_DRIVE_RIGHT    = 10;
@@ -27,7 +30,7 @@ public class RobotMap {
 //    public static final int PORT_SENSOR_VOLTAGE_LOAD = 2;
     public static final int PORT_SENSOR_GYRO          = 1;
     
-    public static final int MODULE_SENSOR_ACCELEROMETER = 1; // TODO: make sure this is right
+    public static final int MODULE_SENSOR_ACCELEROMETER = 1;
     
     public static final int PORT_ENCODER_LEFT_1       = 3;
     public static final int PORT_ENCODER_LEFT_2       = 4;
@@ -36,6 +39,4 @@ public class RobotMap {
     
     
     public static final int PORT_LIMIT_TOMAHAWK       = 6;
-    public static final int PORT_LIMIT_TILTER_BOTTOM  = 7; // TODO: get this value
-    public static final int PORT_LIMIT_TILTER_TOP     = 8; // TODO: get this value
 }

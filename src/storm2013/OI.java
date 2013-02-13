@@ -56,19 +56,19 @@ public class OI {
     
     private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);
     
-    private Button tomahawkButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SHOOT),
+    private Button shootButton         = new JoystickButton(driveJoystick, RobotMap.BUTTON_SHOOT),
+                   spinDownButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SPIN_DOWN),
                    recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
                    tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
                    tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN),
-                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT),
-                   spinDownButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SPIN_DOWN);
+                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT);
     
     public OI() {
-        tomahawkButton.whenPressed(new Shoot());
+        shootButton.whenPressed(new Shoot());
+        spinDownButton.whenPressed(new SpinDown());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         tilterUpButton.whileHeld(new RaiseTilter());
         tilterDownButton.whileHeld(new LowerTilter());
-        spinDownButton.whenPressed(new SpinDown());
         
         TargetPIDTurn turnAim = new TargetPIDTurn(Target.TwoPT, 1.0, true);
         SmartDashboard.putData("Turn PID",turnAim.getPIDController());
@@ -97,24 +97,12 @@ public class OI {
         return sign*joyValue*joyValue/Math.sqrt(Math.abs(joyValue));
     }
     
-    public double getDriveAxis() {
-        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(2),0.1));
-    }
-    
-    public double getTurnAxis() {
-        return _applyExponential(_zeroDeadzone(driveJoystick.getRawAxis(3)/2,0.3));
-    }
-    
-    public double getFlipperAxis() {
-        return driveJoystick.getRawAxis(4);
-    }
-    
     public double getLeftDrive() {
-        return 0;
+        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_LEFT),0.15));
     }
     
     public double getRightDrive() {
-        return 0;
+        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_RIGHT),0.15));
     }
 }
 

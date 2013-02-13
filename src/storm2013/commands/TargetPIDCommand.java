@@ -47,7 +47,10 @@ public abstract class TargetPIDCommand extends PIDCommand {
         setSetpoint(getPosition()+SmartDashboard.getNumber(_targetKey));
         NetworkTable.getTable("SmartDashboard").addTableListener(_listener);
         _controller.enable();
+        _timeyWimey.reset();
         _timeyWimey.start();
+        _latencyTimer.reset();
+        _latencyTimer.start();
     }
 
     protected void execute() {
@@ -79,10 +82,14 @@ public abstract class TargetPIDCommand extends PIDCommand {
         return super.getPIDController();
     }
     
+    private Timer _latencyTimer = new Timer();
+    
     private ITableListener _listener = new ITableListener() {
         public void valueChanged(ITable source, String key, Object value, boolean isNew) {
             if (key.equals(_targetKey)){
                 setSetpoint(getPosition()+((Double)value).doubleValue());
+                SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()/1.0e3);
+                _latencyTimer.reset();
             }
         }
     };

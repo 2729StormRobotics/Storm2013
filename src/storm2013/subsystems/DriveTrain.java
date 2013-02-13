@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import storm2013.RobotMap;
-import storm2013.commands.ArcadeDrive;
+import storm2013.commands.TankDrive;
 
 /**
  *
@@ -43,7 +43,7 @@ public class DriveTrain extends Subsystem{
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new ArcadeDrive());
+        setDefaultCommand(new TankDrive());
     }
     
     public void arcadeDrive(double speed,double turn) {

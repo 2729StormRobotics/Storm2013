@@ -2,11 +2,14 @@ package storm2013.subsystems;
 
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 import storm2013.RobotMap;
+import storm2013.commands.DoNothing;
+import storm2013.commands.SpinDown;
 import storm2013.utilities.Accelerator;
 import storm2013.utilities.HallEffectSpeedSensor;
 
@@ -45,6 +48,10 @@ public class Shooter extends PIDSubsystem {
     }
 
     protected void initDefaultCommand() {
+        CommandGroup timeout = new CommandGroup("Time out shooter");
+        timeout.addSequential(new DoNothing(),5);
+        timeout.addSequential(new SpinDown());
+        setDefaultCommand(timeout);
     }
 
     protected double returnPIDInput() {

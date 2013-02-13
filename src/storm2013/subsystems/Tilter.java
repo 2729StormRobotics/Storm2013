@@ -2,7 +2,6 @@ package storm2013.subsystems;
 
 import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -92,13 +91,9 @@ public class Tilter extends Subsystem {
     private static final double LERP_CONST = 0.3;
     
     public double getAngle() {
-        double y = _accelerometer.getAcceleration(ADXL345_I2C.Axes.kY), // g*sin(theta)
-               z = _accelerometer.getAcceleration(ADXL345_I2C.Axes.kZ); // g*cos(theta)
-        if(z == 0) {
-            return 90;
-        }
-        // assuming y-z plane is forward-back and up-down
-        _lerped = _lerped*(1-LERP_CONST) + LERP_CONST*Math.abs(Math.toDegrees(MathUtils.atan(y/z))-5);
+        double y = _accelerometer.getAcceleration(ADXL345_I2C.Axes.kY); // g*sin(theta)
+        // assuming y axis is forward-back
+        _lerped = _lerped*(1-LERP_CONST) + LERP_CONST*Math.abs(Math.toDegrees(MathUtils.asin(y)));
         return _lerped;
     }
 }

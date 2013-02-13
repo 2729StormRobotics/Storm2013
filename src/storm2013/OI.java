@@ -12,6 +12,8 @@ import storm2013.commands.TargetPIDTurn;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.RaiseTilter;
+import storm2013.commands.Shoot;
+import storm2013.commands.SpinDown;
 import storm2013.commands.SpinTomahawk;
 import storm2013.utilities.Target;
 
@@ -58,25 +60,29 @@ public class OI {
                    recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
                    tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
                    tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN),
-                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT);
+                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT),
+                   spinDownButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SPIN_DOWN);
     
     public OI() {
-        tomahawkButton.whenPressed(new SpinTomahawk());
+        tomahawkButton.whenPressed(new Shoot());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         tilterUpButton.whileHeld(new RaiseTilter());
         tilterDownButton.whileHeld(new LowerTilter());
+        spinDownButton.whenPressed(new SpinDown());
         
-        TargetPIDTurn turnAim = new TargetPIDTurn(Target.TwoPT, 1.0,false);
+        TargetPIDTurn turnAim = new TargetPIDTurn(Target.TwoPT, 1.0, true);
         SmartDashboard.putData("Turn PID",turnAim.getPIDController());
         
-        TargetPIDTilt tiltAim = new TargetPIDTilt(Target.TwoPT, 1.0,false);
-        SmartDashboard.putData("Tilt PID",turnAim.getPIDController());
+//        TargetPIDTilt tiltAim = new TargetPIDTilt(Target.TwoPT, 1.0,false);
+//        SmartDashboard.putData("Tilt PID",turnAim.getPIDController());
+//        
+//        CommandGroup aim = new CommandGroup("2pt Aim");
+//        aim.addParallel(turnAim);
+//        aim.addParallel(tiltAim);
         
-        CommandGroup aim = new CommandGroup("2pt Aim");
-        aim.addParallel(turnAim);
-        aim.addParallel(tiltAim);
+        SmartDashboard.putData(turnAim);
         
-        target2ptButton.whileHeld(aim);
+        target2ptButton.whileHeld(turnAim);
     }
     
     private double _zeroDeadzone(double joyValue,double dead) {
@@ -101,6 +107,14 @@ public class OI {
     
     public double getFlipperAxis() {
         return driveJoystick.getRawAxis(4);
+    }
+    
+    public double getLeftDrive() {
+        return 0;
+    }
+    
+    public double getRightDrive() {
+        return 0;
     }
 }
 

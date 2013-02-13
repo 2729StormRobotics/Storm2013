@@ -20,7 +20,7 @@ public class SpinUp extends Command {
      * {@inheritDoc}
      */
     protected void initialize() {
-        Robot.shooter.getPIDController().setSetpoint(2500);
+        Robot.shooter.getPIDController().setSetpoint(3400);
         Robot.shooter.getPIDController().enable();
     }
 

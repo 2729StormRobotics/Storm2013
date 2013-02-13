@@ -70,6 +70,6 @@ public class DriveTrain extends Subsystem{
         _gyro.reset();
     }
     public double getGyroAngle(){
-        return _gyro.getAngle();
+        return -_gyro.getAngle();
     }
 }

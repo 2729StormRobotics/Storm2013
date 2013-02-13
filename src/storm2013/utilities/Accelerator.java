@@ -14,16 +14,14 @@ public class Accelerator implements SpeedController {
     private class _BgTask extends TimerTask {
 
         public void run() {
-            if (_enabled) {
-                double newSpeed = _controller.get() + _rate * _period;
-                double sign = _negated ? -1 : 1;
-                if (newSpeed < _minSpeed) {
-                    _controller.set(sign*_minSpeed);
-                } else if(newSpeed > _maxSpeed) {
-                    _controller.set(sign*_maxSpeed);
-                } else {
-                    _controller.set(sign*newSpeed);
-                }
+            double sign = _negated ? -1 : 1;
+            double newSpeed = _controller.get() + sign*_rate * _period;
+            if (newSpeed < _minSpeed) {
+                _controller.set(_minSpeed);
+            } else if(newSpeed > _maxSpeed) {
+                _controller.set(_maxSpeed);
+            } else {
+                _controller.set(newSpeed);
             }
         }
     }
@@ -62,20 +60,18 @@ public class Accelerator implements SpeedController {
     }
 
     public void set(double speed) {
-        _rate = speed;
-        System.out.println("New rate: " + _rate);
+        if(_enabled) {
+            _rate = speed;
+        }
     }
 
     public void disable() {
         setEnabled(false);
     }
 
-    public void setEnabled(boolean enabled) {
-        if (_enabled == enabled) {
-            return;
-        }
-        if (!enabled) {
-            _controller.set(0);
+    public synchronized void setEnabled(boolean enabled) {
+        if(!enabled) {
+            set(0);
         }
         _enabled = enabled;
     }
@@ -85,10 +81,18 @@ public class Accelerator implements SpeedController {
     }
 
     public void setMinSpeed(double minSpeed) {
-        _minSpeed = minSpeed;
+        if(!_negated) {
+            _minSpeed = minSpeed;
+        } else {
+            _maxSpeed = minSpeed;
+        }
     }
 
     public void setMaxSpeed(double maxSpeed) {
-        _maxSpeed = maxSpeed;
+        if(_negated) {
+            _minSpeed = maxSpeed;
+        } else {
+            _maxSpeed = maxSpeed;
+        }
     }
 }

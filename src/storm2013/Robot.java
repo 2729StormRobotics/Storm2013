@@ -1,15 +1,10 @@
 package storm2013;
 
-import edu.wpi.first.wpilibj.AnalogChannel;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.*;
@@ -17,9 +12,7 @@ import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
 import storm2013.subsystems.Tomahawk;
-import storm2013.utilities.HallEffectSpeedSensor;
 import storm2013.utilities.LoadSensor;
-import storm2013.utilities.Target;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -51,11 +44,8 @@ public class Robot extends IterativeRobot {
         tomahawk   = new Tomahawk();
         oi         = new OI();
 
-        loadSensor = new LoadSensor(1);
+        loadSensor = new LoadSensor(2);
         testJag = new Jaguar(6);
-
-
-    	teleop = new TestShooter();
 
         autonomiceNames = new String[]{"Do Nothing", "DriveStuff"};
 
@@ -98,6 +88,9 @@ public class Robot extends IterativeRobot {
 
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("Tilter angle", tilter.getAngle());
+        SmartDashboard.putNumber("Wheel Speed (RPM)", shooter.getSpeedRpm());
+        SmartDashboard.putNumber("Gyro angle", driveTrain.getGyroAngle());
     }
 
     public void testPeriodic() {

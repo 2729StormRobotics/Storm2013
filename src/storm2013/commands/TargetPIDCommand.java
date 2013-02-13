@@ -16,24 +16,22 @@ import storm2013.utilities.Target;
  */
 public abstract class TargetPIDCommand extends PIDCommand {
     
-    private PIDController _controller;
+    private final PIDController _controller;
     
-    private String _targetFoundKey;
-    private String _targetKey;
-    private Timer _timeyWimey = new Timer();
-    private double _timeout;
-    private boolean _willTimeout;
-    private boolean _continuous;
+    private final String _targetFoundKey;
+    private final String _targetKey;
+    private final Timer _timeyWimey = new Timer();
+    private final double _timeout;
+    private final boolean _willTimeout;
+    private final boolean _continuous;
     
     public TargetPIDCommand(Target target, Target.Axis axis, double timeout,boolean continuous,
                             double p,double i,double d,double tolerance,double maxOutput){
         super(p,i,d);
         requires(Robot.tilter);
-        _controller = getPIDController();
+        _controller = super.getPIDController();
         _timeout = timeout;
-        if (timeout >= 0) {
-            _willTimeout = true;
-        }
+        _willTimeout = (timeout >= 0);
         _targetFoundKey = target.getFoundKey();
         _targetKey = target.getAxisKey(axis);
         _continuous = continuous;
@@ -46,7 +44,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
     }
 
     protected void initialize() {
-        setSetpoint(computeSetpoint(SmartDashboard.getNumber(_targetKey)));
+        setSetpoint(getPosition()+SmartDashboard.getNumber(_targetKey));
         NetworkTable.getTable("SmartDashboard").addTableListener(_listener);
         _controller.enable();
         _timeyWimey.start();
@@ -59,6 +57,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
                 _controller.enable();
             }
             if(_timeyWimey.get() > _timeout) {
+                System.out.println("Timing out!");
                 _controller.disable();
             }
         }
@@ -77,17 +76,16 @@ public abstract class TargetPIDCommand extends PIDCommand {
     }
 
     public PIDController getPIDController() {
-        return _controller;
+        return super.getPIDController();
     }
     
     private ITableListener _listener = new ITableListener() {
         public void valueChanged(ITable source, String key, Object value, boolean isNew) {
             if (key.equals(_targetKey)){
-                setSetpoint(computeSetpoint(SmartDashboard.getNumber(_targetKey)));
+                setSetpoint(getPosition()+((Double)value).doubleValue());
             }
         }
     };
     
-    protected abstract double computeSetpoint(double newValue);
     protected abstract void writePIDOut(double output);
 }

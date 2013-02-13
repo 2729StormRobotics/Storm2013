@@ -3,3 +3,5 @@ suite/*
 build/
 __MACOSX/
 *nbproject/*
+nbproject/project.bak.xml
+nbproject/project.xml

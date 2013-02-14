@@ -1,7 +1,6 @@
 package storm2013;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -34,7 +33,6 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser = new SendableChooser();
     Command autonomouse;
     
-    Jaguar testJag;
     LoadSensor loadSensor;
 
     public void robotInit() {
@@ -45,8 +43,7 @@ public class Robot extends IterativeRobot {
         oi         = new OI();
 
         loadSensor = new LoadSensor(2);
-        testJag = new Jaguar(6);
-
+        
         autonomiceNames = new String[]{"Do Nothing", "DriveStuff"};
 
         autonomice = new Command[]{new DoNothing(), new DriveStuff()};

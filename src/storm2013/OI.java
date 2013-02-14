@@ -59,16 +59,19 @@ public class OI {
     private Button shootButton         = new JoystickButton(driveJoystick, RobotMap.BUTTON_SHOOT),
                    spinDownButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SPIN_DOWN),
                    recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
-                   tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
-                   tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN),
-                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT);
+//                   tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
+//                   tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN),
+                   slowModeButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SLOW),
+                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT),
+                   resetTomahawkButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_RESET_TOMAHAWK);
     
     public OI() {
         shootButton.whenPressed(new Shoot());
         spinDownButton.whenPressed(new SpinDown());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
-        tilterUpButton.whileHeld(new RaiseTilter());
-        tilterDownButton.whileHeld(new LowerTilter());
+        resetTomahawkButton.whenPressed(new SpinTomahawk());
+//        tilterUpButton.whileHeld(new RaiseTilter());
+//        tilterDownButton.whileHeld(new LowerTilter());
         
         TargetPIDTurn turnAim = new TargetPIDTurn(Target.TwoPT, 1.0, true);
         SmartDashboard.putData("Turn PID",turnAim.getPIDController());
@@ -98,11 +101,15 @@ public class OI {
     }
     
     public double getLeftDrive() {
-        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_LEFT),0.15));
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);
     }
     
     public double getRightDrive() {
-        return _applyExponential(_zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_RIGHT),0.15));
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);
+    }
+    
+    public double getTilterAxis() {
+        return -driveJoystick.getRawAxis(RobotMap.AXIS_TILTER);
     }
 }
 

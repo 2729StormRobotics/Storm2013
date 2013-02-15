@@ -95,8 +95,8 @@ public class OI {
     private double _applyExponential(double joyValue) {
         if(joyValue == 0) {
             return 0;
-	}
-	double sign = (joyValue > 0) ? 1 : -1;
+        }
+        double sign = (joyValue > 0) ? 1 : -1;
         return sign*joyValue*joyValue/Math.sqrt(Math.abs(joyValue));
     }
     

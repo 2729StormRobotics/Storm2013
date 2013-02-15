@@ -56,15 +56,15 @@ public class DriveTrain extends Subsystem{
     }
 
      public double getLeftDistance() {
-	return -_leftEncoder.get();
+        return _leftEncoder.get();
     }
 
     public double getRightDistance() {
-	return _rightEncoder.get();
+        return -_rightEncoder.get();
     }
     public void clearEncoder(){
-	_leftEncoder.reset();
-	_rightEncoder.reset();
+        _leftEncoder.reset();
+        _rightEncoder.reset();
     }
     public void clearGyro(){
         _gyro.reset();

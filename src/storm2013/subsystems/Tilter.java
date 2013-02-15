@@ -2,7 +2,9 @@ package storm2013.subsystems;
 
 import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -26,18 +28,16 @@ public class Tilter extends Subsystem {
     
     private Jaguar _motor = new Jaguar(RobotMap.PORT_MOTOR_TILTER);
     private Trigger _topLimitSwitch    = new Trigger() {
+                                             private DigitalInput _limit = new DigitalInput(RobotMap.PORT_LIMIT_TILTER_TOP);
+
                                              public boolean get() {
-                                                 return getAngle() >= ANGLE_MAX;
+                                                 return _limit.get();
                                              }
                                          },
-                    _bottomLimitSwitch = new Trigger() {
-                                             public boolean get() {
-                                                 return getAngle() <= ANGLE_MIN;
-                                             }
-                                         };
-    private LimitSwitchedMotor _limitedMotor;// = new LimitSwitchedMotor(_motor,
-                                             //                         _bottomLimitSwitch, true,
-                                             //                         _topLimitSwitch, true);
+                    _bottomLimitSwitch = null;
+    private LimitSwitchedMotor _limitedMotor = new LimitSwitchedMotor(_motor,
+                                                                      _bottomLimitSwitch, true,
+                                                                      _topLimitSwitch,    true);
     private ADXL345_I2C _accelerometer = new ADXL345_I2C(RobotMap.MODULE_SENSOR_ACCELEROMETER,
                                                          ADXL345_I2C.DataFormat_Range.k2G);
     private LiveWindowSendable _angleSensor = new LiveWindowSendable() {
@@ -77,7 +77,7 @@ public class Tilter extends Subsystem {
     }
     
     public void move(double speed) {
-        _motor.set(UP_SIGN*speed);
+        _limitedMotor.set(UP_SIGN*speed);
     }
     
     public void moveUp() {

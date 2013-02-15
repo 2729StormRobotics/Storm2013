@@ -1,5 +1,6 @@
 package storm2013;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -34,6 +35,8 @@ public class Robot extends IterativeRobot {
     Command autonomouse;
     
     LoadSensor loadSensor;
+    
+//    DigitalInput irTest = new DigitalInput(7);
 
     public void robotInit() {
         driveTrain = new DriveTrain();
@@ -54,9 +57,10 @@ public class Robot extends IterativeRobot {
         }
         SmartDashboard.putData("Which Autonomouse?", chooser);
 
-//	SmartDashboard.putData(Scheduler.getInstance());
+//        SmartDashboard.putData(Scheduler.getInstance());
 
         LiveWindow.addSensor("Load Sensor", "Load Sensor 1", loadSensor);
+//        LiveWindow.addSensor("Tilter","DIO 7", irTest);
     }
 
     public void autonomousInit() {
@@ -94,7 +98,6 @@ public class Robot extends IterativeRobot {
         LiveWindow.run();
     }
 
-    // Eliminates "Overload me!" messages
     public void disabledInit() {
         if(autonomouse != null) {
             autonomouse.cancel();
@@ -104,6 +107,7 @@ public class Robot extends IterativeRobot {
         }
     }
 
+    // Eliminates "Overload me!" messages
     public void disabledPeriodic() {
     }
 }

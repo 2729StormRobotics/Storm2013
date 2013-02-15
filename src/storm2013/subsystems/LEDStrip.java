@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -10,16 +6,19 @@ import java.util.Stack;
 import storm2013.utilities.LED;
 
 /**
- *
+ * Subsystem to control the LED strip.
  * @author evan1026
  */
 public class LEDStrip extends Subsystem {
     
     LED _red,_green,_blue;
     
-    private StateColor _color      = StateColor.OFF;
-    private Stack      _colorStack = new Stack();
+    private Stack _colorStack = new Stack();
 
+    /**
+     * Allocates space for the subsystem and it's various parts, and adds it to
+     * the {@link LiveWindow}.
+     */
     public LEDStrip() {
         _red   = new LED(6);
         _green = new LED(7);
@@ -29,27 +28,56 @@ public class LEDStrip extends Subsystem {
         LiveWindow.addActuator("LED", "Blue",  _blue);
     }
     
+    /**
+     * Does nothing here, but it would set the command to be run when no other command
+     * is using the subsystem.
+     */
     protected void initDefaultCommand() {}
     
+    /**
+     * Sets the new color for the LED strip.
+     * @param color The new color, based on {@link StateColor} values.
+     */
     private void setColor(StateColor color) {
-        _color = color;
         _red.set(color.getRed());
         _green.set(color.getGreen());
         _blue.set(color.getBlue());
     }
     
+    /**
+     * Adds a new color to the color stack and sets the LED's to output that color.
+     * @param color 
+     */
     public void pushColor(StateColor color){
         _colorStack.addElement(color);
         setColor(color);
     }
+    
+    /**
+     * Pops the current color off the stack and sets the color to the next one.
+     */
     public void popColor(){
-        if (!_colorStack.isEmpty()) _color = (StateColor) _colorStack.pop();
-        else _color = StateColor.IDLE;
-    }
-    public StateColor getColor(){
-        return _color;
+        _colorStack.pop();
+        if (!_colorStack.isEmpty()) {
+            setColor((StateColor) _colorStack.peek());
+        }
+        else {
+            setColor(StateColor.IDLE);
+        }
     }
     
+    /**
+     * Gets the current LED color
+     * @return The current color
+     */
+    public StateColor getColor(){
+        return (StateColor) _colorStack.peek();
+    }
+    
+    /**
+     * Contains values for all of the colors that we want to use to represent different
+     * robot actions.
+     */
     public static class StateColor{
         
         public static StateColor OFF;
@@ -69,12 +97,27 @@ public class LEDStrip extends Subsystem {
             _green = green;
             _blue  = blue;
         }
+        
+        /**
+         * Returns the red value
+         * @return the red value
+         */
         public int getRed(){
             return _red;
         }
+        
+        /**
+         * Returns the green value
+         * @return the green value
+         */
         public int getGreen() {
             return _green;
         }
+        
+        /**
+         * Returns the blue value
+         * @return the blue value
+         */
         public int getBlue() {
             return _blue;
         }

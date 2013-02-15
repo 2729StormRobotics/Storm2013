@@ -6,7 +6,7 @@ import storm2013.subsystems.DriveTrain;
 
 /**
  * Drives a certain number of wheel rotations based on an encoder. The encoder values
- * are supplied by the {@link IDriveTrainEncoder}, which is implemented by some other class
+ * are supplied by the drive train (see {@link Robot}), which is implemented by some other class
  * to supply values in rotations. It then drives at the specified drive speed until
  * until it reaches the goal.
  * 
@@ -25,9 +25,6 @@ public class EncoderDrive extends Command {
      * 
      * @param goal            How far you want to go (use rotations for units, just to make a standard).
      * @param driveSpeed      The speed at which you want to travel (also in rotations).
-     * @param decelThreshold  The threshold to determine when to start to decelerate.
-     * @param tolerance   The threshold to determine when to stop the command.
-     * @see   IDriveTrainEncoder
      */
     public EncoderDrive(double goal, double driveSpeed){ 
         
@@ -40,8 +37,8 @@ public class EncoderDrive extends Command {
      * Implemented from {@link Command}, but it doesn't actually do anything at the moment.
      */
      protected void initialize() {
-	 Robot.driveTrain.clearEncoder();
-    }
+        Robot.driveTrain.clearEncoder();
+     }
     
     /**
      * Implemented from {@link Command}. It is run over and over and such, and it calculates
@@ -51,34 +48,38 @@ public class EncoderDrive extends Command {
      * @see DriveTrain
      */
     public void execute() {
-	double left  = Robot.driveTrain.getLeftDistance(),
-	       right = Robot.driveTrain.getRightDistance();
-	if(Math.abs(_goal-left) > Math.abs(_goal-right)) {
-	    _dist = left;
-	} else {
-	    _dist = right;
-	}
+        double left  = Robot.driveTrain.getLeftDistance(),
+               right = Robot.driveTrain.getRightDistance();
+        
+        if(Math.abs(_goal-left) > Math.abs(_goal-right)) {
+            _dist = left;
+        }
+        else {
+            _dist = right;
+        }
 	
         
-	if (_goal > 0) {
-	    _driveTrain.tankDrive(_driveSpeed, _driveSpeed);
-	} else {
-	    _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);
-	}
+        if (_goal > 0) {
+            _driveTrain.tankDrive(_driveSpeed, _driveSpeed);
+        }
+        else {
+            _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);
+        }
     }
     
     /**
      * Implemented from {@link Command}. When it returns true, it runs {@link #end()},
      * and then stops running the command.
      * 
-     * @return true if it is within the stopping threshold ({@link #_tolerance}) and false otherwise.
+     * @return true if it has reached the goal and false otherwise.
      */
     public boolean isFinished() {
-	if(_goal < 0) {
-	    return _dist <= _goal;
-	} else {
-	    return _dist >= _goal;
-	}
+        if(_goal < 0) {
+            return _dist <= _goal;
+        } 
+        else {
+            return _dist >= _goal;
+        }
     }
     
     /**
@@ -86,7 +87,7 @@ public class EncoderDrive extends Command {
      * stops running. Stops the robot.
      */
     public void end() {
-	Robot.driveTrain.tankDrive(0, 0);
+        Robot.driveTrain.tankDrive(0, 0);
     }
     
     /**
@@ -94,7 +95,7 @@ public class EncoderDrive extends Command {
      * this is first called, then {@link #end()}.
      */
     public void interrupted() {
-	end();
+        end();
     }
 
     /**

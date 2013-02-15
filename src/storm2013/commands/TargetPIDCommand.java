@@ -11,7 +11,7 @@ import storm2013.Robot;
 import storm2013.utilities.Target;
 
 /**
- *
+ * Base for {@link TargetPIDTilt} and {@link TargetPIDTurn}
  * @author ginto
  */
 public abstract class TargetPIDCommand extends PIDCommand {
@@ -25,6 +25,18 @@ public abstract class TargetPIDCommand extends PIDCommand {
     private final boolean _willTimeout;
     private final boolean _continuous;
     
+    /**
+     * Constructor and stuffness
+     * @param target the {@link Target} to aim at. Used to find network table keys
+     * @param axis The axis (x or y) to look for
+     * @param timeout How long (seconds) until the {@link PIDCommand} times out
+     * @param continuous If continuous, it never ends!!! MUAHAHAHA!!!!
+     * @param p P value for PID controller
+     * @param i I value for PID controller
+     * @param d D value for PID controller
+     * @param tolerance the tolerance for the PID controller
+     * @param maxOutput the absolute value of the maximum output
+     */
     public TargetPIDCommand(Target target, Target.Axis axis, double timeout,boolean continuous,
                             double p,double i,double d,double tolerance,double maxOutput){
         super(p,i,d);
@@ -39,10 +51,17 @@ public abstract class TargetPIDCommand extends PIDCommand {
         _controller.setOutputRange(-maxOutput, maxOutput);
     }
 
+    /**
+     * Writes PID values to the controller.
+     * @param output the output to write
+     */
     protected void usePIDOutput(double output) {
         writePIDOut(_controller.onTarget() ? 0 : output);
     }
 
+    /**
+     * Initializes the {@link PIDCommand}, as well as the network table stuff and the timers.
+     */
     protected void initialize() {
         setSetpoint(getPosition()+SmartDashboard.getNumber(_targetKey));
         NetworkTable.getTable("SmartDashboard").addTableListener(_listener);
@@ -53,6 +72,9 @@ public abstract class TargetPIDCommand extends PIDCommand {
         _latencyTimer.start();
     }
 
+    /**
+     * Calculates if the {@link PIDCommand} should timeout
+     */
     protected void execute() {
         if (_willTimeout){
             if(SmartDashboard.getBoolean(_targetFoundKey)){
@@ -66,18 +88,33 @@ public abstract class TargetPIDCommand extends PIDCommand {
         }
     }
 
+    /**
+     * Returns whether or not the {@link PIDCommand} is finished based on whether or not
+     * it's continuous and the controller values
+     * @return whether or not it's done
+     */
     protected boolean isFinished() {
         return !_continuous && (!_controller.isEnable() || _controller.onTarget());
     }
 
+    /**
+     * Removes the command from the network table's list of listeners.
+     */
     protected void end() {
         NetworkTable.getTable("SmartDashboard").removeTableListener(_listener);
     }
 
+    /**
+     * Runs {@link #end()}
+     */
     protected void interrupted() {
         end();
     }
 
+    /**
+     * Returns the PIDController being used
+     * @return The {@link PIDController}
+     */
     public PIDController getPIDController() {
         return super.getPIDController();
     }
@@ -94,5 +131,9 @@ public abstract class TargetPIDCommand extends PIDCommand {
         }
     };
     
+    /**
+     * Writes the output to the controller.
+     * @param output the output to write
+     */
     protected abstract void writePIDOut(double output);
 }

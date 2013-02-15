@@ -1,13 +1,12 @@
 package storm2013.utilities;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- *
+ * Uses two triggers (of any type) to keep a motor from spinning outside of a certain range.
  * @author ginto
  */
 public class LimitSwitchedMotor implements SpeedController {
@@ -36,6 +35,14 @@ public class LimitSwitchedMotor implements SpeedController {
     };
 
     // "top" being positive, "bottom" negative
+    /**
+     * 
+     * @param controller The {@link SpeedController} that controls the motor.
+     * @param top The top {@link Trigger} (trigger at the positive end of the motor's output).
+     * @param topOnValue The value from the top {@link Trigger} where you want the motor to stop.
+     * @param bottom The bottom {@link Trigger} (trigger at the negative end of the motor's output).
+     * @param bottomOnValue The value from the bottom {@link Trigger} where you want the motor to stop.
+     */
     public LimitSwitchedMotor(SpeedController controller,Trigger top,boolean topOnValue,
                                                          Trigger bottom,boolean bottomOnValue) {
         _controller = controller;
@@ -46,23 +53,43 @@ public class LimitSwitchedMotor implements SpeedController {
         _bottomOn = bottomOnValue;
     }
 
+    /**
+     * Gets the speed at which the motor is running.
+     * @return The current output speed
+     */
     public double get() {
         return _value;
     }
 
+    /**
+     * Sets a new output speed.
+     * @param speed The new speed
+     * @param syncGroup Honestly, I have no idea, but it's not used anyway
+     */
     public void set(double speed, byte syncGroup) {
         set(speed);
     }
 
+    /**
+     * Sets the new output speed
+     * @param speed The new speed
+     */
     public void set(double speed) {
         _value = speed;
     }
 
+    /**
+     * Stops the motor and disables its controller
+     */
     public void disable() {
         set(0);
         _controller.disable();
     }
 
+    /**
+     * Writes values from the PID controller to the motor.
+     * @param output 
+     */
     public void pidWrite(double output) {
         set(output);
     }

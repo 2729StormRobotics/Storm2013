@@ -9,7 +9,7 @@
 <FONT color="green">006</FONT>    <a name="line.6"></a>
 <FONT color="green">007</FONT>    /**<a name="line.7"></a>
 <FONT color="green">008</FONT>     * Drives a certain number of wheel rotations based on an encoder. The encoder values<a name="line.8"></a>
-<FONT color="green">009</FONT>     * are supplied by the {@link IDriveTrainEncoder}, which is implemented by some other class<a name="line.9"></a>
+<FONT color="green">009</FONT>     * are supplied by the drive train (see {@link Robot}), which is implemented by some other class<a name="line.9"></a>
 <FONT color="green">010</FONT>     * to supply values in rotations. It then drives at the specified drive speed until<a name="line.10"></a>
 <FONT color="green">011</FONT>     * until it reaches the goal.<a name="line.11"></a>
 <FONT color="green">012</FONT>     * <a name="line.12"></a>
@@ -20,166 +20,127 @@
 <FONT color="green">017</FONT>        private double _goal;<a name="line.17"></a>
 <FONT color="green">018</FONT>        private double _dist;<a name="line.18"></a>
 <FONT color="green">019</FONT>        private double _driveSpeed;<a name="line.19"></a>
-<FONT color="green">020</FONT>        private double _decelThreshold;<a name="line.20"></a>
-<FONT color="green">021</FONT>        private double _stopThreshold;<a name="line.21"></a>
-<FONT color="green">022</FONT>        private IDriveTrainEncoder _encoder;<a name="line.22"></a>
-<FONT color="green">023</FONT>        private DriveTrain _driveTrain = Robot.driveTrain;<a name="line.23"></a>
-<FONT color="green">024</FONT>        <a name="line.24"></a>
-<FONT color="green">025</FONT>        /**<a name="line.25"></a>
-<FONT color="green">026</FONT>         * Main constructor for the class. More could be created if it proves to be worthwhile,<a name="line.26"></a>
-<FONT color="green">027</FONT>         * but for now, use this one.<a name="line.27"></a>
-<FONT color="green">028</FONT>         * <a name="line.28"></a>
-<FONT color="green">029</FONT>         * @param goal            How far you want to go (use rotations for units, just to make a standard).<a name="line.29"></a>
-<FONT color="green">030</FONT>         * @param driveSpeed      The speed at which you want to travel (also in rotations).<a name="line.30"></a>
-<FONT color="green">031</FONT>         * @param encoder         The class that implements {@link IDriveTrainEncoder}.<a name="line.31"></a>
-<FONT color="green">032</FONT>         * @param decelThreshold  The threshold to determine when to start to decelerate.<a name="line.32"></a>
-<FONT color="green">033</FONT>         * @param stopThreshold   The threshold to determine when to stop the command.<a name="line.33"></a>
-<FONT color="green">034</FONT>         * @see   IDriveTrainEncoder<a name="line.34"></a>
-<FONT color="green">035</FONT>         */<a name="line.35"></a>
-<FONT color="green">036</FONT>        public EncoderDrive(double goal, double driveSpeed, IDriveTrainEncoder encoder,<a name="line.36"></a>
-<FONT color="green">037</FONT>                double decelThreshold, double stopThreshold){ <a name="line.37"></a>
-<FONT color="green">038</FONT>            <a name="line.38"></a>
-<FONT color="green">039</FONT>            if (encoder == null){<a name="line.39"></a>
-<FONT color="green">040</FONT>                throw new NullPointerException("The DriveTrainEncoder cannot be null.");<a name="line.40"></a>
-<FONT color="green">041</FONT>            }<a name="line.41"></a>
-<FONT color="green">042</FONT>            <a name="line.42"></a>
-<FONT color="green">043</FONT>            _goal = goal;<a name="line.43"></a>
-<FONT color="green">044</FONT>            _driveSpeed = driveSpeed;<a name="line.44"></a>
-<FONT color="green">045</FONT>            _encoder = encoder;<a name="line.45"></a>
-<FONT color="green">046</FONT>            _decelThreshold = decelThreshold;<a name="line.46"></a>
-<FONT color="green">047</FONT>            _stopThreshold = stopThreshold;<a name="line.47"></a>
-<FONT color="green">048</FONT>            requires(Robot.driveTrain);<a name="line.48"></a>
-<FONT color="green">049</FONT>        }<a name="line.49"></a>
-<FONT color="green">050</FONT>        <a name="line.50"></a>
-<FONT color="green">051</FONT>        /**<a name="line.51"></a>
-<FONT color="green">052</FONT>         * Implemented from {@link Command}, but it doesn't actually do anything at the moment.<a name="line.52"></a>
-<FONT color="green">053</FONT>         */<a name="line.53"></a>
-<FONT color="green">054</FONT>         protected void initialize() {<a name="line.54"></a>
-<FONT color="green">055</FONT>        }<a name="line.55"></a>
-<FONT color="green">056</FONT>        <a name="line.56"></a>
-<FONT color="green">057</FONT>        /**<a name="line.57"></a>
-<FONT color="green">058</FONT>         * Implemented from {@link Command}. It is run over and over and such, and it calculates<a name="line.58"></a>
-<FONT color="green">059</FONT>         * what the drive speed the robot needs to accelerate toward by setting values in <a name="line.59"></a>
-<FONT color="green">060</FONT>         * the {@link DriveTrain}.<a name="line.60"></a>
-<FONT color="green">061</FONT>         * <a name="line.61"></a>
-<FONT color="green">062</FONT>         * @see DriveTrain<a name="line.62"></a>
-<FONT color="green">063</FONT>         */<a name="line.63"></a>
-<FONT color="green">064</FONT>        public void execute() {<a name="line.64"></a>
-<FONT color="green">065</FONT>            _dist = _encoder.getDistance();<a name="line.65"></a>
-<FONT color="green">066</FONT>            <a name="line.66"></a>
-<FONT color="green">067</FONT>            if(Math.abs(_goal) - Math.abs(_dist) &gt; _decelThreshold){<a name="line.67"></a>
-<FONT color="green">068</FONT>                if (_dist &lt; _goal){<a name="line.68"></a>
-<FONT color="green">069</FONT>                    _driveTrain.tankDrive(_driveSpeed, _driveSpeed);<a name="line.69"></a>
-<FONT color="green">070</FONT>                }<a name="line.70"></a>
-<FONT color="green">071</FONT>                else if (_dist &gt; _goal){<a name="line.71"></a>
-<FONT color="green">072</FONT>                    _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);<a name="line.72"></a>
-<FONT color="green">073</FONT>                }<a name="line.73"></a>
-<FONT color="green">074</FONT>            }<a name="line.74"></a>
-<FONT color="green">075</FONT>            else{<a name="line.75"></a>
-<FONT color="green">076</FONT>                _driveTrain.tankDrive(0, 0);<a name="line.76"></a>
-<FONT color="green">077</FONT>            }  <a name="line.77"></a>
-<FONT color="green">078</FONT>        }<a name="line.78"></a>
-<FONT color="green">079</FONT>        <a name="line.79"></a>
-<FONT color="green">080</FONT>        /**<a name="line.80"></a>
-<FONT color="green">081</FONT>         * Implemented from {@link Command}. When it returns true, it runs {@link #end()},<a name="line.81"></a>
-<FONT color="green">082</FONT>         * and then stops running the command.<a name="line.82"></a>
-<FONT color="green">083</FONT>         * <a name="line.83"></a>
-<FONT color="green">084</FONT>         * @return true if it is within the stopping threshold ({@link #_stopThreshold}) and false otherwise.<a name="line.84"></a>
-<FONT color="green">085</FONT>         */<a name="line.85"></a>
-<FONT color="green">086</FONT>        public boolean isFinished() {<a name="line.86"></a>
-<FONT color="green">087</FONT>            return (Math.abs(_goal) - Math.abs(_dist) &lt;= _stopThreshold);<a name="line.87"></a>
-<FONT color="green">088</FONT>        }<a name="line.88"></a>
-<FONT color="green">089</FONT>        <a name="line.89"></a>
-<FONT color="green">090</FONT>        /**<a name="line.90"></a>
-<FONT color="green">091</FONT>         * Implemented from {@link Command}. This is the last thing run before the command<a name="line.91"></a>
-<FONT color="green">092</FONT>         * stops running. At the moment, it doesn't actually do anything.<a name="line.92"></a>
-<FONT color="green">093</FONT>         */<a name="line.93"></a>
-<FONT color="green">094</FONT>        public void end() {<a name="line.94"></a>
-<FONT color="green">095</FONT>        }<a name="line.95"></a>
-<FONT color="green">096</FONT>        <a name="line.96"></a>
-<FONT color="green">097</FONT>        /**<a name="line.97"></a>
-<FONT color="green">098</FONT>         * Implemented from {@link Command}. When {@link Command#cancel()} is run, <a name="line.98"></a>
-<FONT color="green">099</FONT>         * this is first called, then {@link #end()}.<a name="line.99"></a>
-<FONT color="green">100</FONT>         */<a name="line.100"></a>
-<FONT color="green">101</FONT>        public void interrupted() {<a name="line.101"></a>
-<FONT color="green">102</FONT>        }<a name="line.102"></a>
-<FONT color="green">103</FONT>    <a name="line.103"></a>
-<FONT color="green">104</FONT>        /**<a name="line.104"></a>
-<FONT color="green">105</FONT>         * Gets the current goal.<a name="line.105"></a>
-<FONT color="green">106</FONT>         * @return The current goal, in rotations.<a name="line.106"></a>
-<FONT color="green">107</FONT>         */<a name="line.107"></a>
-<FONT color="green">108</FONT>        public double getGoal() {<a name="line.108"></a>
-<FONT color="green">109</FONT>            return _goal;<a name="line.109"></a>
-<FONT color="green">110</FONT>        }<a name="line.110"></a>
-<FONT color="green">111</FONT>        <a name="line.111"></a>
-<FONT color="green">112</FONT>        /**<a name="line.112"></a>
-<FONT color="green">113</FONT>         * Sets a new goal.<a name="line.113"></a>
-<FONT color="green">114</FONT>         * @param goal The new goal, in rotations.<a name="line.114"></a>
-<FONT color="green">115</FONT>         */<a name="line.115"></a>
-<FONT color="green">116</FONT>        public void setGoal(double goal) {<a name="line.116"></a>
-<FONT color="green">117</FONT>            _goal = goal;<a name="line.117"></a>
-<FONT color="green">118</FONT>        }<a name="line.118"></a>
-<FONT color="green">119</FONT>        <a name="line.119"></a>
-<FONT color="green">120</FONT>        /**<a name="line.120"></a>
-<FONT color="green">121</FONT>         * Gets the total distance traveled.<a name="line.121"></a>
-<FONT color="green">122</FONT>         * @return The distance traveled, in revolutions.<a name="line.122"></a>
-<FONT color="green">123</FONT>         */<a name="line.123"></a>
-<FONT color="green">124</FONT>        public double getDist() {<a name="line.124"></a>
-<FONT color="green">125</FONT>            return _dist;<a name="line.125"></a>
-<FONT color="green">126</FONT>        }<a name="line.126"></a>
-<FONT color="green">127</FONT>       <a name="line.127"></a>
-<FONT color="green">128</FONT>        //No set distance. You should implement that in the encoder.<a name="line.128"></a>
-<FONT color="green">129</FONT>       <a name="line.129"></a>
-<FONT color="green">130</FONT>        /**<a name="line.130"></a>
-<FONT color="green">131</FONT>         * Returns the speed at which the robot it set to drive.<a name="line.131"></a>
-<FONT color="green">132</FONT>         * @return The drive speed, in RPM.<a name="line.132"></a>
-<FONT color="green">133</FONT>         */<a name="line.133"></a>
-<FONT color="green">134</FONT>        public double getDriveSpeed() {<a name="line.134"></a>
-<FONT color="green">135</FONT>            return _driveSpeed;<a name="line.135"></a>
-<FONT color="green">136</FONT>        }<a name="line.136"></a>
-<FONT color="green">137</FONT>        <a name="line.137"></a>
-<FONT color="green">138</FONT>        /**<a name="line.138"></a>
-<FONT color="green">139</FONT>         * Sets the drive speed.<a name="line.139"></a>
-<FONT color="green">140</FONT>         * @param driveSpeed The drive speed, in RPM.<a name="line.140"></a>
-<FONT color="green">141</FONT>         */<a name="line.141"></a>
-<FONT color="green">142</FONT>        public void setDriveSpeed(double driveSpeed) {<a name="line.142"></a>
-<FONT color="green">143</FONT>            _driveSpeed = driveSpeed;<a name="line.143"></a>
-<FONT color="green">144</FONT>        }<a name="line.144"></a>
-<FONT color="green">145</FONT>        <a name="line.145"></a>
-<FONT color="green">146</FONT>        /**<a name="line.146"></a>
-<FONT color="green">147</FONT>         * Gets the threshold at which the robot will start to decelerate.<a name="line.147"></a>
-<FONT color="green">148</FONT>         * @return The threshold, a distance, in revolutions.<a name="line.148"></a>
-<FONT color="green">149</FONT>         */<a name="line.149"></a>
-<FONT color="green">150</FONT>        public double getDecelThreshold() {<a name="line.150"></a>
-<FONT color="green">151</FONT>            return _decelThreshold;<a name="line.151"></a>
-<FONT color="green">152</FONT>        }<a name="line.152"></a>
-<FONT color="green">153</FONT>        <a name="line.153"></a>
-<FONT color="green">154</FONT>        /**<a name="line.154"></a>
-<FONT color="green">155</FONT>         * Sets a new threshold to decide when the robot will decelerate.<a name="line.155"></a>
-<FONT color="green">156</FONT>         * @param decelThreshold The new deceleration threshold, in revolutions.<a name="line.156"></a>
-<FONT color="green">157</FONT>         */<a name="line.157"></a>
-<FONT color="green">158</FONT>        public void setDecelThreshold(double decelThreshold) {<a name="line.158"></a>
-<FONT color="green">159</FONT>            _decelThreshold = decelThreshold;<a name="line.159"></a>
-<FONT color="green">160</FONT>        }<a name="line.160"></a>
-<FONT color="green">161</FONT>        <a name="line.161"></a>
-<FONT color="green">162</FONT>        /**<a name="line.162"></a>
-<FONT color="green">163</FONT>         * Gets the threshold at which the robot will stop executing the command.<a name="line.163"></a>
-<FONT color="green">164</FONT>         * @return The threshold, in revolutions.<a name="line.164"></a>
-<FONT color="green">165</FONT>         */<a name="line.165"></a>
-<FONT color="green">166</FONT>        public double getStopThreshold() {<a name="line.166"></a>
-<FONT color="green">167</FONT>            return _stopThreshold;<a name="line.167"></a>
-<FONT color="green">168</FONT>        }<a name="line.168"></a>
-<FONT color="green">169</FONT>        <a name="line.169"></a>
-<FONT color="green">170</FONT>        /**<a name="line.170"></a>
-<FONT color="green">171</FONT>         * Sets a new threshold at which the robot will stop.<a name="line.171"></a>
-<FONT color="green">172</FONT>         * @param stopThreshold The new threshold, in revolutions<a name="line.172"></a>
-<FONT color="green">173</FONT>         */<a name="line.173"></a>
-<FONT color="green">174</FONT>        public void setStopThreshold(double stopThreshold) {<a name="line.174"></a>
-<FONT color="green">175</FONT>            _stopThreshold = stopThreshold;<a name="line.175"></a>
-<FONT color="green">176</FONT>        }<a name="line.176"></a>
-<FONT color="green">177</FONT>        <a name="line.177"></a>
-<FONT color="green">178</FONT>        <a name="line.178"></a>
-<FONT color="green">179</FONT>    }<a name="line.179"></a>
+<FONT color="green">020</FONT>        private DriveTrain _driveTrain = Robot.driveTrain;<a name="line.20"></a>
+<FONT color="green">021</FONT>        <a name="line.21"></a>
+<FONT color="green">022</FONT>        /**<a name="line.22"></a>
+<FONT color="green">023</FONT>         * Main constructor for the class. More could be created if it proves to be worthwhile,<a name="line.23"></a>
+<FONT color="green">024</FONT>         * but for now, use this one.<a name="line.24"></a>
+<FONT color="green">025</FONT>         * <a name="line.25"></a>
+<FONT color="green">026</FONT>         * @param goal            How far you want to go (use rotations for units, just to make a standard).<a name="line.26"></a>
+<FONT color="green">027</FONT>         * @param driveSpeed      The speed at which you want to travel (also in rotations).<a name="line.27"></a>
+<FONT color="green">028</FONT>         */<a name="line.28"></a>
+<FONT color="green">029</FONT>        public EncoderDrive(double goal, double driveSpeed){ <a name="line.29"></a>
+<FONT color="green">030</FONT>            <a name="line.30"></a>
+<FONT color="green">031</FONT>            _goal = goal;<a name="line.31"></a>
+<FONT color="green">032</FONT>            _driveSpeed = driveSpeed;<a name="line.32"></a>
+<FONT color="green">033</FONT>            requires(Robot.driveTrain);<a name="line.33"></a>
+<FONT color="green">034</FONT>        }<a name="line.34"></a>
+<FONT color="green">035</FONT>        <a name="line.35"></a>
+<FONT color="green">036</FONT>        /**<a name="line.36"></a>
+<FONT color="green">037</FONT>         * Implemented from {@link Command}, but it doesn't actually do anything at the moment.<a name="line.37"></a>
+<FONT color="green">038</FONT>         */<a name="line.38"></a>
+<FONT color="green">039</FONT>         protected void initialize() {<a name="line.39"></a>
+<FONT color="green">040</FONT>            Robot.driveTrain.clearEncoder();<a name="line.40"></a>
+<FONT color="green">041</FONT>         }<a name="line.41"></a>
+<FONT color="green">042</FONT>        <a name="line.42"></a>
+<FONT color="green">043</FONT>        /**<a name="line.43"></a>
+<FONT color="green">044</FONT>         * Implemented from {@link Command}. It is run over and over and such, and it calculates<a name="line.44"></a>
+<FONT color="green">045</FONT>         * what the drive speed the robot needs to accelerate toward by setting values in <a name="line.45"></a>
+<FONT color="green">046</FONT>         * the {@link DriveTrain}.<a name="line.46"></a>
+<FONT color="green">047</FONT>         * <a name="line.47"></a>
+<FONT color="green">048</FONT>         * @see DriveTrain<a name="line.48"></a>
+<FONT color="green">049</FONT>         */<a name="line.49"></a>
+<FONT color="green">050</FONT>        public void execute() {<a name="line.50"></a>
+<FONT color="green">051</FONT>            double left  = Robot.driveTrain.getLeftDistance(),<a name="line.51"></a>
+<FONT color="green">052</FONT>                   right = Robot.driveTrain.getRightDistance();<a name="line.52"></a>
+<FONT color="green">053</FONT>            <a name="line.53"></a>
+<FONT color="green">054</FONT>            if(Math.abs(_goal-left) &gt; Math.abs(_goal-right)) {<a name="line.54"></a>
+<FONT color="green">055</FONT>                _dist = left;<a name="line.55"></a>
+<FONT color="green">056</FONT>            }<a name="line.56"></a>
+<FONT color="green">057</FONT>            else {<a name="line.57"></a>
+<FONT color="green">058</FONT>                _dist = right;<a name="line.58"></a>
+<FONT color="green">059</FONT>            }<a name="line.59"></a>
+<FONT color="green">060</FONT>            <a name="line.60"></a>
+<FONT color="green">061</FONT>            <a name="line.61"></a>
+<FONT color="green">062</FONT>            if (_goal &gt; 0) {<a name="line.62"></a>
+<FONT color="green">063</FONT>                _driveTrain.tankDrive(_driveSpeed, _driveSpeed);<a name="line.63"></a>
+<FONT color="green">064</FONT>            }<a name="line.64"></a>
+<FONT color="green">065</FONT>            else {<a name="line.65"></a>
+<FONT color="green">066</FONT>                _driveTrain.tankDrive(-_driveSpeed, -_driveSpeed);<a name="line.66"></a>
+<FONT color="green">067</FONT>            }<a name="line.67"></a>
+<FONT color="green">068</FONT>        }<a name="line.68"></a>
+<FONT color="green">069</FONT>        <a name="line.69"></a>
+<FONT color="green">070</FONT>        /**<a name="line.70"></a>
+<FONT color="green">071</FONT>         * Implemented from {@link Command}. When it returns true, it runs {@link #end()},<a name="line.71"></a>
+<FONT color="green">072</FONT>         * and then stops running the command.<a name="line.72"></a>
+<FONT color="green">073</FONT>         * <a name="line.73"></a>
+<FONT color="green">074</FONT>         * @return true if it has reached the goal and false otherwise.<a name="line.74"></a>
+<FONT color="green">075</FONT>         */<a name="line.75"></a>
+<FONT color="green">076</FONT>        public boolean isFinished() {<a name="line.76"></a>
+<FONT color="green">077</FONT>            if(_goal &lt; 0) {<a name="line.77"></a>
+<FONT color="green">078</FONT>                return _dist &lt;= _goal;<a name="line.78"></a>
+<FONT color="green">079</FONT>            } <a name="line.79"></a>
+<FONT color="green">080</FONT>            else {<a name="line.80"></a>
+<FONT color="green">081</FONT>                return _dist &gt;= _goal;<a name="line.81"></a>
+<FONT color="green">082</FONT>            }<a name="line.82"></a>
+<FONT color="green">083</FONT>        }<a name="line.83"></a>
+<FONT color="green">084</FONT>        <a name="line.84"></a>
+<FONT color="green">085</FONT>        /**<a name="line.85"></a>
+<FONT color="green">086</FONT>         * Implemented from {@link Command}. This is the last thing run before the command<a name="line.86"></a>
+<FONT color="green">087</FONT>         * stops running. Stops the robot.<a name="line.87"></a>
+<FONT color="green">088</FONT>         */<a name="line.88"></a>
+<FONT color="green">089</FONT>        public void end() {<a name="line.89"></a>
+<FONT color="green">090</FONT>            Robot.driveTrain.tankDrive(0, 0);<a name="line.90"></a>
+<FONT color="green">091</FONT>        }<a name="line.91"></a>
+<FONT color="green">092</FONT>        <a name="line.92"></a>
+<FONT color="green">093</FONT>        /**<a name="line.93"></a>
+<FONT color="green">094</FONT>         * Implemented from {@link Command}. When {@link Command#cancel()} is run, <a name="line.94"></a>
+<FONT color="green">095</FONT>         * this is first called, then {@link #end()}.<a name="line.95"></a>
+<FONT color="green">096</FONT>         */<a name="line.96"></a>
+<FONT color="green">097</FONT>        public void interrupted() {<a name="line.97"></a>
+<FONT color="green">098</FONT>            end();<a name="line.98"></a>
+<FONT color="green">099</FONT>        }<a name="line.99"></a>
+<FONT color="green">100</FONT>    <a name="line.100"></a>
+<FONT color="green">101</FONT>        /**<a name="line.101"></a>
+<FONT color="green">102</FONT>         * Gets the current goal.<a name="line.102"></a>
+<FONT color="green">103</FONT>         * @return The current goal, in rotations.<a name="line.103"></a>
+<FONT color="green">104</FONT>         */<a name="line.104"></a>
+<FONT color="green">105</FONT>        public double getGoal() {<a name="line.105"></a>
+<FONT color="green">106</FONT>            return _goal;<a name="line.106"></a>
+<FONT color="green">107</FONT>        }<a name="line.107"></a>
+<FONT color="green">108</FONT>        <a name="line.108"></a>
+<FONT color="green">109</FONT>        /**<a name="line.109"></a>
+<FONT color="green">110</FONT>         * Sets a new goal.<a name="line.110"></a>
+<FONT color="green">111</FONT>         * @param goal The new goal, in rotations.<a name="line.111"></a>
+<FONT color="green">112</FONT>         */<a name="line.112"></a>
+<FONT color="green">113</FONT>        public void setGoal(double goal) {<a name="line.113"></a>
+<FONT color="green">114</FONT>            _goal = goal;<a name="line.114"></a>
+<FONT color="green">115</FONT>        }<a name="line.115"></a>
+<FONT color="green">116</FONT>        <a name="line.116"></a>
+<FONT color="green">117</FONT>        /**<a name="line.117"></a>
+<FONT color="green">118</FONT>         * Gets the total distance traveled.<a name="line.118"></a>
+<FONT color="green">119</FONT>         * @return The distance traveled, in revolutions.<a name="line.119"></a>
+<FONT color="green">120</FONT>         */<a name="line.120"></a>
+<FONT color="green">121</FONT>        public double getDist() {<a name="line.121"></a>
+<FONT color="green">122</FONT>            return _dist;<a name="line.122"></a>
+<FONT color="green">123</FONT>        }<a name="line.123"></a>
+<FONT color="green">124</FONT>       <a name="line.124"></a>
+<FONT color="green">125</FONT>        /**<a name="line.125"></a>
+<FONT color="green">126</FONT>         * Returns the speed at which the robot it set to drive.<a name="line.126"></a>
+<FONT color="green">127</FONT>         * @return The drive speed, in RPM.<a name="line.127"></a>
+<FONT color="green">128</FONT>         */<a name="line.128"></a>
+<FONT color="green">129</FONT>        public double getDriveSpeed() {<a name="line.129"></a>
+<FONT color="green">130</FONT>            return _driveSpeed;<a name="line.130"></a>
+<FONT color="green">131</FONT>        }<a name="line.131"></a>
+<FONT color="green">132</FONT>        <a name="line.132"></a>
+<FONT color="green">133</FONT>        /**<a name="line.133"></a>
+<FONT color="green">134</FONT>         * Sets the drive speed.<a name="line.134"></a>
+<FONT color="green">135</FONT>         * @param driveSpeed The drive speed, in RPM.<a name="line.135"></a>
+<FONT color="green">136</FONT>         */<a name="line.136"></a>
+<FONT color="green">137</FONT>        public void setDriveSpeed(double driveSpeed) {<a name="line.137"></a>
+<FONT color="green">138</FONT>            _driveSpeed = driveSpeed;<a name="line.138"></a>
+<FONT color="green">139</FONT>        }<a name="line.139"></a>
+<FONT color="green">140</FONT>    }<a name="line.140"></a>
 
 
 

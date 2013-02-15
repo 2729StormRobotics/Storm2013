@@ -32,35 +32,70 @@ public class HallEffectSpeedSensor implements LiveWindowSendable {
         _counter.start();
     }
     
+    /**
+     * Sets the minimum speed that the sensor will pick up in RPM. This is to avoid
+     * the speed returning NaN because the timer returns a time of infinity.
+     * @param speedRpm The min speed
+     */
     public void setMinSpeedRpm(double speedRpm) {
         _counter.setMaxPeriod(60/speedRpm);
     }
     
+    /**
+     * Gets the speed in RPM
+     * @return the speed... in RPM
+     */
     public double getSpeedRpm() {
         return 60/_counter.getPeriod();
     }
 
     ITable _table;
+    
+    /**
+     * Initializes the table that the sensor puts data to.
+     * @param table The table it's gonna put data to
+     */
     public void initTable(ITable table) {
         _table = table;
         updateTable();
     }
 
+    /**
+     * Returns the table the sensor writes to
+     * @return the aforementioned table
+     */
     public ITable getTable() {
         return _table;
     }
 
+    /**
+     * Returns the type to be used for smart dashboard. I can't say I fully know
+     * what it does, but if someone does, they can change this documentation.
+     * @return "Analog Input"
+     */
     public String getSmartDashboardType() {
         return "Analog Input";
     }
 
+    /**
+     * Puts the RPM into the table
+     */
     public void updateTable() {
         if(_table != null) {
             _table.putNumber("Value", getSpeedRpm());
         }
     }
 
+    /**
+     * LiveWindow wants it. I don't really know what it is supposed to do. It does
+     * nothing anyway.
+     */
     public void startLiveWindowMode() {}
+    
+    /**
+     * LiveWindow wants it. I don't really know what it is supposed to do. It does
+     * nothing anyway.
+     */
     public void stopLiveWindowMode() {}
 
 }

@@ -3,18 +3,12 @@ package storm2013;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import storm2013.commands.TargetPIDTilt;
-import storm2013.commands.TargetPIDTurn;
-import storm2013.commands.LowerTilter;
 import storm2013.commands.PrintAutonomousMove;
-import storm2013.commands.RaiseTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
 import storm2013.commands.SpinTomahawk;
+import storm2013.commands.TargetPIDTurn;
 import storm2013.utilities.Target;
 
 /**

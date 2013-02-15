@@ -10,7 +10,10 @@ import storm2013.RobotMap;
 import storm2013.commands.TankDrive;
 
 /**
- *
+ * The subsystem that controls the drive train of the robot. It contains various
+ * methods that easily calculate the movement to make up for weird things in the robot,
+ * and it contains references to all of the devices that the robot has associated with
+ * the drive train.
  * @author Joe
  */
 
@@ -32,43 +35,81 @@ public class DriveTrain extends Subsystem{
      
     Gyro _gyro = new Gyro(RobotMap.PORT_SENSOR_GYRO);
     
+    /**
+     * The constructor which simply enables the encoders and adds the gyro to the {@link LiveWindow}
+     */
     public DriveTrain() {
 	
-	_leftEncoder.start();
-	_rightEncoder.start();
+        _leftEncoder.start();
+        _rightEncoder.start();
 	
 //        LiveWindow.addActuator("Drive Train", "Left Motor", _left);
 //        LiveWindow.addActuator("Drive Train", "Right Motor", _right);
         LiveWindow.addSensor  ("Drive Train", "Gyro", _gyro);
     }
     
+    /**
+     * Sets the default command for the drive train to run to be {@link TankDrive}.
+     */
     public void initDefaultCommand() {
         setDefaultCommand(new TankDrive());
     }
     
+    /**
+     * Moves the robot based on a speed value and a turn value, kind of like using
+     * a joystick with 2 axes on an arcade game.
+     * @param speed The speed at which to drive. On a joystick, this would come from the forward/backward axis
+     * @param turn The amount to turn. On a joystick, the left/right axis value.
+     */
     public void arcadeDrive(double speed,double turn) {
         _drive.arcadeDrive(-speed, turn, false);
 //	_drive.tankDrive(-speed, -speed);
     }
     
+    /**
+     * Gives specific values to the left and right motors.
+     * @param leftValue The value to output to the left motor
+     * @param rightValue The value to output to the right motor
+     */
     public void tankDrive(double leftValue, double rightValue){
         _drive.tankDrive(-leftValue, -rightValue);
     }
 
+    /**
+     * Gets the reading on the left encoder
+     * @return The encoder value
+     */
      public double getLeftDistance() {
         return _leftEncoder.get();
     }
 
+     /**
+      * Gets the reading on the right encoder. Negated because the 2 encoders face opposite directions
+      * @return The encoder value
+      */
     public double getRightDistance() {
         return -_rightEncoder.get();
     }
+    
+    /**
+     * Resets the values of both encoders.
+     */
     public void clearEncoder(){
         _leftEncoder.reset();
         _rightEncoder.reset();
     }
+    
+    /**
+     * Resets the gyro value.
+     */
     public void clearGyro(){
         _gyro.reset();
     }
+    
+    /**
+     * Returns the gyro's angle. Negated due to the gyro being upside down
+     * @return The angle the robot has turned
+     */
     public double getGyroAngle(){
         return -_gyro.getAngle();
     }

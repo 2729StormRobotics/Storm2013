@@ -4,8 +4,6 @@
  */
 package storm2013.commands;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
 
@@ -45,5 +43,9 @@ public class SpinTomahawk extends Command {
 
     protected void interrupted() {
         end();
+    }
+
+    public synchronized boolean isInterruptible() {
+        return false;
     }
 }

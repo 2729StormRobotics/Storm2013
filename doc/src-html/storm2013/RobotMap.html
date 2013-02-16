@@ -4,25 +4,49 @@
 <FONT color="green">001</FONT>    package storm2013;<a name="line.1"></a>
 <FONT color="green">002</FONT>    <a name="line.2"></a>
 <FONT color="green">003</FONT>    /**<a name="line.3"></a>
-<FONT color="green">004</FONT>     * The RobotMap is a mapping from the ports sensors and actuators are wired into<a name="line.4"></a>
-<FONT color="green">005</FONT>     * to a variable name. This provides flexibility changing wiring, makes checking<a name="line.5"></a>
-<FONT color="green">006</FONT>     * the wiring easier and significantly reduces the number of magic numbers<a name="line.6"></a>
+<FONT color="green">004</FONT>     * The RobotMap is a mapping from where the ports, sensors, and actuators are wired<a name="line.4"></a>
+<FONT color="green">005</FONT>     * to a variable name. This provides flexibility in changing wiring, makes checking<a name="line.5"></a>
+<FONT color="green">006</FONT>     * the wiring easier, and significantly reduces the number of magic numbers<a name="line.6"></a>
 <FONT color="green">007</FONT>     * floating around.<a name="line.7"></a>
 <FONT color="green">008</FONT>     */<a name="line.8"></a>
 <FONT color="green">009</FONT>    public class RobotMap {<a name="line.9"></a>
-<FONT color="green">010</FONT>        public static final int PORT_JOYSTICK_DRIVE = 1;<a name="line.10"></a>
+<FONT color="green">010</FONT>        public static final int PORT_JOYSTICK_DRIVE       = 1;<a name="line.10"></a>
 <FONT color="green">011</FONT>        <a name="line.11"></a>
-<FONT color="green">012</FONT>        public static final int PORT_MOTOR_DRIVE_LEFT         = 8;<a name="line.12"></a>
-<FONT color="green">013</FONT>        public static final int PORT_MOTOR_DRIVE_RIGHT        = 3;<a name="line.13"></a>
-<FONT color="green">014</FONT>        <a name="line.14"></a>
-<FONT color="green">015</FONT>        public static final int PORT_MOTOR_SHOOTER = 5; //# on Donald Duct<a name="line.15"></a>
-<FONT color="green">016</FONT>        public static final int PORT_MOTOR_BALL_FIRE_BELT = 9; //on Donald Duct<a name="line.16"></a>
-<FONT color="green">017</FONT>        public static final int PORT_MOTOR_BALL_LIFT = 6;//on Donald Duct<a name="line.17"></a>
-<FONT color="green">018</FONT>        public static final int PORT_BREAKBEAM_BALL_READY = 9; //on Donald<a name="line.18"></a>
-<FONT color="green">019</FONT>        public static final int PORT_MOTOR_FEEDER = 4;<a name="line.19"></a>
+<FONT color="green">012</FONT>        public static final int BUTTON_SHOOT              = 6;<a name="line.12"></a>
+<FONT color="green">013</FONT>        public static final int BUTTON_SPIN_DOWN          = 8;<a name="line.13"></a>
+<FONT color="green">014</FONT>    //    public static final int BUTTON_TILTER_DOWN        = 7;<a name="line.14"></a>
+<FONT color="green">015</FONT>    //    public static final int BUTTON_TILTER_UP          = 5;<a name="line.15"></a>
+<FONT color="green">016</FONT>        public static final int BUTTON_SLOW               = 5;<a name="line.16"></a>
+<FONT color="green">017</FONT>        public static final int BUTTON_PRINT_ENCODER      = 9;<a name="line.17"></a>
+<FONT color="green">018</FONT>        public static final int BUTTON_TARGET_2PT         = 1;<a name="line.18"></a>
+<FONT color="green">019</FONT>        public static final int BUTTON_RESET_TOMAHAWK     = 10;<a name="line.19"></a>
 <FONT color="green">020</FONT>        <a name="line.20"></a>
-<FONT color="green">021</FONT>        public static final int PORT_HALL_EFFECT = 5; //5 on Donald Duct<a name="line.21"></a>
-<FONT color="green">022</FONT>    }<a name="line.22"></a>
+<FONT color="green">021</FONT>        public static final int AXIS_DRIVE_LEFT           = 2,<a name="line.21"></a>
+<FONT color="green">022</FONT>                                AXIS_DRIVE_RIGHT          = 4,<a name="line.22"></a>
+<FONT color="green">023</FONT>                                AXIS_TILTER               = 6;<a name="line.23"></a>
+<FONT color="green">024</FONT>        <a name="line.24"></a>
+<FONT color="green">025</FONT>        public static final int PORT_MOTOR_DRIVE_LEFT     = 1;<a name="line.25"></a>
+<FONT color="green">026</FONT>        public static final int PORT_MOTOR_DRIVE_RIGHT    = 10;<a name="line.26"></a>
+<FONT color="green">027</FONT>        <a name="line.27"></a>
+<FONT color="green">028</FONT>        public static final int PORT_MOTOR_SHOOTER        = 3;<a name="line.28"></a>
+<FONT color="green">029</FONT>        public static final int PORT_MOTOR_TILTER         = 2;<a name="line.29"></a>
+<FONT color="green">030</FONT>        public static final int PORT_MOTOR_TOMAHAWK       = 4;<a name="line.30"></a>
+<FONT color="green">031</FONT>        <a name="line.31"></a>
+<FONT color="green">032</FONT>        public static final int PORT_SENSOR_HALL_EFFECT   = 5;<a name="line.32"></a>
+<FONT color="green">033</FONT>    //    public static final int PORT_SENSOR_VOLTAGE_LOAD = 2;<a name="line.33"></a>
+<FONT color="green">034</FONT>        public static final int PORT_SENSOR_GYRO          = 1;<a name="line.34"></a>
+<FONT color="green">035</FONT>        <a name="line.35"></a>
+<FONT color="green">036</FONT>        public static final int MODULE_SENSOR_ACCELEROMETER = 1;<a name="line.36"></a>
+<FONT color="green">037</FONT>        <a name="line.37"></a>
+<FONT color="green">038</FONT>        public static final int PORT_ENCODER_LEFT_1       = 3;<a name="line.38"></a>
+<FONT color="green">039</FONT>        public static final int PORT_ENCODER_LEFT_2       = 4;<a name="line.39"></a>
+<FONT color="green">040</FONT>        public static final int PORT_ENCODER_RIGHT_1      = 2;<a name="line.40"></a>
+<FONT color="green">041</FONT>        public static final int PORT_ENCODER_RIGHT_2      = 1;<a name="line.41"></a>
+<FONT color="green">042</FONT>        <a name="line.42"></a>
+<FONT color="green">043</FONT>        <a name="line.43"></a>
+<FONT color="green">044</FONT>        public static final int PORT_LIMIT_TOMAHAWK       = 6;<a name="line.44"></a>
+<FONT color="green">045</FONT>        public static final int PORT_LIMIT_TILTER_TOP     = 7;<a name="line.45"></a>
+<FONT color="green">046</FONT>    }<a name="line.46"></a>
 
 
 

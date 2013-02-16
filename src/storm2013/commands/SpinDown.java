@@ -17,33 +17,34 @@ public class SpinDown extends Command {
     }
     
     /**
-     * {@inheritDoc}
+     * Initializes the {@link Command}
      */
     protected void initialize() {
         Robot.shooter.getPIDController().setSetpoint(0);
     }
 
     /**
-     * {@inheritDoc}
+     * Does nothing
      */
     protected void execute() {
     }
 
     /**
-     * {@inheritDoc}
+     * Tells if the {@link Command} is done
+     * @return If the shooter is at its target.
      */
     protected boolean isFinished() {
         return Robot.shooter.onTarget();
     }
 
     /**
-     * {@inheritDoc}
+     * Ends the {@link Command}
      */
     protected void end() {
     }
 
     /**
-     * {@inheritDoc}
+     * Also ends the {@link Command}
      */
     protected void interrupted() {
         end();

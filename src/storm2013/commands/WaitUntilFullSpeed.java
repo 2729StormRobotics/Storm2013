@@ -14,7 +14,8 @@ import storm2013.Robot;
 public class WaitUntilFullSpeed extends DoNothing {
 
     /**
-     * {@inheritDoc}
+     * Returns true when the shooter wheel is spinning at the right speed
+     * @return see above
      */
     protected boolean isFinished() {
         return Robot.shooter.getPIDController().onTarget();

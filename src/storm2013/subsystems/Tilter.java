@@ -4,7 +4,6 @@ import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
-import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -16,7 +15,7 @@ import storm2013.commands.MoveTilter;
 import storm2013.utilities.LimitSwitchedMotor;
 
 /**
- *
+ * Provides functionality to interface with the tilter.
  * @author Joe
  */
 public class Tilter extends Subsystem {
@@ -67,25 +66,47 @@ public class Tilter extends Subsystem {
         }
     };
 
+    /**
+     * Constructs the tilter and adds it to {@link LiveWindow}
+     */
     public Tilter() {
         LiveWindow.addActuator("Tilter", "Motor", _motor);
         LiveWindow.addSensor("Tilter", "Angle", _angleSensor);
     }
 
+    /**
+     * Sets the default command to be {@link MoveTilter}
+     */
     public void initDefaultCommand() {
         setDefaultCommand(new MoveTilter());
     }
     
+    /**
+     * Moves the tilter up at a certain speed (use negative values to move down,
+     * or just use {@link #moveUp()} and {@link #moveDown()}.
+     * @param speed 
+     */
     public void move(double speed) {
         _limitedMotor.set(UP_SIGN*speed);
     }
     
+    /**
+     * Moves the tilter up.
+     */
     public void moveUp() {
         move(UP_SIGN*SPEED_DEFAULT);
     }
+    
+    /**
+     * Stops the tilter.
+     */
     public void stop() {
         move(0);
     }
+    
+    /**
+     * Moves the tilter down
+     */
     public void moveDown() {
         move(-UP_SIGN*SPEED_DEFAULT);
     }
@@ -93,6 +114,11 @@ public class Tilter extends Subsystem {
     private double _lerped = 0;
     private static final double LERP_CONST = 0.3;
     
+    /**
+     * Returns the angle of the tilter based on accelerometer values. It also lerps
+     * the values to help reduce noise.
+     * @return the angle
+     */
     public double getAngle() {
         double x = _accelerometer.getAcceleration(ADXL345_I2C.Axes.kX),
                y = _accelerometer.getAcceleration(ADXL345_I2C.Axes.kY), // g*sin(theta)

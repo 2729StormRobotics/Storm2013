@@ -1,16 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * Autonomous movement {@link CommandGroup}
  * @author Storm
  */
 public class DriveStuff extends CommandGroup {
+    /**
+     * Default constructor.
+     */
     public DriveStuff() {
         addSequential(new EncoderDrive(1170.0, 0.5));
         addSequential(new DoNothing(),0.5);

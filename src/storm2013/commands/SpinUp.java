@@ -9,6 +9,7 @@ import storm2013.Robot;
  * @author evan1026
  */
 public class SpinUp extends Command {
+    
     private Timer _onTargetTimer = new Timer();
 
     /**
@@ -19,7 +20,7 @@ public class SpinUp extends Command {
     }
     
     /**
-     * {@inheritDoc}
+     * Initializes {@link Command}
      */
     protected void initialize() {
         Robot.shooter.getPIDController().setSetpoint(3400);
@@ -29,7 +30,7 @@ public class SpinUp extends Command {
     }
 
     /**
-     * {@inheritDoc}
+     * Executes over and over and such
      */
     protected void execute() {
         if(!Robot.shooter.onTarget()) {
@@ -38,20 +39,20 @@ public class SpinUp extends Command {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns true when the shooter is on target
      */
     protected boolean isFinished() {
         return _onTargetTimer.get() > 0.3;
     }
 
     /**
-     * {@inheritDoc}
+     * Called when {@link Command} is done
      */
     protected void end() {
     }
 
     /**
-     * {@inheritDoc}
+     * Called when {@link Command} is interrupted
      */
     protected void interrupted() {
         end();

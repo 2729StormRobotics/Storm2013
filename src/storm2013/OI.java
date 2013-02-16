@@ -3,15 +3,10 @@ package storm2013;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.TargetPIDTilt;
 import storm2013.commands.TargetPIDTurn;
-import storm2013.commands.LowerTilter;
 import storm2013.commands.PrintAutonomousMove;
-import storm2013.commands.RaiseTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
 import storm2013.commands.SpinTomahawk;
@@ -54,16 +49,15 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
     
-    private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);
+    private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE),
+                     shootJoystick = new Joystick(RobotMap.PORT_JOYSTICK_SHOOT);
     
-    private Button shootButton         = new JoystickButton(driveJoystick, RobotMap.BUTTON_SHOOT),
-                   spinDownButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SPIN_DOWN),
-                   recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),
-//                   tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),
-//                   tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN),
-                   slowModeButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SLOW),
-                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT),
-                   resetTomahawkButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_RESET_TOMAHAWK);
+    private Button recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_PRINT_ENCODER),
+                   slowModeButton      = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SLOW),
+                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),
+                   shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),
+                   spinDownButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN),
+                   resetTomahawkButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_RESET_TOMAHAWK);
     
     public OI() {
         shootButton.whenPressed(new Shoot());
@@ -101,15 +95,15 @@ public class OI {
     }
     
     public double getLeftDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);
     }
     
     public double getRightDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);
     }
     
     public double getTilterAxis() {
-        return -driveJoystick.getRawAxis(RobotMap.AXIS_TILTER);
+        return _zeroDeadzone(-shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_TILTER),0.15);
     }
 }
 

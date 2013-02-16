@@ -44,8 +44,4 @@ public class SpinTomahawk extends Command {
     protected void interrupted() {
         end();
     }
-
-    public synchronized boolean isInterruptible() {
-        return false;
-    }
 }

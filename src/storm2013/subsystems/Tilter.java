@@ -20,7 +20,7 @@ import storm2013.utilities.LimitSwitchedMotor;
  * @author Joe
  */
 public class Tilter extends Subsystem {
-    public static final double  SPEED_DEFAULT = 0.6;
+    public static final double  SPEED_DEFAULT = 1;
     private static final double UP_SIGN       = -1;
     
     private static final double ANGLE_MAX = 90, // TODO: find actual values for these.

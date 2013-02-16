@@ -15,6 +15,7 @@ import storm2013.utilities.Target;
  * @author ginto
  */
 public abstract class TargetPIDCommand extends PIDCommand {
+    private static final ITable _dashboardTable = NetworkTable.getTable("SmartDashboard");
     
     private final PIDController _controller;
     
@@ -63,8 +64,8 @@ public abstract class TargetPIDCommand extends PIDCommand {
      * Initializes the {@link PIDCommand}, as well as the network table stuff and the timers.
      */
     protected void initialize() {
-        setSetpoint(getPosition()+SmartDashboard.getNumber(_targetKey));
-        NetworkTable.getTable("SmartDashboard").addTableListener(_listener);
+        useCameraValue(SmartDashboard.getNumber(_targetKey));
+        _dashboardTable.addTableListener(_listener);
         _controller.enable();
         _timeyWimey.reset();
         _timeyWimey.start();
@@ -101,7 +102,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
      * Removes the command from the network table's list of listeners.
      */
     protected void end() {
-        NetworkTable.getTable("SmartDashboard").removeTableListener(_listener);
+        _dashboardTable.removeTableListener(_listener);
     }
 
     /**
@@ -124,12 +125,14 @@ public abstract class TargetPIDCommand extends PIDCommand {
     private ITableListener _listener = new ITableListener() {
         public void valueChanged(ITable source, String key, Object value, boolean isNew) {
             if (key.equals(_targetKey)){
-                setSetpoint(getPosition()+((Double)value).doubleValue());
+                useCameraValue(((Double)value).doubleValue());
                 SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()/1.0e3);
                 _latencyTimer.reset();
             }
         }
     };
+    
+    protected abstract void useCameraValue(double value);
     
     /**
      * Writes the output to the controller.

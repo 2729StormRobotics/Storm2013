@@ -8,6 +8,7 @@ import storm2013.utilities.Target;
  * @author evan1026
  */
 public class TargetPIDTilt extends TargetPIDCommand {
+    private double _angleToTarget = 0;
     /**
      * Constructor.
      * @param target The {@link Target} to aim at
@@ -17,33 +18,28 @@ public class TargetPIDTilt extends TargetPIDCommand {
     public TargetPIDTilt(Target target, double timeout, boolean continuous){
         super(target,Target.Axis.Y,timeout,continuous,
               0, 0, 0, // P, I, D
-              1,10);
+              1,1);
         requires(Robot.tilter);
+        setSetpoint(0);
     }
     
     /**
-     * Returns the tilter angle
+     * Returns the angle to target
      * @return the angle of the tilter
      */
     protected double returnPIDInput() {
-        return Robot.tilter.getAngle();
+        return _angleToTarget;
     }
 
     /**
-     * Writes the output (divided by 10) to the tilter.
+     * Writes the output to the tilter.
      * @param output the output to write
      */
     protected void writePIDOut(double output) {
-        output /= 10;
         Robot.tilter.move(output);
     }
 
-    /**
-     * Figures out the new setPoint
-     * @param newValue The new value to add to the current input to find the setPoint
-     * @return the new setPoint
-     */
-    protected double computeSetpoint(double newValue) {
-        return returnPIDInput()+newValue;
+    protected void useCameraValue(double value) {
+        _angleToTarget = value;
     }
 }

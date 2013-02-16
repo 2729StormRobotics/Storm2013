@@ -24,7 +24,6 @@ public class SpinTomahawk extends Command {
     protected void initialize() {
         Robot.tomahawk.move();
         _hasChanged = false;
-        System.out.println("Turning tomahawk");
     }
 
     /**
@@ -32,7 +31,6 @@ public class SpinTomahawk extends Command {
      */
     protected void execute() {
         if (Robot.tomahawk.isForward()) {
-            System.out.println("tomahawk forward");
             _hasChanged = true;
         }
     }

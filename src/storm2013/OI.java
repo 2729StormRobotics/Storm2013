@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.TargetPIDTilt;
-import storm2013.commands.TargetPIDTurn;
 import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
@@ -56,6 +55,7 @@ public class OI {
     private Button recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_PRINT_ENCODER),
                    slowModeButton      = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SLOW),
                    target2ptButton     = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),
+                   target3ptButton     = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_3PT),
                    shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),
                    spinDownButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN),
                    resetTomahawkButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_RESET_TOMAHAWK);
@@ -68,8 +68,13 @@ public class OI {
 //        tilterUpButton.whileHeld(new RaiseTilter());
 //        tilterDownButton.whileHeld(new LowerTilter());
         
-        TargetPIDTurn turnAim = new TargetPIDTurn(Target.TwoPT, 1.0, true);
-        SmartDashboard.putData("Turn PID",turnAim.getPIDController());
+        TargetPIDTurn turn2ptAim = new TargetPIDTurn(Target.TwoPT, 1.0, true),
+                      turn3ptAim = new TargetPIDTurn(Target.ThreePT, 1.0, true);
+        TargetPIDTilt tilt2ptAim = new TargetPIDTilt(Target.TwoPT, 1.0, true);
+        
+        SmartDashboard.putData(tilt2ptAim);
+        
+        SmartDashboard.putData("Tilt PID",tilt2ptAim.getPIDController());
         
 //        TargetPIDTilt tiltAim = new TargetPIDTilt(Target.TwoPT, 1.0,false);
 //        SmartDashboard.putData("Tilt PID",turnAim.getPIDController());
@@ -78,9 +83,8 @@ public class OI {
 //        aim.addParallel(turnAim);
 //        aim.addParallel(tiltAim);
         
-        SmartDashboard.putData(turnAim);
-        
-        target2ptButton.whileHeld(turnAim);
+        target2ptButton.whileHeld(turn2ptAim);
+        target3ptButton.whileHeld(turn3ptAim);
     }
     
     private double _zeroDeadzone(double joyValue,double dead) {
@@ -96,11 +100,11 @@ public class OI {
     }
     
     public double getLeftDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.7 : 1);
     }
     
     public double getRightDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.7 : 1);
     }
     
     public double getTilterAxis() {

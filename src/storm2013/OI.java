@@ -54,10 +54,12 @@ public class OI {
     
     private Button recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_PRINT_ENCODER),
                    slowModeButton      = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SLOW),
-                   target2ptButton     = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),
-                   target3ptButton     = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_3PT),
+                   target2ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),
+                   target3ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_3PT),
                    shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),
                    spinDownButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN),
+                   target2ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_2PT),
+                   target3ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_3PT),
                    resetTomahawkButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_RESET_TOMAHAWK);
     
     public OI() {
@@ -65,38 +67,23 @@ public class OI {
         spinDownButton.whenPressed(new SpinDown());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         resetTomahawkButton.whenPressed(new SpinTomahawk());
-//        tilterUpButton.whileHeld(new RaiseTilter());
-//        tilterDownButton.whileHeld(new LowerTilter());
         
-        TargetPIDTurn turn2ptAim = new TargetPIDTurn(Target.TwoPT, 1.0, true),
+        TargetPIDTurn turn2ptAim = new TargetPIDTurn(Target.TwoPT,   1.0, true),
                       turn3ptAim = new TargetPIDTurn(Target.ThreePT, 1.0, true);
-        TargetPIDTilt tilt2ptAim = new TargetPIDTilt(Target.TwoPT, 1.0, true);
+        TargetPIDTilt tilt2ptAim = new TargetPIDTilt(Target.TwoPT,   1.0, true),
+                      tilt3ptAim = new TargetPIDTilt(Target.ThreePT, 1.0, true);
         
-        SmartDashboard.putData(tilt2ptAim);
-        
+        SmartDashboard.putData("Turn PID",turn2ptAim.getPIDController());
         SmartDashboard.putData("Tilt PID",tilt2ptAim.getPIDController());
         
-//        TargetPIDTilt tiltAim = new TargetPIDTilt(Target.TwoPT, 1.0,false);
-//        SmartDashboard.putData("Tilt PID",turnAim.getPIDController());
-//        
-//        CommandGroup aim = new CommandGroup("2pt Aim");
-//        aim.addParallel(turnAim);
-//        aim.addParallel(tiltAim);
-        
-        target2ptButton.whileHeld(turn2ptAim);
-        target3ptButton.whileHeld(turn3ptAim);
+        target2ptTurnButton.whileHeld(turn2ptAim);
+        target3ptTurnButton.whileHeld(turn3ptAim);
+        target2ptTiltButton.whileHeld(tilt2ptAim);
+        target3ptTiltButton.whileHeld(tilt3ptAim);
     }
     
     private double _zeroDeadzone(double joyValue,double dead) {
         return Math.abs(joyValue) > dead ? joyValue : 0;
-    }
-    
-    private double _applyExponential(double joyValue) {
-        if(joyValue == 0) {
-            return 0;
-        }
-        double sign = (joyValue > 0) ? 1 : -1;
-        return sign*joyValue*joyValue/Math.sqrt(Math.abs(joyValue));
     }
     
     public double getLeftDrive() {

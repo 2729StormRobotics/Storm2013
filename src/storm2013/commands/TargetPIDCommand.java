@@ -21,7 +21,8 @@ public abstract class TargetPIDCommand extends PIDCommand {
     
     private final String _targetFoundKey;
     private final String _targetKey;
-    private final Timer _timeyWimey = new Timer();
+    private final Timer _timeyWimey = new Timer(),
+                        _onTarget   = new Timer();
     private final double _timeout;
     private final boolean _willTimeout;
     private final boolean _continuous;
@@ -39,9 +40,8 @@ public abstract class TargetPIDCommand extends PIDCommand {
      * @param maxOutput the absolute value of the maximum output
      */
     public TargetPIDCommand(Target target, Target.Axis axis, double timeout,boolean continuous,
-                            double p,double i,double d,double tolerance,double maxOutput){
-        super(p,i,d);
-        requires(Robot.tilter);
+                            double p,double i,double d,double tolerance,double maxOutput,double period){
+        super(p,i,d,period);
         _controller = super.getPIDController();
         _timeout = timeout;
         _willTimeout = (timeout >= 0);
@@ -69,6 +69,8 @@ public abstract class TargetPIDCommand extends PIDCommand {
         _controller.enable();
         _timeyWimey.reset();
         _timeyWimey.start();
+        _onTarget.reset();
+        _onTarget.start();
         _latencyTimer.reset();
         _latencyTimer.start();
     }
@@ -87,6 +89,9 @@ public abstract class TargetPIDCommand extends PIDCommand {
                 _controller.disable();
             }
         }
+        if(!_controller.onTarget()) {
+            _onTarget.reset();
+        }
     }
 
     /**
@@ -95,7 +100,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
      * @return whether or not it's done
      */
     protected boolean isFinished() {
-        return !_continuous && (!_controller.isEnable() || _controller.onTarget());
+        return !_continuous && (_onTarget.get() >= 0.3);
     }
 
     /**
@@ -126,7 +131,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
         public void valueChanged(ITable source, String key, Object value, boolean isNew) {
             if (key.equals(_targetKey)){
                 useCameraValue(((Double)value).doubleValue());
-                SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()/1.0e3);
+                SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()*1.0e3);
                 _latencyTimer.reset();
             }
         }

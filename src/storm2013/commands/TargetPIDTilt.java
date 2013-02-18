@@ -17,8 +17,8 @@ public class TargetPIDTilt extends TargetPIDCommand {
      */
     public TargetPIDTilt(Target target, double timeout, boolean continuous){
         super(target,Target.Axis.Y,timeout,continuous,
-              0, 0, 0, // P, I, D
-              1,1);
+              0.7, 0.15, 1, // P, I, D
+              0.5,1,1.5/10);
         requires(Robot.tilter);
         setSetpoint(0);
     }
@@ -40,6 +40,6 @@ public class TargetPIDTilt extends TargetPIDCommand {
     }
 
     protected void useCameraValue(double value) {
-        _angleToTarget = value;
+        _angleToTarget = -value;
     }
 }

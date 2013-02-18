@@ -46,9 +46,9 @@ public class Robot extends IterativeRobot {
 
         loadSensor = new LoadSensor(2);
         
-        autonomiceNames = new String[]{"Do Nothing", "DriveStuff"};
+        autonomiceNames = new String[]{"Do Nothing", "Shoot from pyramid right", "Just shoot"};
 
-        autonomice = new Command[]{new DoNothing(), new DriveStuff()};
+        autonomice = new Command[]{new DoNothing(), new ShootPyramidRight(), new JustShoot()};
 
         System.out.println(autonomice.length);
         for (int i = 0; i < autonomice.length; ++i) {
@@ -59,6 +59,7 @@ public class Robot extends IterativeRobot {
 //        SmartDashboard.putData(Scheduler.getInstance());
 
         LiveWindow.addSensor("Load Sensor", "Load Sensor 1", loadSensor);
+        SmartDashboard.putData("Shooter PID",shooter.getPIDController());
 //        LiveWindow.addSensor("Tilter","DIO 7", irTest);
     }
 
@@ -88,9 +89,7 @@ public class Robot extends IterativeRobot {
 
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("Tilter angle", tilter.getAngle());
         SmartDashboard.putNumber("Wheel Speed (RPM)", shooter.getSpeedRpm());
-        SmartDashboard.putNumber("Gyro angle", driveTrain.getGyroAngle());
     }
 
     public void testPeriodic() {
@@ -104,6 +103,8 @@ public class Robot extends IterativeRobot {
         if(teleop != null) {
             teleop.cancel();
         }
+        shooter.setSetpoint(0);
+        shooter.setMotorValRaw(0);
     }
 
     // Eliminates "Overload me!" messages

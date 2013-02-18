@@ -84,9 +84,9 @@ public class LoadSensor implements LiveWindowSendable{
     /**
      * Returns the type to be used for smart dashboard. I can't say I fully know
      * what it does, but if someone does, they can change this documentation.
-     * @return "LoadSensorType"
+     * @return "Load Sensor"
      */
     public String getSmartDashboardType() {
-        return "LoadSensorType";
+        return "Load Sensor";
     }
 }

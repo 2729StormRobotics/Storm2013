@@ -11,8 +11,6 @@ import storm2013.utilities.LED;
  */
 public class LEDStrip extends Subsystem {
     LED _red,_green,_blue;
-    
-    private Stack _colorStack = new Stack();
 
     /**
      * Allocates space for the subsystem and it's various parts, and adds it to
@@ -33,92 +31,20 @@ public class LEDStrip extends Subsystem {
      */
     protected void initDefaultCommand() {}
     
-    /**
-     * Sets the new color for the LED strip.
-     * @param color The new color, based on {@link StateColor} values.
-     */
-    private void setColor(StateColor color) {
-        _red.set(color.getRed());
-        _green.set(color.getGreen());
-        _blue.set(color.getBlue());
+    public void setColor(int red, int green, int blue){
+        _red.set(red);
+        _green.set(green);
+        _blue.set(blue);
     }
     
-    /**
-     * Adds a new color to the color stack and sets the LED's to output that color.
-     * @param color 
-     */
-    public void pushColor(StateColor color){
-        _colorStack.addElement(color);
-        setColor(color);
+    public int getRed(){
+        return _red.get();
+    }
+    public int getGreen(){
+        return _green.get();
+    }
+    public int getBlue(){
+        return _blue.get();
     }
     
-    /**
-     * Pops the current color off the stack and sets the color to the next one.
-     */
-    public void popColor(){
-        _colorStack.pop();
-        if (!_colorStack.isEmpty()) {
-            setColor((StateColor) _colorStack.peek());
-        }
-        else {
-            setColor(StateColor.IDLE);
-        }
-    }
-    
-    /**
-     * Gets the current LED color
-     * @return The current color
-     */
-    public StateColor getColor(){
-        return (StateColor) _colorStack.peek();
-    }
-    
-    /**
-     * Contains values for all of the colors that we want to use to represent different
-     * robot actions.
-     */
-    public static class StateColor{
-        
-        public static final StateColor OFF               = new StateColor(0,     0,   0);
-        public static final StateColor IDLE              = new StateColor(255, 255, 255);
-        public static final StateColor ROBOT_MOVING      = new StateColor(255, 255, 255);
-        public static final StateColor SHOOTER_ON_TARGET = new StateColor(255, 255, 255);
-        public static final StateColor TARGETING         = new StateColor(255, 255, 255);
-        public static final StateColor SHOOTING          = new StateColor(255, 255, 255);
-        public static final StateColor SPINNING_UP       = new StateColor(255, 255, 255);
-        public static final StateColor SPUN_UP           = new StateColor(255, 255, 255);
-        
-        //All of this is just a placeholder. Needs revision when we know what we're doing
-        private int _red,_green,_blue;
-        
-        private StateColor(int red,int green,int blue) {
-            _red   = red;
-            _green = green;
-            _blue  = blue;
-        }
-        
-        /**
-         * Returns the red value
-         * @return the red value
-         */
-        public int getRed() {
-            return _red;
-        }
-        
-        /**
-         * Returns the green value
-         * @return the green value
-         */
-        public int getGreen() {
-            return _green;
-        }
-        
-        /**
-         * Returns the blue value
-         * @return the blue value
-         */
-        public int getBlue() {
-            return _blue;
-        }
-    }
 }

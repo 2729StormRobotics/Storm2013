@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
+import storm2013.subsystems.LEDStrip;
 import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
 import storm2013.subsystems.Tomahawk;
@@ -21,11 +22,12 @@ import storm2013.utilities.LoadSensor;
  * directory.
  */
 public class Robot extends IterativeRobot {
-    public static OI oi;
+    public static OI         oi;
     public static DriveTrain driveTrain;
-    public static Shooter shooter;
-    public static Tilter tilter;
-    public static Tomahawk tomahawk;
+    public static Shooter    shooter;
+    public static Tilter     tilter;
+    public static Tomahawk   tomahawk;
+    public static LEDStrip   ledStrip;
     
     Command teleop;
     String[] autonomiceNames;
@@ -42,6 +44,7 @@ public class Robot extends IterativeRobot {
         tilter     = new Tilter();
         tomahawk   = new Tomahawk();
         oi         = new OI();
+        ledStrip   = new LEDStrip();
 
         loadSensor = new LoadSensor(2);
         

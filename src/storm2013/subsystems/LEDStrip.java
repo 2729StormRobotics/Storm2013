@@ -10,7 +10,6 @@ import storm2013.utilities.LED;
  * @author evan1026
  */
 public class LEDStrip extends Subsystem {
-    
     LED _red,_green,_blue;
     
     private Stack _colorStack = new Stack();
@@ -80,17 +79,17 @@ public class LEDStrip extends Subsystem {
      */
     public static class StateColor{
         
-        public static StateColor OFF;
-        public static StateColor IDLE;
-        public static StateColor ROBOT_MOVING;
-        public static StateColor SHOOTER_ON_TARGET;
-        public static StateColor TARGETING;
-        public static StateColor SHOOTING;
-        public static StateColor SPINNING_UP;
-        public static StateColor SPUN_UP;
+        public static final StateColor OFF               = new StateColor(0,     0,   0);
+        public static final StateColor IDLE              = new StateColor(255, 255, 255);
+        public static final StateColor ROBOT_MOVING      = new StateColor(255, 255, 255);
+        public static final StateColor SHOOTER_ON_TARGET = new StateColor(255, 255, 255);
+        public static final StateColor TARGETING         = new StateColor(255, 255, 255);
+        public static final StateColor SHOOTING          = new StateColor(255, 255, 255);
+        public static final StateColor SPINNING_UP       = new StateColor(255, 255, 255);
+        public static final StateColor SPUN_UP           = new StateColor(255, 255, 255);
         
         //All of this is just a placeholder. Needs revision when we know what we're doing
-        private int _red,_green,_blue; 
+        private int _red,_green,_blue;
         
         private StateColor(int red,int green,int blue) {
             _red   = red;
@@ -102,7 +101,7 @@ public class LEDStrip extends Subsystem {
          * Returns the red value
          * @return the red value
          */
-        public int getRed(){
+        public int getRed() {
             return _red;
         }
         

@@ -35,7 +35,6 @@ public class Robot extends IterativeRobot {
     
     LoadSensor loadSensor;
     
-//    DigitalInput irTest = new DigitalInput(7);
 
     public void robotInit() {
         driveTrain = new DriveTrain();
@@ -48,7 +47,7 @@ public class Robot extends IterativeRobot {
         
         autonomiceNames = new String[]{"Do Nothing", "Shoot from pyramid right", "Just shoot"};
 
-        autonomice = new Command[]{new DoNothing(), new ShootPyramidRight(), new JustShoot()};
+        autonomice = new Command[]{new DoNothing(), new ShootFromPyramidRight(), new JustShoot()};
 
         System.out.println(autonomice.length);
         for (int i = 0; i < autonomice.length; ++i) {
@@ -56,11 +55,25 @@ public class Robot extends IterativeRobot {
         }
         SmartDashboard.putData("Which Autonomouse?", chooser);
 
-//        SmartDashboard.putData(Scheduler.getInstance());
-
         LiveWindow.addSensor("Load Sensor", "Load Sensor 1", loadSensor);
-        SmartDashboard.putData("Shooter PID",shooter.getPIDController());
-//        LiveWindow.addSensor("Tilter","DIO 7", irTest);
+//        SmartDashboard.putData("Shooter PID",shooter.getPIDController());
+        
+        // Send sensor info over to the dashboard
+        new Command("Sensor feedback") {
+            protected void initialize() {}
+            protected void execute() {
+                SmartDashboard.putNumber("Wheel Speed (RPM)", shooter.getSpeedRpm());
+                SmartDashboard.putBoolean("Tomahawk forward?", tomahawk.isForward());
+                SmartDashboard.putBoolean("Tilter at top?", tilter.isTopLimitTriggered());
+            }
+            protected boolean isFinished() {
+                return false;
+            }
+            protected void end() {}
+            protected void interrupted() {
+                end();
+            }
+        }.start();
     }
 
     public void autonomousInit() {
@@ -74,7 +87,6 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousPeriodic() {
-        SmartDashboard.putData("Load Sensor", loadSensor);
         Scheduler.getInstance().run();
     }
 
@@ -89,7 +101,6 @@ public class Robot extends IterativeRobot {
 
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("Wheel Speed (RPM)", shooter.getSpeedRpm());
     }
 
     public void testPeriodic() {
@@ -108,6 +119,5 @@ public class Robot extends IterativeRobot {
     }
 
     // Eliminates "Overload me!" messages
-    public void disabledPeriodic() {
-    }
+    public void disabledPeriodic() {}
 }

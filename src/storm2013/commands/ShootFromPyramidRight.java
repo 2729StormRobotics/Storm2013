@@ -8,8 +8,8 @@ import storm2013.utilities.Target;
  * Drive from the right side of pyramid, then aim & shoot.
  * @author Joe
  */
-public class ShootPyramidRight extends CommandGroup {
-    public ShootPyramidRight() {
+public class ShootFromPyramidRight extends CommandGroup {
+    public ShootFromPyramidRight() {
         addParallel(new LowerTilter(),1);
         addSequential(new EncoderDrive(300.0, 0.5));
         addSequential(new DoNothing(),0.2);

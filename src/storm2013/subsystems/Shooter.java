@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 import storm2013.RobotMap;
 import storm2013.commands.DoNothing;
 import storm2013.commands.SpinDown;
-import storm2013.commands.SpinTomahawk;
 import storm2013.utilities.Accelerator;
 import storm2013.utilities.HallEffectSpeedSensor;
 

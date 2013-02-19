@@ -73,8 +73,8 @@ public class OI {
         TargetPIDTilt tilt2ptAim = new TargetPIDTilt(Target.TwoPT,   1.0, true),
                       tilt3ptAim = new TargetPIDTilt(Target.ThreePT, 1.0, true);
         
-        SmartDashboard.putData("Turn PID",turn2ptAim.getPIDController());
-        SmartDashboard.putData("Tilt PID",tilt2ptAim.getPIDController());
+//        SmartDashboard.putData("Turn 3pt PID",turn3ptAim.getPIDController());
+//        SmartDashboard.putData("Tilt 3pt PID",tilt3ptAim.getPIDController());
         
         target2ptTurnButton.whileHeld(turn2ptAim);
         target3ptTurnButton.whileHeld(turn3ptAim);

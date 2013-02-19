@@ -22,21 +22,18 @@ public class Tilter extends Subsystem {
     public static final double  SPEED_DEFAULT = 1;
     private static final double UP_SIGN       = -1;
     
-    private static final double ANGLE_MAX = 90, // TODO: find actual values for these.
-                                ANGLE_MIN = 0;
-    
-    private Jaguar _motor = new Jaguar(RobotMap.PORT_MOTOR_TILTER);
-    private Trigger _topLimitSwitch    = new Trigger() {
-                                             private DigitalInput _limit = new DigitalInput(RobotMap.PORT_LIMIT_TILTER_TOP);
-
+    private final Jaguar _motor = new Jaguar(RobotMap.PORT_MOTOR_TILTER);
+    private final DigitalInput _topLimitSwitch = new DigitalInput(RobotMap.PORT_LIMIT_TILTER_TOP);
+    private final boolean _topLimitOnState = true;
+    private Trigger _topLimitTrigger    = new Trigger() {
                                              public boolean get() {
-                                                 return _limit.get();
+                                                 return _topLimitSwitch.get();
                                              }
                                          },
-                    _bottomLimitSwitch = null;
+                    _bottomLimitTrigger = null;
     private LimitSwitchedMotor _limitedMotor = new LimitSwitchedMotor(_motor,
-                                                                      _bottomLimitSwitch, true,
-                                                                      _topLimitSwitch,    true);
+                                                                      _bottomLimitTrigger, true,
+                                                                      _topLimitTrigger,    _topLimitOnState);
 
     /**
      * Constructs the tilter and adds it to {@link LiveWindow}
@@ -80,5 +77,9 @@ public class Tilter extends Subsystem {
      */
     public void moveDown() {
         move(-SPEED_DEFAULT);
+    }
+    
+    public boolean isTopLimitTriggered() {
+        return _topLimitSwitch.get() == _topLimitOnState;
     }
 }

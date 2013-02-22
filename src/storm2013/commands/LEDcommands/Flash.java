@@ -36,6 +36,7 @@ public class Flash extends Command {
     }
     
     protected void initialize() {
+        _timer.start();
     }
 
     protected void execute() {
@@ -54,6 +55,7 @@ public class Flash extends Command {
     }
 
     protected void end() {
+        _timer.stop();
     }
 
     protected void interrupted() {

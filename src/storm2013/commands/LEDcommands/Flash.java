@@ -4,9 +4,8 @@
  */
 package storm2013.commands.LEDcommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import java.util.Timer;
-import java.util.TimerTask;
 import storm2013.Robot;
 
 /**
@@ -15,33 +14,39 @@ import storm2013.Robot;
  */
 public class Flash extends Command {
     
-    public static final long DEFAULT_PERIOD = 1000; //once a second
+    public static final double DEFAULT_PERIOD = 1; //once a second
     
-    private Timer _flasher = new Timer();
+    private Timer _timer = new Timer();
     private Color[] _colors;
-    private long  _period;
+    private double  _period;
+    private int index;
 
     public Flash(Color[] colors) {
         this(colors, DEFAULT_PERIOD);
     }
     
-    public Flash(Color[] colors, long period) {
+    /**
+     * 
+     * @param colors
+     * @param period In seconds
+     */
+    public Flash(Color[] colors, double period) {
         _colors = colors;
         _period = period;
     }
     
     protected void initialize() {
-        TimerTask task = new TimerTask(){
-            int index;
-            public void run() {
-                Robot.ledStrip.setColor(_colors[index].getRed(), _colors[index].getGreen(), _colors[index].getBlue());
-                index = (index + 1) % _colors.length;
-            }
-        };
-        _flasher.schedule(task, 0L, _period);
     }
 
     protected void execute() {
+        
+        double time = _timer.get();
+        
+        if(time >= _period){
+            Robot.ledStrip.setColor(_colors[index].getRed(), _colors[index].getGreen(), _colors[index].getBlue());
+            index = (index + 1) % _colors.length;
+            _timer.reset();
+        }
     }
 
     protected boolean isFinished() {
@@ -49,7 +54,6 @@ public class Flash extends Command {
     }
 
     protected void end() {
-        _flasher.cancel();
     }
 
     protected void interrupted() {

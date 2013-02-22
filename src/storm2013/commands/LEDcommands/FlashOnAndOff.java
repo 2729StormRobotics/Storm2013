@@ -13,7 +13,7 @@ public class FlashOnAndOff extends Flash {
     public FlashOnAndOff(Color color){
         this(color, Flash.DEFAULT_PERIOD);
     }
-    public FlashOnAndOff(Color color, long period){
+    public FlashOnAndOff(Color color, double period){
         super(new Color[] {color, Color.OFF}, period);
     }
 }

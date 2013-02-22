@@ -1,5 +1,7 @@
 package storm2013;
 
+import storm2013.commands.autonomous.JustShoot;
+import storm2013.commands.autonomous.ShootFromPyramidRight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -12,6 +14,7 @@ import storm2013.subsystems.LEDStrip;
 import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
 import storm2013.subsystems.Tomahawk;
+import storm2013.subsystems.Vision;
 import storm2013.utilities.LoadSensor;
 
 /**
@@ -28,6 +31,7 @@ public class Robot extends IterativeRobot {
     public static Tilter     tilter;
     public static Tomahawk   tomahawk;
     public static LEDStrip   ledStrip;
+    public static Vision     vision;
     
     Command teleop;
     String[] autonomiceNames;
@@ -44,6 +48,7 @@ public class Robot extends IterativeRobot {
         tilter     = new Tilter();
         tomahawk   = new Tomahawk();
         ledStrip   = new LEDStrip();
+        vision     = new Vision();
         oi         = new OI();
         ledStrip   = new LEDStrip();
 

@@ -82,4 +82,8 @@ public class Tilter extends Subsystem {
     public boolean isTopLimitTriggered() {
         return _topLimitSwitch.get() == _topLimitOnState;
     }
+    
+    public void disableSafety() {
+        _limitedMotor.disableSafety();
+    }
 }

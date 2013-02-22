@@ -8,22 +8,30 @@ package storm2013;
  */
 public class RobotMap {
     public static final int PORT_JOYSTICK_DRIVE = 1,
-                            PORT_JOYSTICK_SHOOT = 2;
+                            PORT_JOYSTICK_SHOOT = 2,
+                            PORT_JOYSTICK_DEBUG = 3;
     
-    public static final int JOYDRIVE_BUTTON_SLOW           = 5;
-    public static final int JOYDRIVE_BUTTON_PRINT_ENCODER  = 9;
-    public static final int JOYDRIVE_BUTTON_TARGET_2PT     = 1;
-    public static final int JOYDRIVE_BUTTON_TARGET_3PT     = 2;
-    public static final int JOYSHOOT_BUTTON_SHOOT          = 6;
-    public static final int JOYSHOOT_BUTTON_SPIN_DOWN      = 8;
-    public static final int JOYSHOOT_BUTTON_TARGET_2PT     = 1;
-    public static final int JOYSHOOT_BUTTON_TARGET_3PT     = 2;
-    public static final int JOYSHOOT_BUTTON_TOMAHAWK_BACK  = 9;
-    public static final int JOYSHOOT_BUTTON_TOMAHAWK       = 10;
+    public static final int JOYDRIVE_BUTTON_SLOW            = 5;
+    public static final int JOYDRIVE_BUTTON_PRINT_ENCODER   = 9;
+    public static final int JOYDRIVE_BUTTON_TARGET_2PT      = 1;
+    public static final int JOYDRIVE_BUTTON_TARGET_3PT      = 2;
+    
+    public static final int JOYSHOOT_BUTTON_SHOOT           = 6;
+    public static final int JOYSHOOT_BUTTON_SPIN_DOWN       = 8;
+    public static final int JOYSHOOT_BUTTON_TARGET_2PT      = 1;
+    public static final int JOYSHOOT_BUTTON_TARGET_3PT      = 2;
+    public static final int JOYSHOOT_BUTTON_TOMAHAWK_BACK   = 9;
+    public static final int JOYSHOOT_BUTTON_TOMAHAWK        = 10;
+    public static final int JOYSHOOT_BUTTON_TILTER_SAFETY_1 = 5;
+    public static final int JOYSHOOT_BUTTON_TILTER_SAFETY_2 = 7;
+    
+    public static final int JOYDEBUG_BUTTON_CONTROLSHOOT = 10;
     
     public static final int JOYDRIVE_AXIS_DRIVE_LEFT  = 2,
                             JOYDRIVE_AXIS_DRIVE_RIGHT = 4,
-                            JOYSHOOT_AXIS_TILTER      = 2;
+                            JOYSHOOT_AXIS_TILTER      = 2,
+                            JOYSHOOT_AXIS_DISTANCE    = 6,
+                            JOYDEBUG_AXIS_SHOOTSPEED  = 4;
     
     public static final int PORT_MOTOR_DRIVE_LEFT     = 1;
     public static final int PORT_MOTOR_DRIVE_RIGHT    = 10;

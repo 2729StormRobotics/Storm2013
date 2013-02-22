@@ -60,21 +60,23 @@ public class OI {
                    spinDownButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN),
                    target2ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_2PT),
                    target3ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_3PT),
-                   resetTomahawkButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_RESET_TOMAHAWK);
+                   tomahawkButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK),
+                   tomahawkBackButton  = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK_BACK);
     
     public OI() {
         shootButton.whenPressed(new Shoot());
         spinDownButton.whenPressed(new SpinDown());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
-        resetTomahawkButton.whenPressed(new SpinTomahawk());
+        tomahawkButton.whenPressed(new SpinTomahawk(true));
+        tomahawkBackButton.whenPressed(new SpinTomahawk(false));
         
         TargetPIDTurn turn2ptAim = new TargetPIDTurn(Target.TwoPT,   1.0, true),
                       turn3ptAim = new TargetPIDTurn(Target.ThreePT, 1.0, true);
         TargetPIDTilt tilt2ptAim = new TargetPIDTilt(Target.TwoPT,   1.0, true),
                       tilt3ptAim = new TargetPIDTilt(Target.ThreePT, 1.0, true);
         
-//        SmartDashboard.putData("Turn 3pt PID",turn3ptAim.getPIDController());
-//        SmartDashboard.putData("Tilt 3pt PID",tilt3ptAim.getPIDController());
+        SmartDashboard.putData("Turn 3pt PID",turn3ptAim.getPIDController());
+        SmartDashboard.putData("Tilt 3pt PID",tilt3ptAim.getPIDController());
         
         target2ptTurnButton.whileHeld(turn2ptAim);
         target3ptTurnButton.whileHeld(turn3ptAim);
@@ -87,11 +89,11 @@ public class OI {
     }
     
     public double getLeftDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.7 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);
     }
     
     public double getRightDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.7 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);
     }
     
     public double getTilterAxis() {

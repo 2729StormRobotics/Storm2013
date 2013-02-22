@@ -64,7 +64,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
      * Initializes the {@link PIDCommand}, as well as the network table stuff and the timers.
      */
     protected void initialize() {
-        useCameraValue(SmartDashboard.getNumber(_targetKey));
+        useCameraValue(SmartDashboard.getNumber(_targetKey,0));
         _dashboardTable.addTableListener(_listener);
         _controller.enable();
         _timeyWimey.reset();
@@ -80,7 +80,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
      */
     protected void execute() {
         if (_willTimeout){
-            if(SmartDashboard.getBoolean(_targetFoundKey)){
+            if(SmartDashboard.getBoolean(_targetFoundKey,false)){
                 _timeyWimey.reset();
                 _controller.enable();
             }
@@ -130,9 +130,12 @@ public abstract class TargetPIDCommand extends PIDCommand {
     private ITableListener _listener = new ITableListener() {
         public void valueChanged(ITable source, String key, Object value, boolean isNew) {
             if (key.equals(_targetKey)){
-                useCameraValue(((Double)value).doubleValue());
-                SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()*1.0e3);
-                _latencyTimer.reset();
+                Double numValue = (Double)value;
+                if(numValue != null) {
+                    useCameraValue(numValue.doubleValue());
+                    SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()*1.0e3);
+                    _latencyTimer.reset();
+                }
             }
         }
     };

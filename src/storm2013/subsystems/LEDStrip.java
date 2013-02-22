@@ -20,8 +20,8 @@ public class LEDStrip extends Subsystem {
      */
     public LEDStrip() {
         _red   = new LED(6);
-        _green = new LED(7);
-        _blue  = new LED(8);
+        _green = new LED(8);
+        _blue  = new LED(7);
         LiveWindow.addActuator("LED", "Red",   _red);
         LiveWindow.addActuator("LED", "Green", _green);
         LiveWindow.addActuator("LED", "Blue",  _blue);
@@ -32,6 +32,12 @@ public class LEDStrip extends Subsystem {
      * is using the subsystem.
      */
     protected void initDefaultCommand() {}
+    
+    public void setColor(int red,int green,int blue) {
+        _red.set(red);
+        _green.set(green);
+        _blue.set(blue);
+    }
     
     /**
      * Sets the new color for the LED strip.

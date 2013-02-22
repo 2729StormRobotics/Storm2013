@@ -9,20 +9,22 @@ import storm2013.Robot;
  */
 public class SpinTomahawk extends Command {
     
+    private final boolean _forward;
     private boolean _hasChanged;
     
     /**
      * Constructor.
      */
-    public SpinTomahawk(){
+    public SpinTomahawk(boolean forward){
         requires(Robot.tomahawk);
+        _forward = forward;
     }
     
     /**
      * Initializes {@link Command}
      */
     protected void initialize() {
-        Robot.tomahawk.move();
+        Robot.tomahawk.move(_forward);
         _hasChanged = false;
     }
 

@@ -41,9 +41,9 @@ public class Tomahawk extends Subsystem {
     /**
      * Spins the tomahawk's window motor.
      */
-    public void move() {
+    public void move(boolean forward) {
 //        if(Robot.shooter.isEnabled()) {
-            _motor.set(MOTOR_SPEED);
+            _motor.set((forward ? 1 : -1)*MOTOR_SPEED);
 //        }
     }
     

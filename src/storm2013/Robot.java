@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.*;
 import storm2013.subsystems.DriveTrain;
+import storm2013.subsystems.LEDStrip;
 import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
 import storm2013.subsystems.Tomahawk;
@@ -26,6 +27,7 @@ public class Robot extends IterativeRobot {
     public static Shooter shooter;
     public static Tilter tilter;
     public static Tomahawk tomahawk;
+    public static LEDStrip ledStrip;
     
     Command teleop;
     String[] autonomiceNames;
@@ -41,13 +43,14 @@ public class Robot extends IterativeRobot {
         shooter    = new Shooter();
         tilter     = new Tilter();
         tomahawk   = new Tomahawk();
+        ledStrip   = new LEDStrip();
         oi         = new OI();
 
         loadSensor = new LoadSensor(2);
         
-        autonomiceNames = new String[]{"Do Nothing", "Shoot from pyramid right", "Just shoot"};
+        autonomiceNames = new String[]{"Do Nothing", "Shoot from pyramid right", "Just shoot","Cycle LEDs"};
 
-        autonomice = new Command[]{new DoNothing(), new ShootFromPyramidRight(), new JustShoot()};
+        autonomice = new Command[]{new DoNothing(), new ShootFromPyramidRight(), new JustShoot(),new CycleLEDs()};
 
         System.out.println(autonomice.length);
         for (int i = 0; i < autonomice.length; ++i) {

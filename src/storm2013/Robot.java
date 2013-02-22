@@ -22,12 +22,12 @@ import storm2013.utilities.LoadSensor;
  * directory.
  */
 public class Robot extends IterativeRobot {
-    public static OI oi;
+    public static OI         oi;
     public static DriveTrain driveTrain;
-    public static Shooter shooter;
-    public static Tilter tilter;
-    public static Tomahawk tomahawk;
-    public static LEDStrip ledStrip;
+    public static Shooter    shooter;
+    public static Tilter     tilter;
+    public static Tomahawk   tomahawk;
+    public static LEDStrip   ledStrip;
     
     Command teleop;
     String[] autonomiceNames;
@@ -45,6 +45,7 @@ public class Robot extends IterativeRobot {
         tomahawk   = new Tomahawk();
         ledStrip   = new LEDStrip();
         oi         = new OI();
+        ledStrip   = new LEDStrip();
 
         loadSensor = new LoadSensor(2);
         

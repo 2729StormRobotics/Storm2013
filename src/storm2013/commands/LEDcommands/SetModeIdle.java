@@ -8,9 +8,9 @@ package storm2013.commands.LEDcommands;
  *
  * @author evan1026
  */
-public class SetColorTargeting extends SetColor {
+public class SetModeIdle extends SetColor {
     
-    public SetColorTargeting(){
-        super(StateColor.TARGETING);
+    public SetModeIdle(){
+        super(Color.IDLE);
     }
 }

@@ -18,38 +18,24 @@ public class Flash extends Command {
     public static final long DEFAULT_PERIOD = 1000; //once a second
     
     private Timer _flasher = new Timer();
-    private int   _red1,   _red2,
-                  _green1, _green2,
-                  _blue1,  _blue2;
+    private Color[] _colors;
     private long  _period;
 
-    public Flash(int red1, int red2, int green1, int green2, int blue1, int blue2) {
-        this(red1, red2, blue1, blue2, green1, green2, DEFAULT_PERIOD);
+    public Flash(Color[] colors) {
+        this(colors, DEFAULT_PERIOD);
     }
-    public Flash(StateColor color1, StateColor color2){
-        this(color1.getRed(), color2.getRed(), color1.getGreen(), color2.getGreen(), color1.getBlue(), color2.getBlue());
-    }
-    public Flash(int red1, int red2, int green1, int green2, int blue1, int blue2, long period) {
-        _red1 = red1;
-        _red2 = red2;
-        _green1 = green1;
-        _green2 = green2;
-        _blue1 = blue1;
-        _blue2 = blue2;
+    
+    public Flash(Color[] colors, long period) {
+        _colors = colors;
         _period = period;
     }
     
     protected void initialize() {
         TimerTask task = new TimerTask(){
-            boolean one;
+            int index;
             public void run() {
-                if (one){
-                    Robot.ledStrip.setColor(_red1, _blue1, _green1);
-                }
-                else{
-                    Robot.ledStrip.setColor(_red2, _blue2, _green2);
-                }
-                one = !one;
+                Robot.ledStrip.setColor(_colors[index].getRed(), _colors[index].getGreen(), _colors[index].getBlue());
+                index = (index + 1) % _colors.length;
             }
         };
         _flasher.schedule(task, 0L, _period);

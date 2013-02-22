@@ -8,9 +8,9 @@ package storm2013.commands.LEDcommands;
  *
  * @author evan1026
  */
-public class SetColorOnTarget extends SetColor{
+public class SetModeFiring extends SetColor {
     
-    public SetColorOnTarget(){
-        super(StateColor.ON_TARGET);
+    public SetModeFiring(){
+        super(Color.FIRING);
     }
 }

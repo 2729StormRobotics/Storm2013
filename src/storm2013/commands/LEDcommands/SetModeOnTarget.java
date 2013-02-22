@@ -8,9 +8,9 @@ package storm2013.commands.LEDcommands;
  *
  * @author evan1026
  */
-public class SetColorSpunUp extends SetColor {
+public class SetModeOnTarget extends SetColor{
     
-    public SetColorSpunUp(){
-        super(StateColor.SPUN_UP);
+    public SetModeOnTarget(){
+        super(Color.ON_TARGET);
     }
 }

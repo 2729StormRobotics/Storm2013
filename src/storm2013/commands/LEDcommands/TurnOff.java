@@ -11,6 +11,6 @@ package storm2013.commands.LEDcommands;
 public class TurnOff extends SetColor {
     
     public TurnOff(){
-        super(StateColor.OFF);
+        super(Color.OFF);
     }
 }

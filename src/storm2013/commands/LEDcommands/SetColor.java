@@ -23,7 +23,7 @@ public class SetColor extends Command {
         _blue = blue;
     }
     
-    public SetColor(StateColor color){
+    public SetColor(Color color){
         _red = color.getRed();
         _green = color.getGreen();
         _blue = color.getBlue();

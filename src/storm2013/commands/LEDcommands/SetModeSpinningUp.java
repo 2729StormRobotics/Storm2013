@@ -8,9 +8,9 @@ package storm2013.commands.LEDcommands;
  *
  * @author evan1026
  */
-public class SetColorIdle extends SetColor {
+public class SetModeSpinningUp extends SetColor {
     
-    public SetColorIdle(){
-        super(StateColor.IDLE);
+    public SetModeSpinningUp(){
+        super(Color.SPINNING_UP);
     }
 }

@@ -8,9 +8,9 @@ package storm2013.commands.LEDcommands;
  *
  * @author evan1026
  */
-public class SetColorMoving extends SetColor {
+public class SetModeMoving extends SetColor {
     
-    public SetColorMoving(){
-        super(StateColor.MOVING);
+    public SetModeMoving(){
+        super(Color.MOVING);
     }
 }

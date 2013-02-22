@@ -3,6 +3,7 @@ package storm2013;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.TargetPIDTilt;
 import storm2013.commands.PrintAutonomousMove;
@@ -50,7 +51,8 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
     
     private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE),
-                     shootJoystick = new Joystick(RobotMap.PORT_JOYSTICK_SHOOT);
+                     shootJoystick = new Joystick(RobotMap.PORT_JOYSTICK_SHOOT),
+                     debugJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DEBUG);
     
     private Button recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_PRINT_ENCODER),
                    slowModeButton      = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SLOW),
@@ -61,7 +63,25 @@ public class OI {
                    target2ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_2PT),
                    target3ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_3PT),
                    tomahawkButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK),
-                   tomahawkBackButton  = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK_BACK);
+                   tomahawkBackButton  = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK_BACK),
+                   tilterSafety1Button = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TILTER_SAFETY_1),
+                   tilterSafety2Button = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TILTER_SAFETY_2),
+                   tilterSafetyButton  = new Button() {
+                       public boolean get() {
+                           return tilterSafety1Button.get() && tilterSafety2Button.get();
+                       }
+                   },
+                   nextDistanceButton  = new Button() {
+                       public boolean get() {
+                           return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) > 0;
+                       }
+                   },
+                   prevDistanceButton  = new Button() {
+                       public boolean get() {
+                           return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) < 0;
+                       }
+                   },
+                   controlShootButton = new JoystickButton(debugJoystick,RobotMap.JOYDEBUG_AXIS_SHOOTSPEED);
     
     public OI() {
         shootButton.whenPressed(new Shoot());
@@ -82,6 +102,65 @@ public class OI {
         target3ptTurnButton.whileHeld(turn3ptAim);
         target2ptTiltButton.whileHeld(tilt2ptAim);
         target3ptTiltButton.whileHeld(tilt3ptAim);
+        
+        tilterSafetyButton.whileHeld(new Command() {
+            {
+                requires(Robot.tilter);
+            }
+            protected void initialize() {}
+            protected void execute() {
+                Robot.tilter.disableSafety();
+            }
+            protected boolean isFinished() {
+                return false;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
+        
+        nextDistanceButton.whenPressed(new Command() {
+            {
+                requires(Robot.vision);
+            }
+            protected void initialize() {}
+            protected void execute() {
+                Robot.vision.nextDistance();
+            }
+            protected boolean isFinished() {
+                return false;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
+        prevDistanceButton.whenPressed(new Command() {
+            {
+                requires(Robot.vision);
+            }
+            protected void initialize() {}
+            protected void execute() {
+                Robot.vision.prevDistance();
+            }
+            protected boolean isFinished() {
+                return false;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
+        
+        controlShootButton.whileHeld(new Command() {
+            {
+                requires(Robot.shooter);
+            }
+            protected void initialize() {}
+            protected void execute() {
+                Robot.shooter.setSetpoint((-debugJoystick.getRawAxis(RobotMap.JOYDEBUG_AXIS_SHOOTSPEED)+1)/2.0*3400);
+            }
+            protected boolean isFinished() {
+                return false;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
     }
     
     private double _zeroDeadzone(double joyValue,double dead) {

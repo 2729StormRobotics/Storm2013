@@ -17,20 +17,30 @@ public class LimitSwitchedMotor implements SpeedController {
     private final boolean      _topOn,_bottomOn;
     private double _value;
     private Timer _bgThread = new Timer();
+    private boolean _limitingEnabled = true;
+    private Timer _safetyOnTimer = new Timer();
     
     private TimerTask _bgTask = new TimerTask() {
         public void run() {
             double output = _value;
-            if(output > 0 && _top != null) {
-                if(_top.get() == _topOn) {
-                    output = 0;
-                }
-            } else if(output < 0 && _bottom != null) {
-                if(_bottom.get() == _bottomOn) {
-                    output = 0;
+            if(_limitingEnabled) {
+                if(output > 0 && _top != null) {
+                    if(_top.get() == _topOn) {
+                        output = 0;
+                    }
+                } else if(output < 0 && _bottom != null) {
+                    if(_bottom.get() == _bottomOn) {
+                        output = 0;
+                    }
                 }
             }
             _controller.set(output);
+        }
+    };
+    
+    private TimerTask _resetSafety = new TimerTask() {
+        public void run() {
+            _limitingEnabled = true;
         }
     };
 
@@ -94,4 +104,13 @@ public class LimitSwitchedMotor implements SpeedController {
         set(output);
     }
     
+    /**
+     * Disables limiting temporarily. If this is not called for 1/10 of a second,
+     * limiting is re-enabled.
+     */
+    public void disableSafety() {
+        _safetyOnTimer.cancel();
+        _limitingEnabled = false;
+        _safetyOnTimer.schedule(_resetSafety, (long)(0.1*1000));
+    }
 }

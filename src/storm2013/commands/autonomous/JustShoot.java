@@ -2,10 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package storm2013.commands;
+package storm2013.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitForChildren;
+import storm2013.commands.LowerTilter;
+import storm2013.commands.Shoot;
+import storm2013.commands.SpinDown;
+import storm2013.commands.TargetPIDTilt;
+import storm2013.commands.TargetPIDTurn;
 import storm2013.utilities.Target;
 
 /**

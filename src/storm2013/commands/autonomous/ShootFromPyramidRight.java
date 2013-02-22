@@ -1,7 +1,15 @@
-package storm2013.commands;
+package storm2013.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitForChildren;
+import storm2013.commands.DoNothing;
+import storm2013.commands.EncoderDrive;
+import storm2013.commands.GyroTurn;
+import storm2013.commands.LowerTilter;
+import storm2013.commands.Shoot;
+import storm2013.commands.SpinDown;
+import storm2013.commands.TargetPIDTilt;
+import storm2013.commands.TargetPIDTurn;
 import storm2013.utilities.Target;
 
 /**

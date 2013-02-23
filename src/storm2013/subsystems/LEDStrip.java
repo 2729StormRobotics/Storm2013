@@ -2,7 +2,7 @@ package storm2013.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import java.util.Stack;
+import storm2013.commands.LEDcommands.SetModeMoving;
 import storm2013.utilities.LED;
 
 /**
@@ -29,7 +29,9 @@ public class LEDStrip extends Subsystem {
      * Does nothing here, but it would set the command to be run when no other command
      * is using the subsystem.
      */
-    protected void initDefaultCommand() {}
+    protected void initDefaultCommand() {
+        setDefaultCommand(new SetModeMoving());
+    }
     
     public void setColor(int red, int green, int blue){
         _red.set(red);

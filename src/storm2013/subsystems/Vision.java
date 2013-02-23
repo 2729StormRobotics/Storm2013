@@ -35,23 +35,32 @@ public class Vision extends Subsystem {
     private int _currIndex = 0;
     
     public Vision() {
-        setDistance(0);
+        _setDistance(0);
     }
     
 
     protected void initDefaultCommand() {}
     
-    private void setDistance(int index) {
+    public void setDistance(Distance distance) {
+        for(int i=0;i<_distances.length;++i) {
+            if(_distances[i] == distance) {
+                _setDistance(i);
+                return;
+            }
+        }
+    }
+    
+    private void _setDistance(int index) {
         index = (index%_distances.length + _distances.length)%_distances.length;
         _currIndex = index;
         SmartDashboard.putString("Distance", _distances[index].getValue());
     }
     
     public void nextDistance() {
-        setDistance(_currIndex+1);
+        _setDistance(_currIndex+1);
     }
     
     public void prevDistance() {
-        setDistance(_currIndex-1);
+        _setDistance(_currIndex-1);
     }
 }

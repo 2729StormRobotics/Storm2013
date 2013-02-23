@@ -16,11 +16,12 @@ public class SpinDown extends Command {
         requires(Robot.shooter);
     }
     
-    /**
+    /**5
      * Initializes the {@link Command}
      */
     protected void initialize() {
         Robot.shooter.getPIDController().setSetpoint(0);
+        Robot.shooter.setMotorValRaw(0);
     }
 
     /**

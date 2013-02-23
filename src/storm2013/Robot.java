@@ -1,7 +1,6 @@
 package storm2013;
 
 import storm2013.commands.autonomous.JustShoot;
-import storm2013.commands.autonomous.ShootFromPyramidRight;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -9,6 +8,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.*;
+import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
+import storm2013.commands.autonomous.PyramidShoot;
 import storm2013.subsystems.DriveTrain;
 import storm2013.subsystems.LEDStrip;
 import storm2013.subsystems.Shooter;
@@ -50,13 +51,12 @@ public class Robot extends IterativeRobot {
         ledStrip   = new LEDStrip();
         vision     = new Vision();
         oi         = new OI();
-        ledStrip   = new LEDStrip();
-
+        
         loadSensor = new LoadSensor(2);
         
-        autonomiceNames = new String[]{"Do Nothing", "Shoot from pyramid right", "Just shoot","Cycle LEDs"};
+        autonomiceNames = new String[]{"Rainbow Dance Party!", "Just shoot", "Shoot through Pyramid"};
 
-        autonomice = new Command[]{new DoNothing(), new ShootFromPyramidRight(), new JustShoot(),new CycleLEDs()};
+        autonomice = new Command[]{new SetModeRainbowDanceParty(), new JustShoot(), new PyramidShoot()};
 
         System.out.println(autonomice.length);
         for (int i = 0; i < autonomice.length; ++i) {
@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Which Autonomouse?", chooser);
 
         LiveWindow.addSensor("Load Sensor", "Load Sensor 1", loadSensor);
-//        SmartDashboard.putData("Shooter PID",shooter.getPIDController());
+        SmartDashboard.putData("Shooter PID",shooter.getPIDController());
         
         // Send sensor info over to the dashboard
         new Command("Sensor feedback") {

@@ -12,7 +12,7 @@ import storm2013.Robot;
  */
 public class SetModeMoving extends FlashOnAndOff {
     
-    private static final double PERIOD_SCALAR = 1;
+    private static final double PERIOD_SCALAR = 0.05;
     
     public SetModeMoving(){
         super(Color.MOVING);
@@ -21,7 +21,12 @@ public class SetModeMoving extends FlashOnAndOff {
     public void execute(){
         super.execute();
         
-        double speedVal = 1/Math.abs((Robot.driveTrain.getLeftSpeed() + Robot.driveTrain.getRightSpeed()) / 2);
+        double frequency = (Math.abs(Robot.driveTrain.getLeftSpeed()) + Math.abs(Robot.driveTrain.getRightSpeed())) / 2;
+        double speedVal = 1/frequency;
+        if(frequency == 0) {
+            speedVal = -1;
+        }
+        
         setPeriod(speedVal * PERIOD_SCALAR);
     }
 }

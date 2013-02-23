@@ -13,4 +13,8 @@ public class SetModeFiring extends SetColor {
     public SetModeFiring(){
         super(Color.FIRING);
     }
+    
+    public boolean isFinished() {
+        return false;
+    }
 }

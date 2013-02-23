@@ -2,6 +2,7 @@ package storm2013.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
+import storm2013.commands.LEDcommands.SetModeFiring;
 
 /**
  * Spins the tomahawk 1 revolution by using a limit switch.
@@ -9,6 +10,7 @@ import storm2013.Robot;
  */
 public class SpinTomahawk extends Command {
     
+    private final Command lightCommand = new SetModeFiring();
     private final boolean _forward;
     private boolean _hasChanged;
     
@@ -26,6 +28,7 @@ public class SpinTomahawk extends Command {
     protected void initialize() {
         Robot.tomahawk.move(_forward);
         _hasChanged = false;
+        lightCommand.start();
     }
 
     /**
@@ -50,6 +53,7 @@ public class SpinTomahawk extends Command {
      */
     protected void end() {
         Robot.tomahawk.stop();
+        lightCommand.cancel();
     }
 
     /**

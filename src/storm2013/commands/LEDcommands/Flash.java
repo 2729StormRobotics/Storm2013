@@ -33,6 +33,7 @@ public class Flash extends Command {
     public Flash(Color[] colors, double period) {
         _colors = colors;
         _period = period;
+        requires(Robot.ledStrip);
     }
     
     protected void initialize() {

@@ -109,7 +109,7 @@ public class LimitSwitchedMotor implements SpeedController {
      * limiting is re-enabled.
      */
     public void disableSafety() {
-        _safetyOnTimer.cancel();
+        _resetSafety.cancel();
         _limitingEnabled = false;
         _safetyOnTimer.schedule(_resetSafety, (long)(0.1*1000));
     }

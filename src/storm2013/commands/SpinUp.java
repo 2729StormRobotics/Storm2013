@@ -3,6 +3,7 @@ package storm2013.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
+import storm2013.commands.LEDcommands.SetModeSpinningUp;
 
 /**
  * Spins up the firing wheel.
@@ -11,6 +12,7 @@ import storm2013.Robot;
 public class SpinUp extends Command {
     
     private Timer _onTargetTimer = new Timer();
+    private final Command lightCommand = new SetModeSpinningUp();
 
     /**
      * Creates a new instance blahdy blahdy blah.
@@ -27,6 +29,7 @@ public class SpinUp extends Command {
         Robot.shooter.getPIDController().enable();
         _onTargetTimer.start();
         _onTargetTimer.reset();
+        lightCommand.start();
     }
 
     /**
@@ -49,6 +52,7 @@ public class SpinUp extends Command {
      * Called when {@link Command} is done
      */
     protected void end() {
+        lightCommand.cancel();
     }
 
     /**

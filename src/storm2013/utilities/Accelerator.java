@@ -17,7 +17,9 @@ public class Accelerator implements SpeedController {
         public void run() {
             double sign = _negated ? -1 : 1;
             double newSpeed = _controller.get() + sign*_rate * _period;
-            if (newSpeed < _minSpeed) {
+            if(Math.abs(newSpeed) < 0.15 && ((sign*_rate < 0) != (newSpeed < 0))) {
+                _controller.set(0);
+            } else if (newSpeed < _minSpeed) {
                 _controller.set(_minSpeed);
             } else if(newSpeed > _maxSpeed) {
                 _controller.set(_maxSpeed);

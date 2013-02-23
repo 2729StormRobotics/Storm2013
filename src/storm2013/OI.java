@@ -81,7 +81,7 @@ public class OI {
                            return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) < 0;
                        }
                    },
-                   controlShootButton = new JoystickButton(debugJoystick,RobotMap.JOYDEBUG_AXIS_SHOOTSPEED);
+                   controlShootButton = new JoystickButton(debugJoystick,RobotMap.JOYDEBUG_BUTTON_CONTROLSHOOT);
     
     public OI() {
         shootButton.whenPressed(new Shoot());
@@ -103,31 +103,31 @@ public class OI {
         target2ptTiltButton.whileHeld(tilt2ptAim);
         target3ptTiltButton.whileHeld(tilt3ptAim);
         
-        tilterSafetyButton.whileHeld(new Command() {
-            {
-                requires(Robot.tilter);
-            }
-            protected void initialize() {}
-            protected void execute() {
-                Robot.tilter.disableSafety();
-            }
-            protected boolean isFinished() {
-                return false;
-            }
-            protected void end() {}
-            protected void interrupted() {}
-        });
+//        tilterSafetyButton.whileHeld(new Command() {
+//            {
+//                requires(Robot.tilter);
+//            }
+//            protected void initialize() {}
+//            protected void execute() {
+//                Robot.tilter.disableSafety();
+//            }
+//            protected boolean isFinished() {
+//                return false;
+//            }
+//            protected void end() {}
+//            protected void interrupted() {}
+//        });
         
         nextDistanceButton.whenPressed(new Command() {
             {
                 requires(Robot.vision);
             }
-            protected void initialize() {}
-            protected void execute() {
+            protected void initialize() {
                 Robot.vision.nextDistance();
             }
+            protected void execute() {}
             protected boolean isFinished() {
-                return false;
+                return true;
             }
             protected void end() {}
             protected void interrupted() {}
@@ -136,10 +136,10 @@ public class OI {
             {
                 requires(Robot.vision);
             }
-            protected void initialize() {}
-            protected void execute() {
+            protected void initialize() {
                 Robot.vision.prevDistance();
             }
+            protected void execute() {}
             protected boolean isFinished() {
                 return false;
             }
@@ -153,7 +153,7 @@ public class OI {
             }
             protected void initialize() {}
             protected void execute() {
-                Robot.shooter.setSetpoint((-debugJoystick.getRawAxis(RobotMap.JOYDEBUG_AXIS_SHOOTSPEED)+1)/2.0*3400);
+                Robot.shooter.setSetpoint((-debugJoystick.getRawAxis(RobotMap.JOYDEBUG_AXIS_SHOOTSPEED)+1)/2.0*4000);
             }
             protected boolean isFinished() {
                 return false;

@@ -21,12 +21,11 @@ public class SetColor extends Command {
         _red = red;
         _green = green;
         _blue = blue;
+        requires(Robot.ledStrip);
     }
     
     public SetColor(Color color){
-        _red = color.getRed();
-        _green = color.getGreen();
-        _blue = color.getBlue();
+        this(color.getRed(),color.getGreen(),color.getBlue());
     }
     
     protected void initialize() {

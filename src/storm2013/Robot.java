@@ -86,6 +86,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
+        SmartDashboard.putBoolean("Enabled", true);
         if (teleop != null) {
             teleop.cancel();
         }
@@ -100,6 +101,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+        SmartDashboard.putBoolean("Enabled", true);
         if (autonomouse != null) {
             autonomouse.cancel();
         }
@@ -112,11 +114,16 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
+    public void testInit() {
+        SmartDashboard.putBoolean("Enabled", false);
+    }
+
     public void testPeriodic() {
         LiveWindow.run();
     }
 
     public void disabledInit() {
+        SmartDashboard.putBoolean("Enabled", false);
         if(autonomouse != null) {
             autonomouse.cancel();
         }

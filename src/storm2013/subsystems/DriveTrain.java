@@ -113,4 +113,12 @@ public class DriveTrain extends Subsystem{
     public double getGyroAngle(){
         return _gyro.getAngle();
     }
+    
+    public double getLeftSpeed(){
+        return _left.get();
+    }
+    
+    public double getRightSpeed(){
+        return _right.get();
+    }
 }

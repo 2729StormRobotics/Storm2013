@@ -16,10 +16,10 @@ public class Flash extends Command {
     
     public static final double DEFAULT_PERIOD = 1; //once a second
     
-    private Timer _timer = new Timer();
-    private Color[] _colors;
-    private double  _period;
-    private int index;
+    protected Timer _timer = new Timer();
+    protected Color[] _colors;
+    protected double  _period;
+    protected int index;
 
     public Flash(Color[] colors) {
         this(colors, DEFAULT_PERIOD);
@@ -40,7 +40,6 @@ public class Flash extends Command {
     }
 
     protected void execute() {
-        
         double time = _timer.get();
         
         if(time >= _period){
@@ -62,4 +61,10 @@ public class Flash extends Command {
         end();
     }
     
+    public void setPeriod(double period){
+        _period = period;
+    }
+    public double getPeriod(){
+        return _period;
+    }
 }

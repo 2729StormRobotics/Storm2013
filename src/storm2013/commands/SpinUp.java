@@ -10,15 +10,26 @@ import storm2013.commands.LEDcommands.SetModeSpinningUp;
  * @author evan1026
  */
 public class SpinUp extends Command {
+    public static final double SPEED_NORMAL    = 3400,
+                               SPEED_FULLCOURT = 4000; // tentative
     
-    private Timer _onTargetTimer = new Timer();
+    private final Timer _onTargetTimer = new Timer();
     private final Command lightCommand = new SetModeSpinningUp();
+    private final double _speed;
 
     /**
      * Creates a new instance blahdy blahdy blah.
      */
-    public SpinUp(){
+    public SpinUp(double speed){
         requires(Robot.shooter);
+        _speed = speed;
+    }
+    
+    /**
+     * 
+     */
+    public SpinUp() {
+        this(SPEED_NORMAL);
     }
     
     /**

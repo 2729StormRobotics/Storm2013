@@ -10,6 +10,7 @@ import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
 import storm2013.commands.SpinTomahawk;
+import storm2013.commands.SpinUp;
 import storm2013.commands.TargetPIDTurn;
 import storm2013.utilities.Target;
 
@@ -59,18 +60,12 @@ public class OI {
                    target2ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),
                    target3ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_3PT),
                    shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),
+                   shootFullButton     = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT_FULLCOURT),
                    spinDownButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN),
                    target2ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_2PT),
                    target3ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_3PT),
                    tomahawkButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK),
                    tomahawkBackButton  = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK_BACK),
-                   tilterSafety1Button = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TILTER_SAFETY_1),
-                   tilterSafety2Button = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TILTER_SAFETY_2),
-                   tilterSafetyButton  = new Button() {
-                       public boolean get() {
-                           return tilterSafety1Button.get() && tilterSafety2Button.get();
-                       }
-                   },
                    nextDistanceButton  = new Button() {
                        public boolean get() {
                            return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) > 0;
@@ -85,6 +80,7 @@ public class OI {
     
     public OI() {
         shootButton.whenPressed(new Shoot());
+        shootFullButton.whenPressed(new Shoot(SpinUp.SPEED_FULLCOURT));
         spinDownButton.whenPressed(new SpinDown());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         tomahawkButton.whenPressed(new SpinTomahawk(true));
@@ -102,21 +98,6 @@ public class OI {
         target3ptTurnButton.whileHeld(turn3ptAim);
         target2ptTiltButton.whileHeld(tilt2ptAim);
         target3ptTiltButton.whileHeld(tilt3ptAim);
-        
-//        tilterSafetyButton.whileHeld(new Command() {
-//            {
-//                requires(Robot.tilter);
-//            }
-//            protected void initialize() {}
-//            protected void execute() {
-//                Robot.tilter.disableSafety();
-//            }
-//            protected boolean isFinished() {
-//                return false;
-//            }
-//            protected void end() {}
-//            protected void interrupted() {}
-//        });
         
         nextDistanceButton.whenPressed(new Command() {
             {
@@ -153,7 +134,7 @@ public class OI {
             }
             protected void initialize() {}
             protected void execute() {
-                Robot.shooter.setSetpoint((-debugJoystick.getRawAxis(RobotMap.JOYDEBUG_AXIS_SHOOTSPEED)+1)/2.0*4000);
+                Robot.shooter.setSetpoint((-debugJoystick.getRawAxis(RobotMap.JOYDEBUG_AXIS_SHOOTSPEED)+1)/2.0*6000);
             }
             protected boolean isFinished() {
                 return false;

@@ -37,12 +37,16 @@ public class Shoot extends CommandGroup {
     /**
      * Constructor stuff.
      */
-    public Shoot() {
+    public Shoot(double speed) {
         addSequential(new _EndTomahawk());
-        addSequential(new SpinUp());
+        addSequential(new SpinUp(speed));
         addSequential(new _BeginTomahawk());
         addSequential(new SpinTomahawk(true));
         addSequential(new _EndTomahawk());
+    }
+    
+    public Shoot() {
+        this(SpinUp.SPEED_NORMAL);
     }
 
     protected void interrupted() {

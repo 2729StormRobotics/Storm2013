@@ -51,7 +51,10 @@ public class Vision extends Subsystem {
     }
     
     private void _setDistance(int index) {
-        index = (index%_distances.length + _distances.length)%_distances.length;
+        index = index%_distances.length;
+        if(index < 0) {
+            index += _distances.length;
+        }
         _currIndex = index;
         SmartDashboard.putString("Distance", _distances[index].getValue());
     }

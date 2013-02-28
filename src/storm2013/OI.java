@@ -68,12 +68,12 @@ public class OI {
                    tomahawkBackButton  = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK_BACK),
                    nextDistanceButton  = new Button() {
                        public boolean get() {
-                           return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) > 0;
+                           return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) > 0.1;
                        }
                    },
                    prevDistanceButton  = new Button() {
                        public boolean get() {
-                           return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) < 0;
+                           return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) < -0.1;
                        }
                    },
                    controlShootButton = new JoystickButton(debugJoystick,RobotMap.JOYDEBUG_BUTTON_CONTROLSHOOT);

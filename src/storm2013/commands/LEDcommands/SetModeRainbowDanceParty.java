@@ -14,6 +14,6 @@ public class SetModeRainbowDanceParty extends Flash {
                                            new Color(0,255,255), new Color(0,0,255), new Color(255,0,255)};
     
     public SetModeRainbowDanceParty(){
-        super(colors);
+        super(colors,1.0/20);
     }
 }

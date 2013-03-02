@@ -18,7 +18,7 @@ public class SetModeSpinningUp extends FlashOnAndOff {
     private static final double PERIOD_SCALAR = 1.0/2500;
 
     public void execute() {
-        setPeriod(Robot.shooter.getPIDController().getError()*PERIOD_SCALAR);
+        setPeriod(Math.abs(Robot.shooter.getPIDController().getError())*PERIOD_SCALAR);
         super.execute();
     }
     

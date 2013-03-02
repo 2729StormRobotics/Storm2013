@@ -27,7 +27,8 @@ public class SetModeMoving extends Command {
         if(rate == 0) {
             _val = Math.PI/2;
         } else {
-            _val += rate*_timer.get()/20;
+            _val += rate*_timer.get()/PERIOD_SCALAR;
+            _timer.reset();
             _val %= Math.PI*2;
         }
         double scalar = (Math.sin(_val)+1)/2;

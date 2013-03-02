@@ -27,6 +27,8 @@ public class JustShoot extends CommandGroup {
         addSequential(new Shoot());
         addSequential(new Shoot());
         addSequential(new Shoot());
+        addSequential(new Shoot());
+        addSequential(new Shoot());
         addSequential(new SpinDown());
     }
 }

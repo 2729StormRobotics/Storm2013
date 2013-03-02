@@ -17,7 +17,7 @@ public class TargetPIDTurn extends TargetPIDCommand {
     public TargetPIDTurn(Target target, double timeout, boolean continuous){
         super(target,Target.Axis.X,timeout,continuous,
               0.5, 0.1, 1, // P, I, D
-              4,0.5,1.0/20);
+              4,0.7,1.0/20);
         requires(Robot.driveTrain);
     }
     

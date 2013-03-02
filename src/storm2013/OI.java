@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
 import storm2013.commands.TargetPIDTilt;
 import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.Shoot;
@@ -57,6 +58,7 @@ public class OI {
     
     private Button recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_PRINT_ENCODER),
                    slowModeButton      = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SLOW),
+                   rainbowButton       = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_RAINBOW),
                    target2ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),
                    target3ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_3PT),
                    shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),
@@ -142,6 +144,7 @@ public class OI {
             protected void end() {}
             protected void interrupted() {}
         });
+        rainbowButton.whileHeld(new SetModeRainbowDanceParty());
     }
     
     private double _zeroDeadzone(double joyValue,double dead) {

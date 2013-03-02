@@ -36,7 +36,7 @@ public class SpinUp extends Command {
      * Initializes {@link Command}
      */
     protected void initialize() {
-        Robot.shooter.getPIDController().setSetpoint(3400);
+        Robot.shooter.getPIDController().setSetpoint(_speed);
         Robot.shooter.getPIDController().enable();
         _onTargetTimer.start();
         _onTargetTimer.reset();

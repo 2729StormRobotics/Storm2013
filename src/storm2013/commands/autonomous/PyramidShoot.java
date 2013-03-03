@@ -26,12 +26,13 @@ import storm2013.utilities.Target;
 public class PyramidShoot extends CommandGroup {
     
     public PyramidShoot() {
-        addParallel(new Command() {
+        addSequential(new Command() {
             {
                 requires(Robot.vision);
             }
             protected void initialize() {
                 Robot.vision.setDistance(Vision.Distance.CENTER);
+                new SetColor(0,0,255).start();
             }
             protected void execute() {}
             protected boolean isFinished() {
@@ -40,24 +41,30 @@ public class PyramidShoot extends CommandGroup {
             protected void end() {}
             protected void interrupted() {}
         });
-        addParallel(new SetColor(0,0,255));
-        addSequential(new EncoderDrive(-1606.0, 0.6));
-        addSequential(new LowerTilter(),1.5);
-        addParallel(new Command() {
+        addSequential(new Command() {
             {
-                requires(Robot.ledStrip);
+                requires(Robot.driveTrain);
             }
-            protected void initialize() {}
-            protected void execute() {}
+            protected void initialize() {
+                Robot.driveTrain.clearEncoder();
+            }
+            protected void execute() {
+                Robot.driveTrain.tankDrive(-0.6, -0.6);
+            }
             protected boolean isFinished() {
-                return true;
+                return Robot.driveTrain.getLeftDistance() < -1476;
             }
-            protected void end() {}
-            protected void interrupted() {}
+            protected void end() {
+                Robot.driveTrain.tankDrive(0, 0);
+            }
+            protected void interrupted() {
+                end();
+            }
         });
-        addParallel(new TargetPIDTilt(Target.ThreePT, 1.0, false));
-        addParallel(new TargetPIDTurn(Target.ThreePT,1.0,false));
-        addSequential(new WaitForChildren());
+        addSequential(new LowerTilter(),1.5);
+        addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
+//        addParallel(new TargetPIDTurn(Target.ThreePT,1.0,false));
+//        addSequential(new WaitForChildren());
         addSequential(new Shoot());
         addSequential(new Shoot());
         addSequential(new Shoot());

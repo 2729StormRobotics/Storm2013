@@ -13,7 +13,7 @@ import storm2013.Robot;
  * @author evan1026
  */
 public class SetModeMoving extends Command {
-    private static final double PERIOD_SCALAR = 0.05;
+    private static final double PERIOD_SCALAR = 0.1;
     
     private Timer _timer = new Timer();
     private double _val = 0;
@@ -28,12 +28,14 @@ public class SetModeMoving extends Command {
             _val = Math.PI/2;
         } else {
             _val += rate*_timer.get()/PERIOD_SCALAR;
-            _timer.reset();
             _val %= Math.PI*2;
         }
+        _timer.reset();
         double scalar = (Math.sin(_val)+1)/2;
         if(scalar <= 0.25) {
             scalar = 0;
+        } else {
+            scalar = (scalar-0.25)/0.75;
         }
         int color = (int)(scalar*255);
         Robot.ledStrip.setColor(color,color,color);

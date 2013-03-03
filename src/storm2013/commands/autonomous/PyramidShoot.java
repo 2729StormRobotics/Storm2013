@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.WaitForChildren;
 import storm2013.Robot;
 import storm2013.commands.DoNothing;
 import storm2013.commands.EncoderDrive;
+import storm2013.commands.LEDcommands.SetColor;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
@@ -39,8 +40,21 @@ public class PyramidShoot extends CommandGroup {
             protected void end() {}
             protected void interrupted() {}
         });
+        addParallel(new SetColor(0,0,255));
         addSequential(new EncoderDrive(-1606.0, 0.6));
         addSequential(new LowerTilter(),1.5);
+        addParallel(new Command() {
+            {
+                requires(Robot.ledStrip);
+            }
+            protected void initialize() {}
+            protected void execute() {}
+            protected boolean isFinished() {
+                return true;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
         addParallel(new TargetPIDTilt(Target.ThreePT, 1.0, false));
         addParallel(new TargetPIDTurn(Target.ThreePT,1.0,false));
         addSequential(new WaitForChildren());

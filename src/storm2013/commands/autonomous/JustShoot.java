@@ -37,9 +37,9 @@ public class JustShoot extends CommandGroup {
             protected void interrupted() {}
         });
         addSequential(new LowerTilter(),1);
-        addParallel(new TargetPIDTilt(Target.ThreePT, 1.0, false));
+        addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
 //        addParallel(new TargetPIDTurn(Target.ThreePT,1.0,false));
-        addSequential(new WaitForChildren());
+//        addSequential(new WaitForChildren());
         addSequential(new Shoot());
         addSequential(new Shoot());
         addSequential(new Shoot());

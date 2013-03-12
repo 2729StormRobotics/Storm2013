@@ -12,6 +12,8 @@ import storm2013.commands.LEDcommands.SetModeSpinningUp;
 public class SpinUp extends Command {
     public static final double SPEED_NORMAL    = 3400,
                                SPEED_FULLCOURT = 4000; // tentative
+    private static final double SPEED_PID_MIN    = 2500,
+                                MOTORVAL_PID_MIN = -0.6; // TODO: configure this to match
     
     private final Timer _onTargetTimer = new Timer();
     private final Command lightCommand = new SetModeSpinningUp();
@@ -49,6 +51,13 @@ public class SpinUp extends Command {
     protected void execute() {
         if(!Robot.shooter.onTarget()) {
             _onTargetTimer.reset();
+        }
+        if(Robot.shooter.getSpeedRpm() < SPEED_PID_MIN) {
+            Robot.shooter.disable();
+            Robot.shooter.setMotorValRaw(-1);
+        } else if(!Robot.shooter.isEnabled()) {
+            Robot.shooter.setMotorValRaw(MOTORVAL_PID_MIN);
+            Robot.shooter.enable();
         }
     }
 

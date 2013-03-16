@@ -4,14 +4,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
- * @author ginto
+ * Subsystem providing an interface with StormCV to control the crosshair
+ * location.
  */
 public class Vision extends Subsystem {
+    /**
+     * These are the distances we've calibrated crosshair locations for.
+     */
     public static final class Distance {
+        /** From the back of the pyramid forward. */
         public static final Distance NEAR          = new Distance("Near");
+        /** Between the auto lines (at an angle). */
         public static final Distance CENTER        = new Distance("Center line");
+        /** At the opponent auto line (at an angle). */
         public static final Distance OPPONENT_AUTO = new Distance("Opponent Auto");
+        /** From the feeder station. */
         public static final Distance FEEDER        = new Distance("Feeder");
         
         private String _value;
@@ -41,6 +48,7 @@ public class Vision extends Subsystem {
 
     protected void initDefaultCommand() {}
     
+    /** Set distance (manually, no cycling). */
     public void setDistance(Distance distance) {
         for(int i=0;i<_distances.length;++i) {
             if(_distances[i] == distance) {
@@ -59,10 +67,12 @@ public class Vision extends Subsystem {
         SmartDashboard.putString("Distance", _distances[index].getValue());
     }
     
+    /** Cycle through distances forward (near -> feeder). */
     public void nextDistance() {
         _setDistance(_currIndex+1);
     }
     
+    /** Cycle through distances backward (feeder -> near). */
     public void prevDistance() {
         _setDistance(_currIndex-1);
     }

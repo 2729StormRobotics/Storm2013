@@ -3,30 +3,21 @@ package storm2013.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
 
-/**
- * Prints out values based on teleoperated movement that can be used for an
- * autonomouse.
- * @author evan1026
- */
+/** Prints out code to be used in a CommandGroup for autonomous movement. */
 public class PrintAutonomousMove extends Command {
-
     private double _speed;
     private double _waitTime;
     
     /**
      * Constructor and such.
-     * @param speed The speed to move at when doing these autonomously.
-     * @param waitTime The amount of time to wait in between different movement commands.
+     * @param speed    The speed to use for output.
+     * @param waitTime The time to wait between actions.
      */
     public PrintAutonomousMove(double speed,double waitTime){
         _speed = speed;
         _waitTime = waitTime;
     }
     
-    /**
-     * Initializes the {@link Command}. This actually does all of the logic, and
-     * execute does nothing.
-     */
     protected void initialize() {
         String out = "addSequential(new ";
         double left = Robot.driveTrain.getLeftDistance();
@@ -50,32 +41,12 @@ public class PrintAutonomousMove extends Command {
         
         Robot.driveTrain.clearEncoder();
     }
-
-    /**
-     * Does nothing.
-     */
-    protected void execute() {
-    }
-
-    /**
-     * Tells the robot to end the {@link Command}.
-     * @return true, so the {@link Command} ends immediately.
-     */
+    protected void execute() {}
     protected boolean isFinished() {
         return true;
     }
-
-    /**
-     * Does nothing.
-     */
-    protected void end() {
-    }
-
-    /**
-     * Calls {@link #end()}
-     */
+    protected void end() {}
     protected void interrupted() {
         end();
     }
-    
 }

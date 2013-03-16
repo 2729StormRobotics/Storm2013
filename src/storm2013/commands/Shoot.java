@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * Spins up the shooter and spins the tomahawk.
- * @author Joe
+ * Spins up the shooter, then spins the tomahawk once when it is up to speed. If
+ * it is interrupted partway through spinning the tomahawk, it will spawn
+ * another {@link SpinTomahawk} to finish the rotation.
  */
 public class Shoot extends CommandGroup {
-    
     private boolean _spinningTomahawk = false;
     
     private class _BeginTomahawk extends Command {
@@ -34,9 +34,6 @@ public class Shoot extends CommandGroup {
         protected void interrupted() {}
     };
     
-    /**
-     * Constructor stuff.
-     */
     public Shoot(double speed) {
         addSequential(new _EndTomahawk());
         addSequential(new SpinUp(speed));

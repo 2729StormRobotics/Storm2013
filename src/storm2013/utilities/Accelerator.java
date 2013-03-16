@@ -1,5 +1,6 @@
 package storm2013.utilities;
 
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedController;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,7 +12,6 @@ import java.util.TimerTask;
  * @author Joe
  */
 public class Accelerator implements SpeedController {
-
     private class _BgTask extends TimerTask {
 
         public void run() {
@@ -38,21 +38,12 @@ public class Accelerator implements SpeedController {
     double _minSpeed = -1, _maxSpeed = 1;
     boolean _negated = false;
 
-    /**
-     * It's a constructor.
-     * @param controller The {@link SpeedController} to use as output.
-     * @param negated True if the motor values should be negated.
-     */
+    /** @param negated true = negate the set rate */
     public Accelerator(SpeedController controller,boolean negated) {
         this(controller, DEFAULT_PERIOD);
         _negated = negated;
     }
 
-    /**
-     * Also a constructor
-     * @param controller The {@link SpeedController} to use as output.
-     * @param period How often it should be updated.
-     */
     public Accelerator(SpeedController controller, double period) {
         if (controller == null) {
             throw new NullPointerException("Accelerator requires a non-null SpeedController");
@@ -62,42 +53,27 @@ public class Accelerator implements SpeedController {
         _timer.schedule(new _BgTask(), 0, (long) (1000 * _period));
     }
 
-    /**
-     * Gets the speed at which the motor should accelerate to
-     * @return the aforementioned rate
-     */
+    /** Returns current acceleration rate. */
     public double get() {
         return _rate;
     }
 
-    /**
-     * Doesn't do anything. Use {@link #set(double)}
-     * @deprecated 
-     */
-    public void set(double speed, byte syncGroup) {
-    }
+    /** @deprecated */
+    public void set(double speed, byte syncGroup) {}
 
-    /**
-     * Sets the new speed
-     * @param speed the new speed
-     */
+    /** Sets the acceleration rate. */
     public void set(double speed) {
         if(_enabled) {
             _rate = speed;
         }
     }
 
-    /**
-     * Disables the controller.
-     */
+    /** Disables acceleration. */
     public void disable() {
         setEnabled(false);
     }
 
-    /**
-     * Enables/disables the controller
-     * @param enabled True to enable, false to disable.
-     */
+    /** Enables/disables the controller. */
     public synchronized void setEnabled(boolean enabled) {
         if(!enabled) {
             set(0);
@@ -105,18 +81,12 @@ public class Accelerator implements SpeedController {
         _enabled = enabled;
     }
 
-    /**
-     * Writes the output from the PID controller to {@link #set(double)}
-     * @param output 
-     */
+    /** Allows this to be used as a {@link PIDOutput}. */
     public void pidWrite(double output) {
         set(output);
     }
 
-    /**
-     * Sets the minimum speed
-     * @param minSpeed the minimum speed
-     */
+    /** Sets the minimum speed. */
     public void setMinSpeed(double minSpeed) {
         if(!_negated) {
             _minSpeed = minSpeed;
@@ -125,10 +95,7 @@ public class Accelerator implements SpeedController {
         }
     }
 
-    /**
-     * Sets the maximum speed
-     * @param maxSpeed The maximum speed
-     */
+    /** Sets the maximum speed. */
     public void setMaxSpeed(double maxSpeed) {
         if(_negated) {
             _minSpeed = maxSpeed;

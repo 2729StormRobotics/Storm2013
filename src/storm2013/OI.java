@@ -15,10 +15,7 @@ import storm2013.commands.SpinUp;
 import storm2013.commands.TargetPIDTurn;
 import storm2013.utilities.Target;
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
+/** Connects the gamepads/joysticks to actual functionality on the robot. */
 public class OI {    
     private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE),
                      shootJoystick = new Joystick(RobotMap.PORT_JOYSTICK_SHOOT),
@@ -49,12 +46,12 @@ public class OI {
                    controlShootButton = new JoystickButton(debugJoystick,RobotMap.JOYDEBUG_BUTTON_CONTROLSHOOT);
     
     public OI() {
-        shootButton.whenPressed(new Shoot());
-        shootFullButton.whenPressed(new Shoot(SpinUp.SPEED_FULLCOURT));
-        spinDownButton.whenPressed(new SpinDown());
+        shootButton        .whenPressed(new Shoot());
+        shootFullButton    .whenPressed(new Shoot(SpinUp.SPEED_FULLCOURT));
+        spinDownButton     .whenPressed(new SpinDown());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
-        tomahawkButton.whenPressed(new SpinTomahawk(true));
-        tomahawkBackButton.whenPressed(new SpinTomahawk(false));
+        tomahawkButton     .whenPressed(new SpinTomahawk(true));
+        tomahawkBackButton .whenPressed(new SpinTomahawk(false));
         
         TargetPIDTurn turn2ptAim = new TargetPIDTurn(Target.TwoPT,   1.0, true),
                       turn3ptAim = new TargetPIDTurn(Target.ThreePT, 1.0, true);
@@ -115,6 +112,8 @@ public class OI {
         rainbowButton.whileHeld(new SetModeRainbowDanceParty());
     }
     
+    // When a joystick is in its zero position, it will not necessarily read
+    // zero. This makes sure that everything within that range reads zero.
     private double _zeroDeadzone(double joyValue,double dead) {
         return Math.abs(joyValue) > dead ? joyValue : 0;
     }

@@ -1,38 +1,30 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitForChildren;
 import storm2013.Robot;
-import storm2013.commands.DoNothing;
-import storm2013.commands.EncoderDrive;
-import storm2013.commands.LEDcommands.SetColor;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
 import storm2013.commands.TargetPIDTilt;
-import storm2013.commands.TargetPIDTurn;
 import storm2013.subsystems.Vision;
 import storm2013.utilities.Target;
 
 /**
- *
- * @author Joe
+ * This autonomous mode moves back and shoots; we use it from the back-center
+ * of the pyramid.
  */
 public class PyramidShoot extends CommandGroup {
     
     public PyramidShoot() {
+        // Make sure the targetting system is set for the right range
+        // (mid-court)
         addSequential(new Command() {
             {
                 requires(Robot.vision);
             }
             protected void initialize() {
                 Robot.vision.setDistance(Vision.Distance.CENTER);
-                new SetColor(0,0,255).start();
             }
             protected void execute() {}
             protected boolean isFinished() {
@@ -41,6 +33,8 @@ public class PyramidShoot extends CommandGroup {
             protected void end() {}
             protected void interrupted() {}
         });
+        // Drive back. This used to be an EncoderDrive, but our right encoder
+        // is broken.
         addSequential(new Command() {
             {
                 requires(Robot.driveTrain);
@@ -61,16 +55,18 @@ public class PyramidShoot extends CommandGroup {
                 end();
             }
         });
+        // Lower tilter to get target in sight
         addSequential(new LowerTilter(),1.5);
+        // Align tilter with target
         addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
-//        addParallel(new TargetPIDTurn(Target.ThreePT,1.0,false));
-//        addSequential(new WaitForChildren());
+        // Shoot repreatedly (in case of jams)
         addSequential(new Shoot());
         addSequential(new Shoot());
         addSequential(new Shoot());
         addSequential(new Shoot());
         addSequential(new Shoot());
         addSequential(new Shoot());
+        // End shooting (not always necessary)
         addSequential(new SpinDown());
     }
 }

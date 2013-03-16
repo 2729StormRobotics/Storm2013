@@ -1,5 +1,6 @@
 package storm2013.utilities;
 
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import java.util.Timer;
@@ -7,7 +8,6 @@ import java.util.TimerTask;
 
 /**
  * Uses two triggers (of any type) to keep a motor from spinning outside of a certain range.
- * @author ginto
  */
 public class LimitSwitchedMotor implements SpeedController {
     private static final double DEFAULT_PERIOD = 1.0/50;
@@ -63,54 +63,29 @@ public class LimitSwitchedMotor implements SpeedController {
         _bottomOn = bottomOnValue;
     }
 
-    /**
-     * Gets the speed at which the motor is running.
-     * @return The current output speed
-     */
+    /** Returns current motor signal. */
     public double get() {
         return _value;
     }
 
-    /**
-     * Sets a new output speed.
-     * @param speed The new speed
-     * @param syncGroup Honestly, I have no idea, but it's not used anyway
-     */
+    /** Sets output signal. */
     public void set(double speed, byte syncGroup) {
         set(speed);
     }
 
-    /**
-     * Sets the new output speed
-     * @param speed The new speed
-     */
+    /** Sets output signal. */
     public void set(double speed) {
         _value = speed;
     }
 
-    /**
-     * Stops the motor and disables its controller
-     */
+    /** Stops the motor and disables its controller. */
     public void disable() {
         set(0);
         _controller.disable();
     }
 
-    /**
-     * Writes values from the PID controller to the motor.
-     * @param output 
-     */
+    /** Allows this to be used as a {@link PIDOutput}. */
     public void pidWrite(double output) {
         set(output);
-    }
-    
-    /**
-     * Disables limiting temporarily. If this is not called for 1/10 of a second,
-     * limiting is re-enabled.
-     */
-    public void disableSafety() {
-        _resetSafety.cancel();
-        _limitingEnabled = false;
-        _safetyOnTimer.schedule(_resetSafety, (long)(0.1*1000));
     }
 }

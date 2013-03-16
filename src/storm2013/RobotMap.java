@@ -1,10 +1,7 @@
 package storm2013;
 
 /**
- * The RobotMap is a mapping from where the ports, sensors, and actuators are wired
- * to a variable name. This provides flexibility in changing wiring, makes checking
- * the wiring easier, and significantly reduces the number of magic numbers
- * floating around.
+ * Holds all of our hardware/joystick mappings, so they're pretty easy to configure.
  */
 public class RobotMap {
     public static final int PORT_JOYSTICK_DRIVE = 1,

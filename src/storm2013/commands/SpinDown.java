@@ -3,50 +3,21 @@ package storm2013.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
 
-/**
- * Spins down the firing wheel.
- * @author evan1026
- */
+/** Spins down the shooter wheel (and waits for it to stop). */
 public class SpinDown extends Command {
-
-    /**
-     * Creates a new instance of the command.
-     */
     public SpinDown(){
         requires(Robot.shooter);
     }
     
-    /**5
-     * Initializes the {@link Command}
-     */
     protected void initialize() {
         Robot.shooter.getPIDController().setSetpoint(0);
         Robot.shooter.setMotorValRaw(0);
     }
-
-    /**
-     * Does nothing
-     */
-    protected void execute() {
-    }
-
-    /**
-     * Tells if the {@link Command} is done
-     * @return If the shooter is at its target.
-     */
+    protected void execute() {}
     protected boolean isFinished() {
         return Robot.shooter.onTarget();
     }
-
-    /**
-     * Ends the {@link Command}
-     */
-    protected void end() {
-    }
-
-    /**
-     * Also ends the {@link Command}
-     */
+    protected void end() {}
     protected void interrupted() {
         end();
     }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands.LEDcommands;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -9,8 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
 
 /**
- *
- * @author evan1026
+ * Turns lights between white and off, in a sinusoid, with frequency
+ * proportional to speed.
  */
 public class SetModeMoving extends Command {
     private static final double PERIOD_SCALAR = 0.1;
@@ -22,7 +18,7 @@ public class SetModeMoving extends Command {
         requires(Robot.ledStrip);
     }
     
-    public void execute(){
+    public void execute() {
         double rate = 2*Math.PI*(Math.abs(Robot.driveTrain.getLeftSpeed()) + Math.abs(Robot.driveTrain.getRightSpeed())) / 2;
         if(rate == 0) {
             _val = Math.PI/2;
@@ -40,19 +36,17 @@ public class SetModeMoving extends Command {
         int color = (int)(scalar*255);
         Robot.ledStrip.setColor(color,color,color);
     }
-
     protected void initialize() {
         _timer.reset();
         _timer.start();
     }
-
     protected boolean isFinished() {
         return false;
     }
-
     protected void end() {
         _timer.stop();
     }
-
-    protected void interrupted() {}
+    protected void interrupted() {
+        end();
+    }
 }

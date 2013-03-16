@@ -1,18 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands.LEDcommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
 
-/**
- *
- * @author evan1026
- */
+/** Sets LED color, then leaves it that way until interrupted somehow. */
 public class SetColor extends Command {
-
     private int _red,
                 _green,
                 _blue;
@@ -31,17 +23,11 @@ public class SetColor extends Command {
     protected void initialize() {
         Robot.ledStrip.setColor(_red, _green, _blue);
     }
-
-    protected void execute() {
-    }
-
+    protected void execute() {}
     protected boolean isFinished() {
         return false;
     }
-
-    protected void end() {
-    }
-
+    protected void end() {}
     protected void interrupted() {
         end();
     }

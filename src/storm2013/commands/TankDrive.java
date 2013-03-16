@@ -4,28 +4,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.Robot;
 
-/**
- * Drives the robot
- * @author Joe
- */
+/** Drives the robot based on joystick input (each side gets one axis). */
 public class TankDrive extends Command {
-    
-    /**
-     * Constructor
-     */
     public TankDrive() {
         requires(Robot.driveTrain);
     }
-
-    /**
-     * Initializes {@link Command}
-     */
-    protected void initialize() {
-    }
-
-    /**
-     * Does some tank driving
-     */
+    
+    protected void initialize() {}
     protected void execute() {
         double left  = Robot.oi.getLeftDrive(),
                right = Robot.oi.getRightDrive();
@@ -33,24 +18,10 @@ public class TankDrive extends Command {
         SmartDashboard.putNumber("Right", right);
         Robot.driveTrain.tankDrive(left,right);
     }
-
-    /**
-     * Never ends
-     * @return false
-     */
     protected boolean isFinished() {
         return false;
     }
-
-    /**
-     * Called when {@link Command} is over. Does nothing
-     */
-    protected void end() {
-    }
-
-    /**
-     * Ends {@link Command}
-     */
+    protected void end() {}
     protected void interrupted() {
         end();
     }

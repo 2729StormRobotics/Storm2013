@@ -14,88 +14,54 @@ public class HallEffectSpeedSensor implements LiveWindowSendable {
     private DigitalInput _hallEffect;
     private Counter _counter;
 
-    /**
-     * 
-     * @param port The port for the hall effect sensor's digital input
-     */
     public HallEffectSpeedSensor(int port) {
         _hallEffect = new DigitalInput(port);
-        // TODO: Try this as a replacement for the rest of the counter initialization
         _counter = new Counter(_hallEffect);
-//        _counter = new Counter(CounterBase.EncodingType.k1X, //Count only rising edge of digital signal
-//                               _hallEffect,
-//                               _hallEffect,
-//                               false); //inverted
-//
-//        _counter.clearDownSource();
-//        _counter.setUpSourceEdge(true, false); //TODO Check without this
         _counter.start();
     }
     
     /**
-     * Sets the minimum speed that the sensor will pick up in RPM. This is to avoid
-     * the speed returning NaN because the timer returns a time of infinity.
-     * @param speedRpm The min speed
+     * Sets the minimum speed that the sensor will pick up in RPM. Below this
+     * speed, _counter.getPeriod() will return infinity, and the speed will be 0.
      */
     public void setMinSpeedRpm(double speedRpm) {
         _counter.setMaxPeriod(60/speedRpm);
     }
     
-    /**
-     * Gets the speed in RPM
-     * @return the speed... in RPM
-     */
+    /** Reads the speed in RPM */
     public double getSpeedRpm() {
         return 60/_counter.getPeriod();
     }
 
     ITable _table;
     
-    /**
-     * Initializes the table that the sensor puts data to.
-     * @param table The table it's gonna put data to
-     */
+    /** Initializes the table that the sensor puts data into. */
     public void initTable(ITable table) {
         _table = table;
         updateTable();
     }
 
-    /**
-     * Returns the table the sensor writes to
-     * @return the aforementioned table
-     */
+    /** Returns the table the sensor writes to. */
     public ITable getTable() {
         return _table;
     }
 
     /**
-     * Returns the type to be used for smart dashboard. I can't say I fully know
-     * what it does, but if someone does, they can change this documentation.
-     * @return "Analog Input"
+     * Returns the type to be used for smart dashboard. It returns "Analog
+     * Input" because that type allows the output this sensor needs. We could
+     * make a custom widget, but that's a pain.
      */
     public String getSmartDashboardType() {
         return "Analog Input";
     }
 
-    /**
-     * Puts the RPM into the table
-     */
+    /** Sends the speed to SmartDashboard. */
     public void updateTable() {
         if(_table != null) {
             _table.putNumber("Value", getSpeedRpm());
         }
     }
 
-    /**
-     * LiveWindow wants it. I don't really know what it is supposed to do. It does
-     * nothing anyway.
-     */
     public void startLiveWindowMode() {}
-    
-    /**
-     * LiveWindow wants it. I don't really know what it is supposed to do. It does
-     * nothing anyway.
-     */
     public void stopLiveWindowMode() {}
-
 }

@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands.LEDcommands;
 
 import storm2013.Robot;
 
 /**
- *
- * @author evan1026
+ * Flashes the LEDs, getting faster as the wheel approaches the target speed.
  */
 public class SetModeSpinningUp extends FlashOnAndOff {
     public SetModeSpinningUp(){
@@ -21,6 +16,4 @@ public class SetModeSpinningUp extends FlashOnAndOff {
         setPeriod(Math.abs(Robot.shooter.getPIDController().getError())*PERIOD_SCALAR);
         super.execute();
     }
-    
-    
 }

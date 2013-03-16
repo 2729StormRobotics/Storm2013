@@ -1,19 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands.LEDcommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
 
-/**
- *
- * @author evan1026
- */
+/** Flash through a series of colors */
 public class Flash extends Command {
-    
     public static final double DEFAULT_PERIOD = 1; //once a second
     
     protected Timer _timer = new Timer();
@@ -26,9 +18,8 @@ public class Flash extends Command {
     }
     
     /**
-     * 
-     * @param colors
-     * @param period In seconds
+     * @param colors Sequence of colors
+     * @param period Time each color is on, in seconds
      */
     public Flash(Color[] colors, double period) {
         _colors = colors;
@@ -39,7 +30,6 @@ public class Flash extends Command {
     protected void initialize() {
         _timer.start();
     }
-
     protected void execute() {
         double time = _timer.get();
         
@@ -49,23 +39,20 @@ public class Flash extends Command {
             _timer.reset();
         }
     }
-
     protected boolean isFinished() {
         return false;
     }
-
     protected void end() {
         _timer.stop();
     }
-
     protected void interrupted() {
         end();
     }
     
-    public void setPeriod(double period){
+    protected void setPeriod(double period){
         _period = period;
     }
-    public double getPeriod(){
+    protected double getPeriod(){
         return _period;
     }
 }

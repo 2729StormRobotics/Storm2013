@@ -1,17 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package storm2013.commands.LEDcommands;
 
 import storm2013.Robot;
 
-/**
- *
- * @author evan1026
- */
+/** Flash one color on and off (or solid on if period == 0). */
 public class FlashOnAndOff extends Flash {
-    
     public FlashOnAndOff(Color color){
         this(color, Flash.DEFAULT_PERIOD);
     }

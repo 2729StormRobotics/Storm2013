@@ -5,17 +5,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import storm2013.commands.LEDcommands.SetModeMoving;
 import storm2013.utilities.LED;
 
-/**
- * Subsystem to control the LED strip.
- * @author evan1026
- */
+/** Subsystem to control the LED strip. */
 public class LEDStrip extends Subsystem {
     LED _red,_green,_blue;
 
-    /**
-     * Allocates space for the subsystem and it's various parts, and adds it to
-     * the {@link LiveWindow}.
-     */
     public LEDStrip() {
         _red   = new LED(6);
         _green = new LED(8);
@@ -25,26 +18,30 @@ public class LEDStrip extends Subsystem {
         LiveWindow.addActuator("LED", "Blue",  _blue);
     }
     
-    /**
-     * Does nothing here, but it would set the command to be run when no other command
-     * is using the subsystem.
-     */
     protected void initDefaultCommand() {
         setDefaultCommand(new SetModeMoving());
     }
     
+    /**
+     * Sets the tri-color LEDs' color with red, green, and blue signals in the
+     * [0,255] range. This is NOT a true RGB color, because the lights respond
+     * weirdly to different signals.
+     */
     public void setColor(int red, int green, int blue){
         _red.set(red);
         _green.set(green);
         _blue.set(blue);
     }
     
+    /** Read current red value. */
     public int getRed(){
         return _red.get();
     }
+    /** Read current green value. */
     public int getGreen(){
         return _green.get();
     }
+    /** Read current blue value. */
     public int getBlue(){
         return _blue.get();
     }

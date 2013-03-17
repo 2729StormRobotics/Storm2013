@@ -29,6 +29,7 @@ public class RobotMap {
     
     public static final int JOYDRIVE_AXIS_DRIVE_LEFT  = 2,
                             JOYDRIVE_AXIS_DRIVE_RIGHT = 4,
+                            JOYDRIVE_AXIS_FEEDERTURN  = 5,
                             JOYSHOOT_AXIS_TILTER      = 2,
                             JOYSHOOT_AXIS_DISTANCE    = 6,
                             JOYDEBUG_AXIS_SHOOTSPEED  = 4;

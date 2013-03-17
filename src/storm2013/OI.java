@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import storm2013.commands.FeederTurn;
 import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
 import storm2013.commands.LEDcommands.Spaz;
 import storm2013.commands.TargetPIDTilt;
@@ -45,6 +46,16 @@ public class OI {
                            return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) < -0.1;
                        }
                    },
+                   feederAwayButton   = new Button() {
+                       public boolean get() {
+                           return driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_FEEDERTURN) < -0.1;
+                       }
+                   },
+                   feederTowardButton   = new Button() {
+                       public boolean get() {
+                           return driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_FEEDERTURN) > 0.1;
+                       }
+                   },
                    controlShootButton = new JoystickButton(debugJoystick,RobotMap.JOYDEBUG_BUTTON_CONTROLSHOOT);
     
     public OI() {
@@ -54,6 +65,8 @@ public class OI {
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         tomahawkButton     .whenPressed(new SpinTomahawk(true));
         tomahawkBackButton .whenPressed(new SpinTomahawk(false));
+        feederAwayButton   .whenPressed(new FeederTurn(false));
+        feederTowardButton .whenPressed(new FeederTurn(true));
         
         TargetPIDTurn turn2ptAim = new TargetPIDTurn(Target.TwoPT,   1.0, true),
                       turn3ptAim = new TargetPIDTurn(Target.ThreePT, 1.0, true);
@@ -122,11 +135,11 @@ public class OI {
     }
     
     public double getLeftDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.7 : 1);
     }
     
     public double getRightDrive() {
-        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);
+        return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.7 : 1);
     }
     
     public double getTilterAxis() {

@@ -16,8 +16,9 @@ import storm2013.subsystems.LEDStrip;
  * @author evan1026
  */
 public class Spaz extends Command {
-
     private static final double DEFAULT_PERIOD = 1.0/20;
+    private static final Color[] colors = {new Color(255,0,0), new Color(255,255,0), new Color(0,255,0),
+                                           new Color(0,255,255), new Color(0,0,255), new Color(255,0,255)};
     
     private double _period;
     private Timer  _timer = new Timer();
@@ -40,7 +41,8 @@ public class Spaz extends Command {
         double time = _timer.get();
         
         if (time >= _period){
-            Robot.ledStrip.setColor(_rand.nextInt(256), _rand.nextInt(256), _rand.nextInt(256));
+            Color c = colors[_rand.nextInt(colors.length)];
+            Robot.ledStrip.setColor(c.getRed(),c.getBlue(),c.getGreen());
             _timer.reset();
         }
     }

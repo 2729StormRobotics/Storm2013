@@ -1,0 +1,85 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package storm2013.commands.LEDcommands;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import storm2013.Robot;<a name="line.3"></a>
+<FONT color="green">004</FONT>    <a name="line.4"></a>
+<FONT color="green">005</FONT>    /**<a name="line.5"></a>
+<FONT color="green">006</FONT>     * Flashes the LEDs, getting faster as the wheel approaches the target speed.<a name="line.6"></a>
+<FONT color="green">007</FONT>     */<a name="line.7"></a>
+<FONT color="green">008</FONT>    public class SetModeSpinningUp extends FlashOnAndOff {<a name="line.8"></a>
+<FONT color="green">009</FONT>        public SetModeSpinningUp(){<a name="line.9"></a>
+<FONT color="green">010</FONT>            super(Color.SPINNING_UP);<a name="line.10"></a>
+<FONT color="green">011</FONT>        }<a name="line.11"></a>
+<FONT color="green">012</FONT>        <a name="line.12"></a>
+<FONT color="green">013</FONT>        private static final double PERIOD_SCALAR = 1.0/2500;<a name="line.13"></a>
+<FONT color="green">014</FONT>    <a name="line.14"></a>
+<FONT color="green">015</FONT>        public void execute() {<a name="line.15"></a>
+<FONT color="green">016</FONT>            setPeriod(Math.abs(Robot.shooter.getPIDController().getError())*PERIOD_SCALAR);<a name="line.16"></a>
+<FONT color="green">017</FONT>            super.execute();<a name="line.17"></a>
+<FONT color="green">018</FONT>        }<a name="line.18"></a>
+<FONT color="green">019</FONT>    }<a name="line.19"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

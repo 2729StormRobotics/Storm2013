@@ -7,49 +7,31 @@
 <FONT color="green">004</FONT>    import storm2013.utilities.Target;<a name="line.4"></a>
 <FONT color="green">005</FONT>    <a name="line.5"></a>
 <FONT color="green">006</FONT>    /**<a name="line.6"></a>
-<FONT color="green">007</FONT>     * Tilts the tilter based on the camera stuff<a name="line.7"></a>
-<FONT color="green">008</FONT>     * @author evan1026<a name="line.8"></a>
+<FONT color="green">007</FONT>     * Does vertical target tracking (with the tilter). Uses the camera as a sensor,<a name="line.7"></a>
+<FONT color="green">008</FONT>     * so this command is susceptible to network latency.<a name="line.8"></a>
 <FONT color="green">009</FONT>     */<a name="line.9"></a>
 <FONT color="green">010</FONT>    public class TargetPIDTilt extends TargetPIDCommand {<a name="line.10"></a>
-<FONT color="green">011</FONT>        /**<a name="line.11"></a>
-<FONT color="green">012</FONT>         * Constructor.<a name="line.12"></a>
-<FONT color="green">013</FONT>         * @param target The {@link Target} to aim at<a name="line.13"></a>
-<FONT color="green">014</FONT>         * @param timeout The timeout<a name="line.14"></a>
-<FONT color="green">015</FONT>         * @param continuous Whether or not the command should be continuous<a name="line.15"></a>
-<FONT color="green">016</FONT>         */<a name="line.16"></a>
-<FONT color="green">017</FONT>        public TargetPIDTilt(Target target, double timeout, boolean continuous){<a name="line.17"></a>
-<FONT color="green">018</FONT>            super(target,Target.Axis.Y,timeout,continuous,<a name="line.18"></a>
-<FONT color="green">019</FONT>                  0, 0, 0, // P, I, D<a name="line.19"></a>
-<FONT color="green">020</FONT>                  1,10);<a name="line.20"></a>
-<FONT color="green">021</FONT>            requires(Robot.tilter);<a name="line.21"></a>
-<FONT color="green">022</FONT>        }<a name="line.22"></a>
-<FONT color="green">023</FONT>        <a name="line.23"></a>
-<FONT color="green">024</FONT>        /**<a name="line.24"></a>
-<FONT color="green">025</FONT>         * Returns the tilter angle<a name="line.25"></a>
-<FONT color="green">026</FONT>         * @return the angle of the tilter<a name="line.26"></a>
-<FONT color="green">027</FONT>         */<a name="line.27"></a>
-<FONT color="green">028</FONT>        protected double returnPIDInput() {<a name="line.28"></a>
-<FONT color="green">029</FONT>            return Robot.tilter.getAngle();<a name="line.29"></a>
+<FONT color="green">011</FONT>        private double _angleToTarget = 0;<a name="line.11"></a>
+<FONT color="green">012</FONT>        /** See {@link TargetPIDCommand}. */<a name="line.12"></a>
+<FONT color="green">013</FONT>        public TargetPIDTilt(Target target, double timeout, boolean continuous){<a name="line.13"></a>
+<FONT color="green">014</FONT>            super(target,Target.Axis.Y,timeout,continuous,<a name="line.14"></a>
+<FONT color="green">015</FONT>                  0.7, 0.15, 1, // P, I, D<a name="line.15"></a>
+<FONT color="green">016</FONT>                  0.5,1,        // tolerance, maxOutput<a name="line.16"></a>
+<FONT color="green">017</FONT>                  1.5/10);      // period - high to allow for network latency.<a name="line.17"></a>
+<FONT color="green">018</FONT>            requires(Robot.tilter);<a name="line.18"></a>
+<FONT color="green">019</FONT>            setSetpoint(0);<a name="line.19"></a>
+<FONT color="green">020</FONT>        }<a name="line.20"></a>
+<FONT color="green">021</FONT>        <a name="line.21"></a>
+<FONT color="green">022</FONT>        protected double returnPIDInput() {<a name="line.22"></a>
+<FONT color="green">023</FONT>            return _angleToTarget;<a name="line.23"></a>
+<FONT color="green">024</FONT>        }<a name="line.24"></a>
+<FONT color="green">025</FONT>        protected void writePIDOut(double output) {<a name="line.25"></a>
+<FONT color="green">026</FONT>            Robot.tilter.move(output);<a name="line.26"></a>
+<FONT color="green">027</FONT>        }<a name="line.27"></a>
+<FONT color="green">028</FONT>        protected void useCameraValue(double value) {<a name="line.28"></a>
+<FONT color="green">029</FONT>            _angleToTarget = -value;<a name="line.29"></a>
 <FONT color="green">030</FONT>        }<a name="line.30"></a>
-<FONT color="green">031</FONT>    <a name="line.31"></a>
-<FONT color="green">032</FONT>        /**<a name="line.32"></a>
-<FONT color="green">033</FONT>         * Writes the output (divided by 10) to the tilter.<a name="line.33"></a>
-<FONT color="green">034</FONT>         * @param output the output to write<a name="line.34"></a>
-<FONT color="green">035</FONT>         */<a name="line.35"></a>
-<FONT color="green">036</FONT>        protected void writePIDOut(double output) {<a name="line.36"></a>
-<FONT color="green">037</FONT>            output /= 10;<a name="line.37"></a>
-<FONT color="green">038</FONT>            Robot.tilter.move(output);<a name="line.38"></a>
-<FONT color="green">039</FONT>        }<a name="line.39"></a>
-<FONT color="green">040</FONT>    <a name="line.40"></a>
-<FONT color="green">041</FONT>        /**<a name="line.41"></a>
-<FONT color="green">042</FONT>         * Figures out the new setPoint<a name="line.42"></a>
-<FONT color="green">043</FONT>         * @param newValue The new value to add to the current input to find the setPoint<a name="line.43"></a>
-<FONT color="green">044</FONT>         * @return the new setPoint<a name="line.44"></a>
-<FONT color="green">045</FONT>         */<a name="line.45"></a>
-<FONT color="green">046</FONT>        protected double computeSetpoint(double newValue) {<a name="line.46"></a>
-<FONT color="green">047</FONT>            return returnPIDInput()+newValue;<a name="line.47"></a>
-<FONT color="green">048</FONT>        }<a name="line.48"></a>
-<FONT color="green">049</FONT>    }<a name="line.49"></a>
+<FONT color="green">031</FONT>    }<a name="line.31"></a>
 
 
 

@@ -6,110 +6,134 @@
 <FONT color="green">003</FONT>    import edu.wpi.first.wpilibj.Joystick;<a name="line.3"></a>
 <FONT color="green">004</FONT>    import edu.wpi.first.wpilibj.buttons.Button;<a name="line.4"></a>
 <FONT color="green">005</FONT>    import edu.wpi.first.wpilibj.buttons.JoystickButton;<a name="line.5"></a>
-<FONT color="green">006</FONT>    import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;<a name="line.6"></a>
-<FONT color="green">007</FONT>    import storm2013.commands.PrintAutonomousMove;<a name="line.7"></a>
-<FONT color="green">008</FONT>    import storm2013.commands.Shoot;<a name="line.8"></a>
-<FONT color="green">009</FONT>    import storm2013.commands.SpinDown;<a name="line.9"></a>
-<FONT color="green">010</FONT>    import storm2013.commands.SpinTomahawk;<a name="line.10"></a>
-<FONT color="green">011</FONT>    import storm2013.commands.TargetPIDTurn;<a name="line.11"></a>
-<FONT color="green">012</FONT>    import storm2013.utilities.Target;<a name="line.12"></a>
-<FONT color="green">013</FONT>    <a name="line.13"></a>
-<FONT color="green">014</FONT>    /**<a name="line.14"></a>
-<FONT color="green">015</FONT>     * This class is the glue that binds the controls on the physical operator<a name="line.15"></a>
-<FONT color="green">016</FONT>     * interface to the commands and command groups that allow control of the robot.<a name="line.16"></a>
-<FONT color="green">017</FONT>     */<a name="line.17"></a>
-<FONT color="green">018</FONT>    public class OI {<a name="line.18"></a>
-<FONT color="green">019</FONT>        //// CREATING BUTTONS<a name="line.19"></a>
-<FONT color="green">020</FONT>        // One type of button is a joystick button which is any button on a joystick.<a name="line.20"></a>
-<FONT color="green">021</FONT>        // You create one by telling it which joystick it's on and which button<a name="line.21"></a>
-<FONT color="green">022</FONT>        // number it is.<a name="line.22"></a>
-<FONT color="green">023</FONT>        // Joystick stick = new Joystick(port);<a name="line.23"></a>
-<FONT color="green">024</FONT>        // Button button = new JoystickButton(stick, buttonNumber);<a name="line.24"></a>
-<FONT color="green">025</FONT>        <a name="line.25"></a>
-<FONT color="green">026</FONT>        // Another type of button you can create is a DigitalIOButton, which is<a name="line.26"></a>
-<FONT color="green">027</FONT>        // a button or switch hooked up to the cypress module. These are useful if<a name="line.27"></a>
-<FONT color="green">028</FONT>        // you want to build a customized operator interface.<a name="line.28"></a>
-<FONT color="green">029</FONT>        // Button button = new DigitalIOButton(1);<a name="line.29"></a>
-<FONT color="green">030</FONT>        <a name="line.30"></a>
-<FONT color="green">031</FONT>        // There are a few additional built in buttons you can use. Additionally,<a name="line.31"></a>
-<FONT color="green">032</FONT>        // by subclassing Button you can create custom triggers and bind those to<a name="line.32"></a>
-<FONT color="green">033</FONT>        // commands the same as any other Button.<a name="line.33"></a>
-<FONT color="green">034</FONT>        <a name="line.34"></a>
-<FONT color="green">035</FONT>        //// TRIGGERING COMMANDS WITH BUTTONS<a name="line.35"></a>
-<FONT color="green">036</FONT>        // Once you have a button, it's trivial to bind it to a button in one of<a name="line.36"></a>
-<FONT color="green">037</FONT>        // three ways:<a name="line.37"></a>
-<FONT color="green">038</FONT>        <a name="line.38"></a>
-<FONT color="green">039</FONT>        // Start the command when the button is pressed and let it run the command<a name="line.39"></a>
-<FONT color="green">040</FONT>        // until it is finished as determined by it's isFinished method.<a name="line.40"></a>
-<FONT color="green">041</FONT>        // button.whenPressed(new ExampleCommand());<a name="line.41"></a>
-<FONT color="green">042</FONT>        <a name="line.42"></a>
-<FONT color="green">043</FONT>        // Run the command while the button is being held down and interrupt it once<a name="line.43"></a>
-<FONT color="green">044</FONT>        // the button is released.<a name="line.44"></a>
-<FONT color="green">045</FONT>        // button.whileHeld(new ExampleCommand());<a name="line.45"></a>
-<FONT color="green">046</FONT>        <a name="line.46"></a>
-<FONT color="green">047</FONT>        // Start the command when the button is released  and let it run the command<a name="line.47"></a>
-<FONT color="green">048</FONT>        // until it is finished as determined by it's isFinished method.<a name="line.48"></a>
-<FONT color="green">049</FONT>        // button.whenReleased(new ExampleCommand());<a name="line.49"></a>
-<FONT color="green">050</FONT>        <a name="line.50"></a>
-<FONT color="green">051</FONT>        private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE);<a name="line.51"></a>
-<FONT color="green">052</FONT>        <a name="line.52"></a>
-<FONT color="green">053</FONT>        private Button shootButton         = new JoystickButton(driveJoystick, RobotMap.BUTTON_SHOOT),<a name="line.53"></a>
-<FONT color="green">054</FONT>                       spinDownButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SPIN_DOWN),<a name="line.54"></a>
-<FONT color="green">055</FONT>                       recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_PRINT_ENCODER),<a name="line.55"></a>
-<FONT color="green">056</FONT>    //                   tilterUpButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_UP),<a name="line.56"></a>
-<FONT color="green">057</FONT>    //                   tilterDownButton    = new JoystickButton(driveJoystick, RobotMap.BUTTON_TILTER_DOWN),<a name="line.57"></a>
-<FONT color="green">058</FONT>                       slowModeButton      = new JoystickButton(driveJoystick, RobotMap.BUTTON_SLOW),<a name="line.58"></a>
-<FONT color="green">059</FONT>                       target2ptButton     = new JoystickButton(driveJoystick, RobotMap.BUTTON_TARGET_2PT),<a name="line.59"></a>
-<FONT color="green">060</FONT>                       resetTomahawkButton = new JoystickButton(driveJoystick, RobotMap.BUTTON_RESET_TOMAHAWK);<a name="line.60"></a>
-<FONT color="green">061</FONT>        <a name="line.61"></a>
-<FONT color="green">062</FONT>        public OI() {<a name="line.62"></a>
-<FONT color="green">063</FONT>            shootButton.whenPressed(new Shoot());<a name="line.63"></a>
-<FONT color="green">064</FONT>            spinDownButton.whenPressed(new SpinDown());<a name="line.64"></a>
-<FONT color="green">065</FONT>            recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));<a name="line.65"></a>
-<FONT color="green">066</FONT>            resetTomahawkButton.whenPressed(new SpinTomahawk());<a name="line.66"></a>
-<FONT color="green">067</FONT>    //        tilterUpButton.whileHeld(new RaiseTilter());<a name="line.67"></a>
-<FONT color="green">068</FONT>    //        tilterDownButton.whileHeld(new LowerTilter());<a name="line.68"></a>
-<FONT color="green">069</FONT>            <a name="line.69"></a>
-<FONT color="green">070</FONT>            TargetPIDTurn turnAim = new TargetPIDTurn(Target.TwoPT, 1.0, true);<a name="line.70"></a>
-<FONT color="green">071</FONT>            SmartDashboard.putData("Turn PID",turnAim.getPIDController());<a name="line.71"></a>
-<FONT color="green">072</FONT>            <a name="line.72"></a>
-<FONT color="green">073</FONT>    //        TargetPIDTilt tiltAim = new TargetPIDTilt(Target.TwoPT, 1.0,false);<a name="line.73"></a>
-<FONT color="green">074</FONT>    //        SmartDashboard.putData("Tilt PID",turnAim.getPIDController());<a name="line.74"></a>
-<FONT color="green">075</FONT>    //        <a name="line.75"></a>
-<FONT color="green">076</FONT>    //        CommandGroup aim = new CommandGroup("2pt Aim");<a name="line.76"></a>
-<FONT color="green">077</FONT>    //        aim.addParallel(turnAim);<a name="line.77"></a>
-<FONT color="green">078</FONT>    //        aim.addParallel(tiltAim);<a name="line.78"></a>
-<FONT color="green">079</FONT>            <a name="line.79"></a>
-<FONT color="green">080</FONT>            SmartDashboard.putData(turnAim);<a name="line.80"></a>
-<FONT color="green">081</FONT>            <a name="line.81"></a>
-<FONT color="green">082</FONT>            target2ptButton.whileHeld(turnAim);<a name="line.82"></a>
-<FONT color="green">083</FONT>        }<a name="line.83"></a>
-<FONT color="green">084</FONT>        <a name="line.84"></a>
-<FONT color="green">085</FONT>        private double _zeroDeadzone(double joyValue,double dead) {<a name="line.85"></a>
-<FONT color="green">086</FONT>            return Math.abs(joyValue) &gt; dead ? joyValue : 0;<a name="line.86"></a>
-<FONT color="green">087</FONT>        }<a name="line.87"></a>
-<FONT color="green">088</FONT>        <a name="line.88"></a>
-<FONT color="green">089</FONT>        private double _applyExponential(double joyValue) {<a name="line.89"></a>
-<FONT color="green">090</FONT>            if(joyValue == 0) {<a name="line.90"></a>
-<FONT color="green">091</FONT>                return 0;<a name="line.91"></a>
-<FONT color="green">092</FONT>            }<a name="line.92"></a>
-<FONT color="green">093</FONT>            double sign = (joyValue &gt; 0) ? 1 : -1;<a name="line.93"></a>
-<FONT color="green">094</FONT>            return sign*joyValue*joyValue/Math.sqrt(Math.abs(joyValue));<a name="line.94"></a>
-<FONT color="green">095</FONT>        }<a name="line.95"></a>
-<FONT color="green">096</FONT>        <a name="line.96"></a>
-<FONT color="green">097</FONT>        public double getLeftDrive() {<a name="line.97"></a>
-<FONT color="green">098</FONT>            return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);<a name="line.98"></a>
-<FONT color="green">099</FONT>        }<a name="line.99"></a>
-<FONT color="green">100</FONT>        <a name="line.100"></a>
-<FONT color="green">101</FONT>        public double getRightDrive() {<a name="line.101"></a>
-<FONT color="green">102</FONT>            return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);<a name="line.102"></a>
-<FONT color="green">103</FONT>        }<a name="line.103"></a>
-<FONT color="green">104</FONT>        <a name="line.104"></a>
-<FONT color="green">105</FONT>        public double getTilterAxis() {<a name="line.105"></a>
-<FONT color="green">106</FONT>            return -driveJoystick.getRawAxis(RobotMap.AXIS_TILTER);<a name="line.106"></a>
-<FONT color="green">107</FONT>        }<a name="line.107"></a>
-<FONT color="green">108</FONT>    }<a name="line.108"></a>
-<FONT color="green">109</FONT>    <a name="line.109"></a>
+<FONT color="green">006</FONT>    import edu.wpi.first.wpilibj.command.Command;<a name="line.6"></a>
+<FONT color="green">007</FONT>    import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;<a name="line.7"></a>
+<FONT color="green">008</FONT>    import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;<a name="line.8"></a>
+<FONT color="green">009</FONT>    import storm2013.commands.TargetPIDTilt;<a name="line.9"></a>
+<FONT color="green">010</FONT>    import storm2013.commands.PrintAutonomousMove;<a name="line.10"></a>
+<FONT color="green">011</FONT>    import storm2013.commands.Shoot;<a name="line.11"></a>
+<FONT color="green">012</FONT>    import storm2013.commands.SpinDown;<a name="line.12"></a>
+<FONT color="green">013</FONT>    import storm2013.commands.SpinTomahawk;<a name="line.13"></a>
+<FONT color="green">014</FONT>    import storm2013.commands.SpinUp;<a name="line.14"></a>
+<FONT color="green">015</FONT>    import storm2013.commands.TargetPIDTurn;<a name="line.15"></a>
+<FONT color="green">016</FONT>    import storm2013.utilities.Target;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    /** Connects the gamepads/joysticks to actual functionality on the robot. */<a name="line.18"></a>
+<FONT color="green">019</FONT>    public class OI {    <a name="line.19"></a>
+<FONT color="green">020</FONT>        private Joystick driveJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DRIVE),<a name="line.20"></a>
+<FONT color="green">021</FONT>                         shootJoystick = new Joystick(RobotMap.PORT_JOYSTICK_SHOOT),<a name="line.21"></a>
+<FONT color="green">022</FONT>                         debugJoystick = new Joystick(RobotMap.PORT_JOYSTICK_DEBUG);<a name="line.22"></a>
+<FONT color="green">023</FONT>        <a name="line.23"></a>
+<FONT color="green">024</FONT>        private Button recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_PRINT_ENCODER),<a name="line.24"></a>
+<FONT color="green">025</FONT>                       slowModeButton      = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SLOW),<a name="line.25"></a>
+<FONT color="green">026</FONT>                       rainbowButton       = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_RAINBOW),<a name="line.26"></a>
+<FONT color="green">027</FONT>                       target2ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),<a name="line.27"></a>
+<FONT color="green">028</FONT>                       target3ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_3PT),<a name="line.28"></a>
+<FONT color="green">029</FONT>                       shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),<a name="line.29"></a>
+<FONT color="green">030</FONT>                       shootFullButton     = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT_FULLCOURT),<a name="line.30"></a>
+<FONT color="green">031</FONT>                       spinDownButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN),<a name="line.31"></a>
+<FONT color="green">032</FONT>                       target2ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_2PT),<a name="line.32"></a>
+<FONT color="green">033</FONT>                       target3ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_3PT),<a name="line.33"></a>
+<FONT color="green">034</FONT>                       tomahawkButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK),<a name="line.34"></a>
+<FONT color="green">035</FONT>                       tomahawkBackButton  = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK_BACK),<a name="line.35"></a>
+<FONT color="green">036</FONT>                       nextDistanceButton  = new Button() {<a name="line.36"></a>
+<FONT color="green">037</FONT>                           public boolean get() {<a name="line.37"></a>
+<FONT color="green">038</FONT>                               return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) &gt; 0.1;<a name="line.38"></a>
+<FONT color="green">039</FONT>                           }<a name="line.39"></a>
+<FONT color="green">040</FONT>                       },<a name="line.40"></a>
+<FONT color="green">041</FONT>                       prevDistanceButton  = new Button() {<a name="line.41"></a>
+<FONT color="green">042</FONT>                           public boolean get() {<a name="line.42"></a>
+<FONT color="green">043</FONT>                               return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) &lt; -0.1;<a name="line.43"></a>
+<FONT color="green">044</FONT>                           }<a name="line.44"></a>
+<FONT color="green">045</FONT>                       },<a name="line.45"></a>
+<FONT color="green">046</FONT>                       controlShootButton = new JoystickButton(debugJoystick,RobotMap.JOYDEBUG_BUTTON_CONTROLSHOOT);<a name="line.46"></a>
+<FONT color="green">047</FONT>        <a name="line.47"></a>
+<FONT color="green">048</FONT>        public OI() {<a name="line.48"></a>
+<FONT color="green">049</FONT>            shootButton        .whenPressed(new Shoot());<a name="line.49"></a>
+<FONT color="green">050</FONT>            shootFullButton    .whenPressed(new Shoot(SpinUp.SPEED_FULLCOURT));<a name="line.50"></a>
+<FONT color="green">051</FONT>            spinDownButton     .whenPressed(new SpinDown());<a name="line.51"></a>
+<FONT color="green">052</FONT>            recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));<a name="line.52"></a>
+<FONT color="green">053</FONT>            tomahawkButton     .whenPressed(new SpinTomahawk(true));<a name="line.53"></a>
+<FONT color="green">054</FONT>            tomahawkBackButton .whenPressed(new SpinTomahawk(false));<a name="line.54"></a>
+<FONT color="green">055</FONT>            <a name="line.55"></a>
+<FONT color="green">056</FONT>            TargetPIDTurn turn2ptAim = new TargetPIDTurn(Target.TwoPT,   1.0, true),<a name="line.56"></a>
+<FONT color="green">057</FONT>                          turn3ptAim = new TargetPIDTurn(Target.ThreePT, 1.0, true);<a name="line.57"></a>
+<FONT color="green">058</FONT>            TargetPIDTilt tilt2ptAim = new TargetPIDTilt(Target.TwoPT,   1.0, true),<a name="line.58"></a>
+<FONT color="green">059</FONT>                          tilt3ptAim = new TargetPIDTilt(Target.ThreePT, 1.0, true);<a name="line.59"></a>
+<FONT color="green">060</FONT>            <a name="line.60"></a>
+<FONT color="green">061</FONT>            SmartDashboard.putData("Turn 3pt PID",turn3ptAim.getPIDController());<a name="line.61"></a>
+<FONT color="green">062</FONT>            SmartDashboard.putData("Tilt 3pt PID",tilt3ptAim.getPIDController());<a name="line.62"></a>
+<FONT color="green">063</FONT>            <a name="line.63"></a>
+<FONT color="green">064</FONT>            target2ptTurnButton.whileHeld(turn2ptAim);<a name="line.64"></a>
+<FONT color="green">065</FONT>            target3ptTurnButton.whileHeld(turn3ptAim);<a name="line.65"></a>
+<FONT color="green">066</FONT>            target2ptTiltButton.whileHeld(tilt2ptAim);<a name="line.66"></a>
+<FONT color="green">067</FONT>            target3ptTiltButton.whileHeld(tilt3ptAim);<a name="line.67"></a>
+<FONT color="green">068</FONT>            <a name="line.68"></a>
+<FONT color="green">069</FONT>            nextDistanceButton.whenPressed(new Command() {<a name="line.69"></a>
+<FONT color="green">070</FONT>                {<a name="line.70"></a>
+<FONT color="green">071</FONT>                    requires(Robot.vision);<a name="line.71"></a>
+<FONT color="green">072</FONT>                }<a name="line.72"></a>
+<FONT color="green">073</FONT>                protected void initialize() {<a name="line.73"></a>
+<FONT color="green">074</FONT>                    Robot.vision.nextDistance();<a name="line.74"></a>
+<FONT color="green">075</FONT>                }<a name="line.75"></a>
+<FONT color="green">076</FONT>                protected void execute() {}<a name="line.76"></a>
+<FONT color="green">077</FONT>                protected boolean isFinished() {<a name="line.77"></a>
+<FONT color="green">078</FONT>                    return true;<a name="line.78"></a>
+<FONT color="green">079</FONT>                }<a name="line.79"></a>
+<FONT color="green">080</FONT>                protected void end() {}<a name="line.80"></a>
+<FONT color="green">081</FONT>                protected void interrupted() {}<a name="line.81"></a>
+<FONT color="green">082</FONT>            });<a name="line.82"></a>
+<FONT color="green">083</FONT>            prevDistanceButton.whenPressed(new Command() {<a name="line.83"></a>
+<FONT color="green">084</FONT>                {<a name="line.84"></a>
+<FONT color="green">085</FONT>                    requires(Robot.vision);<a name="line.85"></a>
+<FONT color="green">086</FONT>                }<a name="line.86"></a>
+<FONT color="green">087</FONT>                protected void initialize() {<a name="line.87"></a>
+<FONT color="green">088</FONT>                    Robot.vision.prevDistance();<a name="line.88"></a>
+<FONT color="green">089</FONT>                }<a name="line.89"></a>
+<FONT color="green">090</FONT>                protected void execute() {}<a name="line.90"></a>
+<FONT color="green">091</FONT>                protected boolean isFinished() {<a name="line.91"></a>
+<FONT color="green">092</FONT>                    return true;<a name="line.92"></a>
+<FONT color="green">093</FONT>                }<a name="line.93"></a>
+<FONT color="green">094</FONT>                protected void end() {}<a name="line.94"></a>
+<FONT color="green">095</FONT>                protected void interrupted() {}<a name="line.95"></a>
+<FONT color="green">096</FONT>            });<a name="line.96"></a>
+<FONT color="green">097</FONT>            <a name="line.97"></a>
+<FONT color="green">098</FONT>            controlShootButton.whileHeld(new Command() {<a name="line.98"></a>
+<FONT color="green">099</FONT>                {<a name="line.99"></a>
+<FONT color="green">100</FONT>                    requires(Robot.shooter);<a name="line.100"></a>
+<FONT color="green">101</FONT>                }<a name="line.101"></a>
+<FONT color="green">102</FONT>                protected void initialize() {}<a name="line.102"></a>
+<FONT color="green">103</FONT>                protected void execute() {<a name="line.103"></a>
+<FONT color="green">104</FONT>                    Robot.shooter.setSetpoint((-debugJoystick.getRawAxis(RobotMap.JOYDEBUG_AXIS_SHOOTSPEED)+1)/2.0*6000);<a name="line.104"></a>
+<FONT color="green">105</FONT>                }<a name="line.105"></a>
+<FONT color="green">106</FONT>                protected boolean isFinished() {<a name="line.106"></a>
+<FONT color="green">107</FONT>                    return false;<a name="line.107"></a>
+<FONT color="green">108</FONT>                }<a name="line.108"></a>
+<FONT color="green">109</FONT>                protected void end() {}<a name="line.109"></a>
+<FONT color="green">110</FONT>                protected void interrupted() {}<a name="line.110"></a>
+<FONT color="green">111</FONT>            });<a name="line.111"></a>
+<FONT color="green">112</FONT>            rainbowButton.whileHeld(new SetModeRainbowDanceParty());<a name="line.112"></a>
+<FONT color="green">113</FONT>        }<a name="line.113"></a>
+<FONT color="green">114</FONT>        <a name="line.114"></a>
+<FONT color="green">115</FONT>        // When a joystick is in its zero position, it will not necessarily read<a name="line.115"></a>
+<FONT color="green">116</FONT>        // zero. This makes sure that everything within that range reads zero.<a name="line.116"></a>
+<FONT color="green">117</FONT>        private double _zeroDeadzone(double joyValue,double dead) {<a name="line.117"></a>
+<FONT color="green">118</FONT>            return Math.abs(joyValue) &gt; dead ? joyValue : 0;<a name="line.118"></a>
+<FONT color="green">119</FONT>        }<a name="line.119"></a>
+<FONT color="green">120</FONT>        <a name="line.120"></a>
+<FONT color="green">121</FONT>        public double getLeftDrive() {<a name="line.121"></a>
+<FONT color="green">122</FONT>            return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_LEFT),0.15)*(slowModeButton.get() ? 0.5 : 1);<a name="line.122"></a>
+<FONT color="green">123</FONT>        }<a name="line.123"></a>
+<FONT color="green">124</FONT>        <a name="line.124"></a>
+<FONT color="green">125</FONT>        public double getRightDrive() {<a name="line.125"></a>
+<FONT color="green">126</FONT>            return _zeroDeadzone(-driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_DRIVE_RIGHT),0.15)*(slowModeButton.get() ? 0.5 : 1);<a name="line.126"></a>
+<FONT color="green">127</FONT>        }<a name="line.127"></a>
+<FONT color="green">128</FONT>        <a name="line.128"></a>
+<FONT color="green">129</FONT>        public double getTilterAxis() {<a name="line.129"></a>
+<FONT color="green">130</FONT>            return _zeroDeadzone(-shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_TILTER),0.15);<a name="line.130"></a>
+<FONT color="green">131</FONT>        }<a name="line.131"></a>
+<FONT color="green">132</FONT>    }<a name="line.132"></a>
+<FONT color="green">133</FONT>    <a name="line.133"></a>
 
 
 

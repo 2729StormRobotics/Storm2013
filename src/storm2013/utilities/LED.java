@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /** Controls an LED with a {@link PWM} signal. */
 public class LED implements LiveWindowSendable {
@@ -27,7 +28,7 @@ public class LED implements LiveWindowSendable {
 
     /**
      * Converts the [0,255] {@link PWM} signal to [-1,1] so that it can be
-     * controlled on {@link LiveWindow} like a {@link Victor} or {@link Jaguar}.
+     * controlled on {@link LiveWindow} like a {@link edu.wpi.first.wpilibj.Victor} or {@link edu.wpi.first.wpilibj.Jaguar}.
      */
     public void updateTable() {
         if(_table != null) {

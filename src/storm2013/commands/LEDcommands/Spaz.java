@@ -41,6 +41,7 @@ public class Spaz extends Command {
         
         if (time >= _period){
             Robot.ledStrip.setColor(_rand.nextInt(256), _rand.nextInt(256), _rand.nextInt(256));
+            _timer.reset();
         }
     }
 

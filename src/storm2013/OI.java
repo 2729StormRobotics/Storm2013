@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
+import storm2013.commands.LEDcommands.Spaz;
 import storm2013.commands.TargetPIDTilt;
 import storm2013.commands.PrintAutonomousMove;
 import storm2013.commands.Shoot;
@@ -24,6 +25,7 @@ public class OI {
     private Button recordEncoderButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_PRINT_ENCODER),
                    slowModeButton      = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SLOW),
                    rainbowButton       = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_RAINBOW),
+                   spazButton          = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_SPAZ),
                    target2ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_2PT),
                    target3ptTurnButton = new JoystickButton(driveJoystick, RobotMap.JOYDRIVE_BUTTON_TARGET_3PT),
                    shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),
@@ -110,6 +112,7 @@ public class OI {
             protected void interrupted() {}
         });
         rainbowButton.whileHeld(new SetModeRainbowDanceParty());
+        spazButton.whileHeld(new Spaz());
     }
     
     // When a joystick is in its zero position, it will not necessarily read

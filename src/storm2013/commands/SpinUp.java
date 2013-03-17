@@ -15,7 +15,7 @@ public class SpinUp extends Command {
     public static final double SPEED_NORMAL    = 3400,
                                SPEED_FULLCOURT = 4000; // tentative
     private static final double SPEED_PID_MIN    = 2500,
-                                MOTORVAL_PID_MIN = -0.6; // TODO: configure this to match
+                                MOTORVAL_PID_MIN = -0.8; // TODO: configure this to match
     
     private final Timer _onTargetTimer = new Timer();
     private final Command lightCommand = new SetModeSpinningUp();

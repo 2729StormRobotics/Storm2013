@@ -10,6 +10,7 @@ public class RobotMap {
     
     public static final int JOYDRIVE_BUTTON_SLOW            = 5;
     public static final int JOYDRIVE_BUTTON_RAINBOW         = 6;
+    public static final int JOYDRIVE_BUTTON_SPAZ            = 8;
     public static final int JOYDRIVE_BUTTON_PRINT_ENCODER   = 9;
     public static final int JOYDRIVE_BUTTON_TARGET_2PT      = 1;
     public static final int JOYDRIVE_BUTTON_TARGET_3PT      = 2;

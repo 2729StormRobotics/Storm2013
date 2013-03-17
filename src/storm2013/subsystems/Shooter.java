@@ -1,5 +1,6 @@
 package storm2013.subsystems;
 
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -18,7 +19,7 @@ import storm2013.utilities.HallEffectSpeedSensor;
  */
 public class Shooter extends PIDSubsystem {
     private HallEffectSpeedSensor _speedSensor = new HallEffectSpeedSensor(RobotMap.PORT_SENSOR_HALL_EFFECT);
-    private Victor _wheelMotor = new Victor(RobotMap.PORT_MOTOR_SHOOTER);
+    private Jaguar _wheelMotor = new Jaguar(RobotMap.PORT_MOTOR_SHOOTER);
     // This serves as the output of the PID loop, because PID works best when
     // controlling an output proportional to the first derivative of the speed
     // sensor.

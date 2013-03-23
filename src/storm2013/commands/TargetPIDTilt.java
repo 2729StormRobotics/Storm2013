@@ -13,7 +13,7 @@ public class TargetPIDTilt extends TargetPIDCommand {
     public TargetPIDTilt(Target target, double timeout, boolean continuous){
         super(target,Target.Axis.Y,timeout,continuous,
               0.7, 0.15, 1, // P, I, D
-              0.5,1,        // tolerance, maxOutput
+              0.75,1,        // tolerance, maxOutput
               1.5/10);      // period - high to allow for network latency.
         requires(Robot.tilter);
         setSetpoint(0);

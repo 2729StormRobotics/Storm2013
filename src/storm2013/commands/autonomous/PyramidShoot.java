@@ -58,7 +58,17 @@ public class PyramidShoot extends CommandGroup {
                 end();
             }
         });
-        addParallel(new SetColor(new Color(0,0,255)));
+        addSequential(new Command() {
+            public void initialize() {
+                new SetColor(new Color(0,0,255)).start();
+            }
+            protected void execute() {}
+            protected boolean isFinished() {
+                return true;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
         // Lower tilter to get target in sight
         addSequential(new LowerTilter(),1.5);
         // Align tilter with target

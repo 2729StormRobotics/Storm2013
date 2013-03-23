@@ -28,7 +28,7 @@ public class Shooter extends PIDSubsystem {
     private final double OUTPUT_SCALE = 0.1;
 
     public Shooter() {
-        super(0.025, 0, 0.28);
+        super(0.08, 0, 0.28);
         _speedSensor.setMinSpeedRpm(200);
         _accelerator.setMinSpeed(0);
         getPIDController().setOutputRange(-2/OUTPUT_SCALE, 2/OUTPUT_SCALE);

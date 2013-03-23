@@ -3,6 +3,9 @@ package storm2013.commands.autonomous;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import storm2013.Robot;
+import storm2013.commands.GyroTurn;
+import storm2013.commands.LEDcommands.Color;
+import storm2013.commands.LEDcommands.SetColor;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
@@ -24,7 +27,7 @@ public class PyramidShoot extends CommandGroup {
                 requires(Robot.vision);
             }
             protected void initialize() {
-                Robot.vision.setDistance(Vision.Distance.CENTER);
+                Robot.vision.setDistance(Vision.Distance.NEAR);
             }
             protected void execute() {}
             protected boolean isFinished() {
@@ -38,7 +41,7 @@ public class PyramidShoot extends CommandGroup {
         addSequential(new Command() {
             {
                 requires(Robot.driveTrain);
-            }
+            } 
             protected void initialize() {
                 Robot.driveTrain.clearEncoder();
             }
@@ -55,6 +58,7 @@ public class PyramidShoot extends CommandGroup {
                 end();
             }
         });
+        addParallel(new SetColor(new Color(0,0,255)));
         // Lower tilter to get target in sight
         addSequential(new LowerTilter(),1.5);
         // Align tilter with target

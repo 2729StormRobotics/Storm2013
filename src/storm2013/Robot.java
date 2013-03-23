@@ -90,6 +90,7 @@ public class Robot extends IterativeRobot {
     /** Called at the start of autonomous mode. */
     public void autonomousInit() {
         shooter.enable();
+        new SpinDown().start();
         SmartDashboard.putBoolean("Enabled", true);
         if (teleop != null) {
             teleop.cancel();
@@ -112,6 +113,7 @@ public class Robot extends IterativeRobot {
     /** Called at the start of teleop mode. */
     public void teleopInit() {
         shooter.enable();
+        new SpinDown().start();
         SmartDashboard.putBoolean("Enabled", true);
         if (autonomouse != null) {
             autonomouse.cancel();

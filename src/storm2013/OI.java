@@ -32,6 +32,7 @@ public class OI {
                    shootButton         = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT),
                    shootFullButton     = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SHOOT_FULLCOURT),
                    spinDownButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN),
+                   spinDown2Button     = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_SPIN_DOWN2),
                    target2ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_2PT),
                    target3ptTiltButton = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TARGET_3PT),
                    tomahawkButton      = new JoystickButton(shootJoystick, RobotMap.JOYSHOOT_BUTTON_TOMAHAWK),
@@ -62,6 +63,7 @@ public class OI {
         shootButton        .whenPressed(new Shoot());
         shootFullButton    .whenPressed(new Shoot(SpinUp.SPEED_FULLCOURT));
         spinDownButton     .whenPressed(new SpinDown());
+        spinDown2Button    .whenPressed(new SpinDown());
         recordEncoderButton.whenPressed(new PrintAutonomousMove(0.6, 0.5));
         tomahawkButton     .whenPressed(new SpinTomahawk(true));
         tomahawkBackButton .whenPressed(new SpinTomahawk(false));

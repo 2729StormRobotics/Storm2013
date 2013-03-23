@@ -3,6 +3,9 @@ package storm2013.commands.autonomous;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import storm2013.Robot;
+import storm2013.commands.GyroTurn;
+import storm2013.commands.LEDcommands.Color;
+import storm2013.commands.LEDcommands.SetColor;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
@@ -18,7 +21,7 @@ public class JustShoot extends CommandGroup {
     public JustShoot() {
         // Make sure the vision system is targetting for the right part of the
         // field
-        addParallel(new Command() {
+        addSequential(new Command() {
             {
                 requires(Robot.vision);
             }
@@ -32,6 +35,7 @@ public class JustShoot extends CommandGroup {
             protected void end() {}
             protected void interrupted() {}
         });
+        addParallel(new SetColor(new Color(0,0,255)));
         // Lower the tilter so the target is in sight
         addSequential(new LowerTilter(),1);
         // Align the tilter with the target

@@ -49,7 +49,7 @@ public class SpinUp extends Command {
         }
     }
     protected boolean isFinished() {
-        return _onTargetTimer.get() > 0.3;
+        return _onTargetTimer.get() > 0.5;
     }
     protected void end() {
         lightCommand.cancel();

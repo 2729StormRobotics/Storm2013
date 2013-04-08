@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import storm2013.RobotMap;
 import storm2013.commands.MoveTilter;
 import storm2013.utilities.LimitSwitchedMotor;
+import storm2013.utilities.StringPot;
 
 /** Subsystem including the tilter and its associated hardware. */
 public class Tilter extends Subsystem {
@@ -15,11 +16,12 @@ public class Tilter extends Subsystem {
     private static final double UP_SIGN       = -1;
     
     private final Jaguar _motor = new Jaguar(RobotMap.PORT_MOTOR_TILTER);
+    private final StringPot _stringPot = new StringPot(RobotMap.PORT_STRINGPOT);
     private final DigitalInput _topLimitSwitch = new DigitalInput(RobotMap.PORT_LIMIT_TILTER_TOP);
     private final boolean _topLimitOnState = true;
     private Trigger _topLimitTrigger    = new Trigger() {
                                              public boolean get() {
-                                                 return _topLimitSwitch.get();
+                                                 return isTopLimitTriggered();
                                              }
                                          },
                     _bottomLimitTrigger = null;
@@ -29,6 +31,7 @@ public class Tilter extends Subsystem {
 
     public Tilter() {
         LiveWindow.addActuator("Tilter", "Motor", _motor);
+        LiveWindow.addSensor("Tilter", "String pot", _stringPot);
     }
 
     protected void initDefaultCommand() {
@@ -57,6 +60,10 @@ public class Tilter extends Subsystem {
     
     /** Reads whether the tilter is at/above its highest safe height. */
     public boolean isTopLimitTriggered() {
-        return _topLimitSwitch.get() == _topLimitOnState;
+        return _stringPot.get() > StringPot.VAL_MIN_UNSAFE && _topLimitSwitch.get() == _topLimitOnState;
+    }
+    
+    public double readStringPot() {
+        return _stringPot.get();
     }
 }

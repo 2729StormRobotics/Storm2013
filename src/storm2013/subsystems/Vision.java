@@ -2,6 +2,8 @@ package storm2013.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import storm2013.commands.StringPotTilt;
+import storm2013.commands.TiltForDistance;
 
 /**
  * Subsystem providing an interface with StormCV to control the crosshair
@@ -68,12 +70,14 @@ public class Vision extends Subsystem {
     }
     
     /** Cycle through distances forward (near -> feeder). */
-    public void nextDistance() {
+    public Distance nextDistance() {
         _setDistance(_currIndex+1);
+        return _distances[_currIndex];
     }
     
     /** Cycle through distances backward (feeder -> near). */
-    public void prevDistance() {
+    public Distance prevDistance() {
         _setDistance(_currIndex-1);
+        return _distances[_currIndex];
     }
 }

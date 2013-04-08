@@ -10,6 +10,7 @@ import storm2013.commands.LowerTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
 import storm2013.commands.TargetPIDTilt;
+import storm2013.commands.TiltSetDistance;
 import storm2013.subsystems.Vision;
 import storm2013.utilities.Target;
 
@@ -19,22 +20,6 @@ import storm2013.utilities.Target;
  */
 public class JustShoot extends CommandGroup {
     public JustShoot() {
-        // Make sure the vision system is targetting for the right part of the
-        // field
-        addSequential(new Command() {
-            {
-                requires(Robot.vision);
-            }
-            protected void initialize() {
-                Robot.vision.setDistance(Vision.Distance.NEAR);
-            }
-            protected void execute() {}
-            protected boolean isFinished() {
-                return true;
-            }
-            protected void end() {}
-            protected void interrupted() {}
-        });
         addSequential(new Command() {
             public void initialize() {
                 new SetColor(new Color(0,0,255)).start();
@@ -46,8 +31,7 @@ public class JustShoot extends CommandGroup {
             protected void end() {}
             protected void interrupted() {}
         });
-        // Lower the tilter so the target is in sight
-        addSequential(new LowerTilter(),1);
+        addSequential(new TiltSetDistance(1, Vision.Distance.NEAR));
         // Align the tilter with the target
         addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
         // Shoot repeatedly (in case of jams)

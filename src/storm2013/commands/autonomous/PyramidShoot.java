@@ -10,6 +10,7 @@ import storm2013.commands.LowerTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
 import storm2013.commands.TargetPIDTilt;
+import storm2013.commands.TiltSetDistance;
 import storm2013.subsystems.Vision;
 import storm2013.utilities.Target;
 
@@ -20,22 +21,6 @@ import storm2013.utilities.Target;
 public class PyramidShoot extends CommandGroup {
     
     public PyramidShoot() {
-        // Make sure the targetting system is set for the right range
-        // (mid-court)
-        addSequential(new Command() {
-            {
-                requires(Robot.vision);
-            }
-            protected void initialize() {
-                Robot.vision.setDistance(Vision.Distance.NEAR);
-            }
-            protected void execute() {}
-            protected boolean isFinished() {
-                return true;
-            }
-            protected void end() {}
-            protected void interrupted() {}
-        });
         // Drive back. This used to be an EncoderDrive, but our right encoder
         // is broken.
         addSequential(new Command() {
@@ -69,8 +54,7 @@ public class PyramidShoot extends CommandGroup {
             protected void end() {}
             protected void interrupted() {}
         });
-        // Lower tilter to get target in sight
-        addSequential(new LowerTilter(),1.5);
+        addSequential(new TiltSetDistance(1, Vision.Distance.NEAR));
         // Align tilter with target
         addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
         // Shoot repreatedly (in case of jams)

@@ -56,4 +56,5 @@ public class RobotMap {
     
     public static final int PORT_LIMIT_TOMAHAWK       = 6;
     public static final int PORT_LIMIT_TILTER_TOP     = 7;
+    public static final int PORT_STRINGPOT            = 3;
 }

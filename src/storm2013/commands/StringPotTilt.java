@@ -18,12 +18,13 @@ public class StringPotTilt extends Command {
     }
     protected void _calcSign() {
         double delta = _target-Robot.tilter.readStringPot();
-        _sign = (delta < 0  ? -1 :
-                 delta == 0 ?  0 :
-                               1);
+        _sign = (delta < -0.1 ? -1 :
+                 delta >  0.1 ?  1 :
+                                 0);
     }
     protected void _setTarget(double target) {
         _target = target;
+        System.out.println("Moving to pot = " + target);
         _calcSign();
     }
 

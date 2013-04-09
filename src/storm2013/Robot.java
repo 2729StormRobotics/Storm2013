@@ -16,7 +16,6 @@ import storm2013.subsystems.Shooter;
 import storm2013.subsystems.Tilter;
 import storm2013.subsystems.Tomahawk;
 import storm2013.subsystems.Vision;
-import storm2013.utilities.LoadSensor;
 
 /** 
  * This is the robot's "Main class" which is run by the VM.
@@ -76,6 +75,7 @@ public class Robot extends IterativeRobot {
                 SmartDashboard.putNumber("Wheel signal", shooter.getMotorValRaw());
                 SmartDashboard.putBoolean("Tomahawk forward?", tomahawk.isForward());
                 SmartDashboard.putBoolean("Tilter at top?", tilter.isTopLimitTriggered());
+                SmartDashboard.putNumber("String-pot", tilter.readStringPot());
             }
             protected boolean isFinished() {
                 return false;

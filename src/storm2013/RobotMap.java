@@ -25,6 +25,8 @@ public class RobotMap {
     public static final int JOYSHOOT_BUTTON_TOMAHAWK        = 10;
     public static final int JOYSHOOT_BUTTON_TILTER_SAFETY_1 = 5;
     public static final int JOYSHOOT_BUTTON_TILTER_SAFETY_2 = 7;
+    public static final int JOYSHOOT_BUTTON_TILTTODIST      = 3;
+    public static final int JOYSHOOT_BUTTON_LOGPOT          = 4;
     
     public static final int JOYDEBUG_BUTTON_CONTROLSHOOT = 10;
     
@@ -56,5 +58,5 @@ public class RobotMap {
     
     public static final int PORT_LIMIT_TOMAHAWK       = 6;
     public static final int PORT_LIMIT_TILTER_TOP     = 7;
-    public static final int PORT_STRINGPOT            = 3;
+    public static final int PORT_STRINGPOT            = 7;
 }

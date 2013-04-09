@@ -60,7 +60,7 @@ public class Tilter extends Subsystem {
     
     /** Reads whether the tilter is at/above its highest safe height. */
     public boolean isTopLimitTriggered() {
-        return _stringPot.get() > StringPot.VAL_MIN_UNSAFE && _topLimitSwitch.get() == _topLimitOnState;
+        return _stringPot.get() > StringPot.VAL_MAX_SAFE || _topLimitSwitch.get() == _topLimitOnState;
     }
     
     public double readStringPot() {

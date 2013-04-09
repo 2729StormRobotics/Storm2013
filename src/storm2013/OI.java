@@ -1,10 +1,17 @@
 package storm2013;
 
+import com.sun.squawk.io.BufferedWriter;
+import com.sun.squawk.microedition.io.FileConnection;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import javax.microedition.io.Connector;
 import storm2013.commands.FeederTurn;
 import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
 import storm2013.commands.LEDcommands.Spaz;
@@ -16,6 +23,7 @@ import storm2013.commands.SpinTomahawk;
 import storm2013.commands.SpinUp;
 import storm2013.commands.TargetPIDTurn;
 import storm2013.commands.TiltCycleDistance;
+import storm2013.commands.TiltToCurrentDistance;
 import storm2013.utilities.Target;
 
 /** Connects the gamepads/joysticks to actual functionality on the robot. */
@@ -48,6 +56,8 @@ public class OI {
                            return shootJoystick.getRawAxis(RobotMap.JOYSHOOT_AXIS_DISTANCE) < -0.1;
                        }
                    },
+                   tiltToDistanceButton  = new JoystickButton(shootJoystick,RobotMap.JOYSHOOT_BUTTON_TILTTODIST),
+                   logPotButton          = new JoystickButton(shootJoystick,RobotMap.JOYSHOOT_BUTTON_LOGPOT),
                    feederAwayButton   = new Button() {
                        public boolean get() {
                            return driveJoystick.getRawAxis(RobotMap.JOYDRIVE_AXIS_FEEDERTURN) < -0.1;
@@ -84,18 +94,35 @@ public class OI {
         target2ptTiltButton.whileHeld(tilt2ptAim);
         target3ptTiltButton.whileHeld(tilt3ptAim);
         
-        nextDistanceButton.whenPressed(new TiltCycleDistance(true, 1) {
-            public synchronized void start() {
-                _nextDistance();
-                super.start();
+        nextDistanceButton.whenPressed(new Command() {
+            {
+                requires(Robot.vision);
             }
-        });
-        prevDistanceButton.whenPressed(new TiltCycleDistance(false, 1) {
-            public synchronized void start() {
-                _nextDistance();
-                super.start();
+            protected void initialize() {
+                Robot.vision.nextDistance();
             }
+            protected void execute() {}
+            protected boolean isFinished() {
+                return true;
+            }
+            protected void end() {}
+            protected void interrupted() {}
         });
+        prevDistanceButton.whenPressed(new Command() {
+            {
+                requires(Robot.vision);
+            }
+            protected void initialize() {
+                Robot.vision.prevDistance();
+            }
+            protected void execute() {}
+            protected boolean isFinished() {
+                return true;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
+        tiltToDistanceButton.whenPressed(new TiltToCurrentDistance(0.5));
         
         controlShootButton.whileHeld(new Command() {
             {
@@ -113,6 +140,38 @@ public class OI {
         });
         rainbowButton.whileHeld(new SetModeRainbowDanceParty());
         spazButton.whileHeld(new Spaz());
+        logPotButton.whenPressed(new Command() {
+            private FileConnection file = null;
+            BufferedWriter out;
+            {
+                try {
+                    file = (FileConnection) Connector.open("file:///Pot.log", Connector.WRITE);
+
+                    file.create();
+
+                    OutputStream output = file.openOutputStream();
+                    out = new BufferedWriter(new OutputStreamWriter(output));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            protected void initialize() {
+                String text = Robot.vision.getCurrDistance().getValue() + ":" + Robot.tilter.readStringPot();
+                try {
+                    out.write(text+"\n");
+                    out.flush();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            protected void execute() {}
+            protected boolean isFinished() {
+                return true;
+            }
+            protected void end() {}
+            protected void interrupted() {}
+        });
     }
     
     // When a joystick is in its zero position, it will not necessarily read

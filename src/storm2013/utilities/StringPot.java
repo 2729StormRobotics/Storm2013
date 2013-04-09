@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 public class StringPot implements LiveWindowSendable {
-    public final static double VAL_MIN_UNSAFE = -1,
-                               VAL_NEAR       = -1,
-                               VAL_CENTER     = -1,
-                               VAL_OPPAUTO    = -1,
-                               VAL_FEEDER     = -1;
+    public final static double VAL_MAX_SAFE   = 3.30,
+                               VAL_NEAR       = 3.00,
+                               VAL_CENTER     = 2.67,
+                               VAL_OPPAUTO    = 2.25,
+                               VAL_FEEDER     = 1.81;
     
     private AnalogChannel _channel;
     
@@ -18,7 +18,8 @@ public class StringPot implements LiveWindowSendable {
     }
     
     public double get() {
-        return _channel.getVoltage();
+        double val = _channel.getAverageVoltage();
+        return val > 0.05 ? val : 0;
     }
     
     private ITable _table = null;

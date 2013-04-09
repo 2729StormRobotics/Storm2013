@@ -80,4 +80,8 @@ public class Vision extends Subsystem {
         _setDistance(_currIndex-1);
         return _distances[_currIndex];
     }
+
+    public Distance getCurrDistance() {
+        return _distances[_currIndex];
+    }
 }

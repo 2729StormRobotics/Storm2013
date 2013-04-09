@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import javax.microedition.io.Connector;
 import storm2013.commands.FeederTurn;
 import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
@@ -22,8 +21,8 @@ import storm2013.commands.SpinDown;
 import storm2013.commands.SpinTomahawk;
 import storm2013.commands.SpinUp;
 import storm2013.commands.TargetPIDTurn;
-import storm2013.commands.TiltCycleDistance;
 import storm2013.commands.TiltToCurrentDistance;
+import storm2013.subsystems.Tilter;
 import storm2013.utilities.Target;
 
 /** Connects the gamepads/joysticks to actual functionality on the robot. */
@@ -122,7 +121,7 @@ public class OI {
             protected void end() {}
             protected void interrupted() {}
         });
-        tiltToDistanceButton.whenPressed(new TiltToCurrentDistance(0.5));
+        tiltToDistanceButton.whenPressed(new TiltToCurrentDistance(Tilter.SPEED_DEFAULT));
         
         controlShootButton.whileHeld(new Command() {
             {
@@ -156,6 +155,7 @@ public class OI {
                 }
             }
 
+            
             protected void initialize() {
                 String text = Robot.vision.getCurrDistance().getValue() + ":" + Robot.tilter.readStringPot();
                 try {

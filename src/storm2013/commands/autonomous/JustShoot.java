@@ -11,6 +11,7 @@ import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
 import storm2013.commands.TargetPIDTilt;
 import storm2013.commands.TiltSetDistance;
+import storm2013.subsystems.Tilter;
 import storm2013.subsystems.Vision;
 import storm2013.utilities.Target;
 
@@ -31,7 +32,7 @@ public class JustShoot extends CommandGroup {
             protected void end() {}
             protected void interrupted() {}
         });
-        addSequential(new TiltSetDistance(1, Vision.Distance.NEAR));
+        addSequential(new TiltSetDistance(Tilter.SPEED_DEFAULT, Vision.Distance.NEAR));
         // Align the tilter with the target
         addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
         // Shoot repeatedly (in case of jams)

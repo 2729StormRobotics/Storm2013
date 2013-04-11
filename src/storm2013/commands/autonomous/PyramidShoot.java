@@ -10,6 +10,7 @@ import storm2013.commands.LEDcommands.SetColor;
 import storm2013.commands.LowerTilter;
 import storm2013.commands.Shoot;
 import storm2013.commands.SpinDown;
+import storm2013.commands.StringPotTilt;
 import storm2013.commands.TargetPIDTilt;
 import storm2013.commands.TiltSetDistance;
 import storm2013.subsystems.Tilter;
@@ -30,6 +31,7 @@ public class PyramidShoot extends CommandGroup {
                 requires(Robot.driveTrain);
             } 
             protected void initialize() {
+                Robot.vision.setDistance(Vision.Distance.NEAR);
                 Robot.driveTrain.clearEncoder();
             }
             protected void execute() {
@@ -46,7 +48,8 @@ public class PyramidShoot extends CommandGroup {
             }
         });
 //        addSequential(new StartCommand(new SetColor(new Color(0,0,255))));
-        addSequential(new TiltSetDistance(Tilter.SPEED_DEFAULT, Vision.Distance.NEAR));
+        addSequential(new StringPotTilt(Tilter.SPEED_DEFAULT, 2.50));
+//        addSequential(new TiltSetDistance(Tilter.SPEED_DEFAULT, Vision.Distance.NEAR));
         // Align tilter with target
         addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
         // Shoot repreatedly (in case of jams)

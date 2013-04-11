@@ -153,7 +153,7 @@ public class OI {
 
                     OutputStream output = file.openOutputStream(Long.MAX_VALUE);
                     out = new BufferedWriter(new OutputStreamWriter(output));
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }

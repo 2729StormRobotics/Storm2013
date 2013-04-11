@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Date;
 import javax.microedition.io.Connector;
 import storm2013.commands.FeederTurn;
 import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
@@ -144,11 +145,13 @@ public class OI {
             BufferedWriter out;
             {
                 try {
-                    file = (FileConnection) Connector.open("file:///Pot.log", Connector.WRITE);
+                    file = (FileConnection) Connector.open("file:///Pot.log", Connector.READ_WRITE);
 
-                    file.create();
+                    if(!file.exists()) {
+                        file.create();
+                    }
 
-                    OutputStream output = file.openOutputStream();
+                    OutputStream output = file.openOutputStream(Long.MAX_VALUE);
                     out = new BufferedWriter(new OutputStreamWriter(output));
                 } catch (IOException ex) {
                     ex.printStackTrace();

@@ -45,7 +45,7 @@ public class PyramidShoot extends CommandGroup {
                 end();
             }
         });
-        addSequential(new StartCommand(new SetColor(new Color(0,0,255))));
+//        addSequential(new StartCommand(new SetColor(new Color(0,0,255))));
         addSequential(new TiltSetDistance(Tilter.SPEED_DEFAULT, Vision.Distance.NEAR));
         // Align tilter with target
         addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));

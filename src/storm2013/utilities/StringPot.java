@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 public class StringPot implements LiveWindowSendable {
-    public final static double VAL_MAX_SAFE   = 6.00, // TODO: calibrate this
-                               VAL_NEAR       = 3.00,
-                               VAL_CENTER     = 2.67,
-                               VAL_OPPAUTO    = 2.25,
-                               VAL_FEEDER     = 1.81;
+    public final static double VAL_MAX_SAFE   = 2.86, // TODO: calibrate this
+                               VAL_NEAR       = 2.64,
+                               VAL_CENTER     = 2.44,
+                               VAL_OPPAUTO    = 2.30,
+                               VAL_FEEDER     = 2.20;
     
     private AnalogChannel _channel;
     

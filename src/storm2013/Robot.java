@@ -72,7 +72,7 @@ public class Robot extends IterativeRobot {
             protected void initialize() {}
             protected void execute() {
                 SmartDashboard.putNumber("Wheel Speed (RPM)", shooter.getSpeedRpm());
-                SmartDashboard.putNumber("Wheel signal", shooter.getMotorValRaw());
+//                SmartDashboard.putNumber("Wheel signal", shooter.getMotorValRaw());
                 SmartDashboard.putBoolean("Tomahawk forward?", tomahawk.isForward());
                 SmartDashboard.putBoolean("Tilter at top?", tilter.isTopLimitTriggered());
                 SmartDashboard.putNumber("String-pot", tilter.readStringPot());

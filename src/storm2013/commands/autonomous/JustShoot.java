@@ -34,7 +34,7 @@ public class JustShoot extends CommandGroup {
 //        });
         addSequential(new TiltSetDistance(Tilter.SPEED_DEFAULT, Vision.Distance.NEAR));
         // Align the tilter with the target
-        addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
+//        addSequential(new TargetPIDTilt(Target.ThreePT, 1.0, false));
         // Shoot repeatedly (in case of jams)
         addSequential(new Shoot());
         addSequential(new Shoot());

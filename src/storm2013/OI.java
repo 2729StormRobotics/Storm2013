@@ -22,8 +22,10 @@ import storm2013.commands.SpinDown;
 import storm2013.commands.SpinTomahawk;
 import storm2013.commands.SpinUp;
 import storm2013.commands.TargetPIDTurn;
+import storm2013.commands.TiltForDistance;
 import storm2013.commands.TiltToCurrentDistance;
 import storm2013.subsystems.Tilter;
+import storm2013.subsystems.Vision;
 import storm2013.utilities.Target;
 
 /** Connects the gamepads/joysticks to actual functionality on the robot. */
@@ -92,7 +94,7 @@ public class OI {
         target2ptTurnButton.whileHeld(turn2ptAim);
         target3ptTurnButton.whileHeld(turn3ptAim);
         target2ptTiltButton.whileHeld(tilt2ptAim);
-        target3ptTiltButton.whileHeld(tilt3ptAim);
+        target3ptTiltButton.whenPressed(new TiltToCurrentDistance(Tilter.SPEED_DEFAULT));
         
         nextDistanceButton.whenPressed(new Command() {
             {
@@ -122,7 +124,7 @@ public class OI {
             protected void end() {}
             protected void interrupted() {}
         });
-        tiltToDistanceButton.whenPressed(new TiltToCurrentDistance(Tilter.SPEED_DEFAULT));
+        tiltToDistanceButton.whenPressed(new TiltForDistance(Tilter.SPEED_DEFAULT,Vision.Distance.NEAR));
         
         controlShootButton.whileHeld(new Command() {
             {

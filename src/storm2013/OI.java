@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Date;
 import javax.microedition.io.Connector;
 import storm2013.commands.FeederTurn;
 import storm2013.commands.LEDcommands.SetModeRainbowDanceParty;
@@ -21,8 +22,10 @@ import storm2013.commands.SpinDown;
 import storm2013.commands.SpinTomahawk;
 import storm2013.commands.SpinUp;
 import storm2013.commands.TargetPIDTurn;
+import storm2013.commands.TiltForDistance;
 import storm2013.commands.TiltToCurrentDistance;
 import storm2013.subsystems.Tilter;
+import storm2013.subsystems.Vision;
 import storm2013.utilities.Target;
 
 /** Connects the gamepads/joysticks to actual functionality on the robot. */
@@ -85,13 +88,13 @@ public class OI {
         TargetPIDTilt tilt2ptAim = new TargetPIDTilt(Target.TwoPT,   1.0, true),
                       tilt3ptAim = new TargetPIDTilt(Target.ThreePT, 1.0, true);
         
-        SmartDashboard.putData("Turn 3pt PID",turn3ptAim.getPIDController());
-        SmartDashboard.putData("Tilt 3pt PID",tilt3ptAim.getPIDController());
+//        SmartDashboard.putData("Turn 3pt PID",turn3ptAim.getPIDController());
+//        SmartDashboard.putData("Tilt 3pt PID",tilt3ptAim.getPIDController());
         
         target2ptTurnButton.whileHeld(turn2ptAim);
         target3ptTurnButton.whileHeld(turn3ptAim);
         target2ptTiltButton.whileHeld(tilt2ptAim);
-        target3ptTiltButton.whileHeld(tilt3ptAim);
+        target3ptTiltButton.whenPressed(new TiltToCurrentDistance(Tilter.SPEED_DEFAULT));
         
         nextDistanceButton.whenPressed(new Command() {
             {
@@ -121,7 +124,7 @@ public class OI {
             protected void end() {}
             protected void interrupted() {}
         });
-        tiltToDistanceButton.whenPressed(new TiltToCurrentDistance(Tilter.SPEED_DEFAULT));
+        tiltToDistanceButton.whenPressed(new TiltForDistance(Tilter.SPEED_DEFAULT,Vision.Distance.NEAR));
         
         controlShootButton.whileHeld(new Command() {
             {
@@ -144,13 +147,15 @@ public class OI {
             BufferedWriter out;
             {
                 try {
-                    file = (FileConnection) Connector.open("file:///Pot.log", Connector.WRITE);
+                    file = (FileConnection) Connector.open("file:///Pot.log", Connector.READ_WRITE);
 
-                    file.create();
+                    if(!file.exists()) {
+                        file.create();
+                    }
 
-                    OutputStream output = file.openOutputStream();
+                    OutputStream output = file.openOutputStream(Long.MAX_VALUE);
                     out = new BufferedWriter(new OutputStreamWriter(output));
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }

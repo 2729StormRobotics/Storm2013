@@ -2,9 +2,12 @@ package storm2013.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import storm2013.Robot;
+import storm2013.commands.LEDcommands.SetColor;
 
 public class StringPotTilt extends Command {
     private static double TOLERANCE = 0.1;
+    
+    private final Command lightCommand = new SetColor(0, 0, 255);
     private double _power,_target;
     private double _sign;
     
@@ -30,6 +33,7 @@ public class StringPotTilt extends Command {
 
     protected void initialize() {
         _calcSign();
+        lightCommand.start();
     }
 
     protected void execute() {
@@ -42,6 +46,7 @@ public class StringPotTilt extends Command {
 
     protected void end() {
         Robot.tilter.stop();
+        lightCommand.cancel();
     }
 
     protected void interrupted() {

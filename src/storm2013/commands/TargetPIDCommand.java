@@ -110,7 +110,7 @@ public abstract class TargetPIDCommand extends PIDCommand {
                 Double numValue = (Double)value;
                 if(numValue != null) {
                     useCameraValue(numValue.doubleValue());
-                    SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()*1.0e3);
+//                    SmartDashboard.putNumber("NetworkTable latency (ms)", _latencyTimer.get()*1.0e3);
                     _latencyTimer.reset();
                 }
             }

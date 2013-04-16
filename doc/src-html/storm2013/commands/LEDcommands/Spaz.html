@@ -19,46 +19,49 @@
 <FONT color="green">016</FONT>     * @author evan1026<a name="line.16"></a>
 <FONT color="green">017</FONT>     */<a name="line.17"></a>
 <FONT color="green">018</FONT>    public class Spaz extends Command {<a name="line.18"></a>
-<FONT color="green">019</FONT>    <a name="line.19"></a>
-<FONT color="green">020</FONT>        private static final double DEFAULT_PERIOD = 1.0/20;<a name="line.20"></a>
-<FONT color="green">021</FONT>        <a name="line.21"></a>
-<FONT color="green">022</FONT>        private double _period;<a name="line.22"></a>
-<FONT color="green">023</FONT>        private Timer  _timer = new Timer();<a name="line.23"></a>
-<FONT color="green">024</FONT>        private Random _rand  = new Random();<a name="line.24"></a>
-<FONT color="green">025</FONT>        <a name="line.25"></a>
-<FONT color="green">026</FONT>        public Spaz(){<a name="line.26"></a>
-<FONT color="green">027</FONT>            this(DEFAULT_PERIOD);<a name="line.27"></a>
-<FONT color="green">028</FONT>        }<a name="line.28"></a>
-<FONT color="green">029</FONT>        <a name="line.29"></a>
-<FONT color="green">030</FONT>        public Spaz(double period){<a name="line.30"></a>
-<FONT color="green">031</FONT>            _period = period;<a name="line.31"></a>
-<FONT color="green">032</FONT>            requires(Robot.ledStrip);<a name="line.32"></a>
-<FONT color="green">033</FONT>        }<a name="line.33"></a>
-<FONT color="green">034</FONT>        <a name="line.34"></a>
-<FONT color="green">035</FONT>        protected void initialize() {<a name="line.35"></a>
-<FONT color="green">036</FONT>            _timer.start();<a name="line.36"></a>
-<FONT color="green">037</FONT>        }<a name="line.37"></a>
-<FONT color="green">038</FONT>    <a name="line.38"></a>
-<FONT color="green">039</FONT>        protected void execute() {<a name="line.39"></a>
-<FONT color="green">040</FONT>            double time = _timer.get();<a name="line.40"></a>
-<FONT color="green">041</FONT>            <a name="line.41"></a>
-<FONT color="green">042</FONT>            if (time &gt;= _period){<a name="line.42"></a>
-<FONT color="green">043</FONT>                Robot.ledStrip.setColor(_rand.nextInt(256), _rand.nextInt(256), _rand.nextInt(256));<a name="line.43"></a>
-<FONT color="green">044</FONT>            }<a name="line.44"></a>
-<FONT color="green">045</FONT>        }<a name="line.45"></a>
-<FONT color="green">046</FONT>    <a name="line.46"></a>
-<FONT color="green">047</FONT>        protected boolean isFinished() {<a name="line.47"></a>
-<FONT color="green">048</FONT>            return false;<a name="line.48"></a>
-<FONT color="green">049</FONT>        }<a name="line.49"></a>
-<FONT color="green">050</FONT>    <a name="line.50"></a>
-<FONT color="green">051</FONT>        protected void end() {<a name="line.51"></a>
+<FONT color="green">019</FONT>        private static final double DEFAULT_PERIOD = 1.0/20;<a name="line.19"></a>
+<FONT color="green">020</FONT>        private static final Color[] colors = {new Color(255,0,0), new Color(255,255,0), new Color(0,255,0),<a name="line.20"></a>
+<FONT color="green">021</FONT>                                               new Color(0,255,255), new Color(0,0,255), new Color(255,0,255)};<a name="line.21"></a>
+<FONT color="green">022</FONT>        <a name="line.22"></a>
+<FONT color="green">023</FONT>        private double _period;<a name="line.23"></a>
+<FONT color="green">024</FONT>        private Timer  _timer = new Timer();<a name="line.24"></a>
+<FONT color="green">025</FONT>        private Random _rand  = new Random();<a name="line.25"></a>
+<FONT color="green">026</FONT>        <a name="line.26"></a>
+<FONT color="green">027</FONT>        public Spaz(){<a name="line.27"></a>
+<FONT color="green">028</FONT>            this(DEFAULT_PERIOD);<a name="line.28"></a>
+<FONT color="green">029</FONT>        }<a name="line.29"></a>
+<FONT color="green">030</FONT>        <a name="line.30"></a>
+<FONT color="green">031</FONT>        public Spaz(double period){<a name="line.31"></a>
+<FONT color="green">032</FONT>            _period = period;<a name="line.32"></a>
+<FONT color="green">033</FONT>            requires(Robot.ledStrip);<a name="line.33"></a>
+<FONT color="green">034</FONT>        }<a name="line.34"></a>
+<FONT color="green">035</FONT>        <a name="line.35"></a>
+<FONT color="green">036</FONT>        protected void initialize() {<a name="line.36"></a>
+<FONT color="green">037</FONT>            _timer.start();<a name="line.37"></a>
+<FONT color="green">038</FONT>        }<a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>        protected void execute() {<a name="line.40"></a>
+<FONT color="green">041</FONT>            double time = _timer.get();<a name="line.41"></a>
+<FONT color="green">042</FONT>            <a name="line.42"></a>
+<FONT color="green">043</FONT>            if (time &gt;= _period){<a name="line.43"></a>
+<FONT color="green">044</FONT>                Color c = colors[_rand.nextInt(colors.length)];<a name="line.44"></a>
+<FONT color="green">045</FONT>                Robot.ledStrip.setColor(c.getRed(),c.getBlue(),c.getGreen());<a name="line.45"></a>
+<FONT color="green">046</FONT>                _timer.reset();<a name="line.46"></a>
+<FONT color="green">047</FONT>            }<a name="line.47"></a>
+<FONT color="green">048</FONT>        }<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>        protected boolean isFinished() {<a name="line.50"></a>
+<FONT color="green">051</FONT>            return false;<a name="line.51"></a>
 <FONT color="green">052</FONT>        }<a name="line.52"></a>
 <FONT color="green">053</FONT>    <a name="line.53"></a>
-<FONT color="green">054</FONT>        protected void interrupted() {<a name="line.54"></a>
-<FONT color="green">055</FONT>            end();<a name="line.55"></a>
-<FONT color="green">056</FONT>        }<a name="line.56"></a>
-<FONT color="green">057</FONT>        <a name="line.57"></a>
-<FONT color="green">058</FONT>    }<a name="line.58"></a>
+<FONT color="green">054</FONT>        protected void end() {<a name="line.54"></a>
+<FONT color="green">055</FONT>        }<a name="line.55"></a>
+<FONT color="green">056</FONT>    <a name="line.56"></a>
+<FONT color="green">057</FONT>        protected void interrupted() {<a name="line.57"></a>
+<FONT color="green">058</FONT>            end();<a name="line.58"></a>
+<FONT color="green">059</FONT>        }<a name="line.59"></a>
+<FONT color="green">060</FONT>        <a name="line.60"></a>
+<FONT color="green">061</FONT>    }<a name="line.61"></a>
 
 
 

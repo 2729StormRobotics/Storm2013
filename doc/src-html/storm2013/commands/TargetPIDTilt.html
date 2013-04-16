@@ -16,7 +16,7 @@
 <FONT color="green">013</FONT>        public TargetPIDTilt(Target target, double timeout, boolean continuous){<a name="line.13"></a>
 <FONT color="green">014</FONT>            super(target,Target.Axis.Y,timeout,continuous,<a name="line.14"></a>
 <FONT color="green">015</FONT>                  0.7, 0.15, 1, // P, I, D<a name="line.15"></a>
-<FONT color="green">016</FONT>                  0.5,1,        // tolerance, maxOutput<a name="line.16"></a>
+<FONT color="green">016</FONT>                  0.65,1,        // tolerance, maxOutput<a name="line.16"></a>
 <FONT color="green">017</FONT>                  1.5/10);      // period - high to allow for network latency.<a name="line.17"></a>
 <FONT color="green">018</FONT>            requires(Robot.tilter);<a name="line.18"></a>
 <FONT color="green">019</FONT>            setSetpoint(0);<a name="line.19"></a>

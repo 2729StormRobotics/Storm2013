@@ -23,7 +23,11 @@ public class TargetPIDTilt extends TargetPIDCommand {
         return _angleToTarget;
     }
     protected void writePIDOut(double output) {
-        Robot.tilter.move(output);
+        if(getPIDController().onTarget()) {
+            Robot.tilter.stop();
+        } else {
+            Robot.tilter.move(output);
+        }
     }
     protected void useCameraValue(double value) {
         _angleToTarget = -value;

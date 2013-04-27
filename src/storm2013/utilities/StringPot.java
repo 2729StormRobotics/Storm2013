@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 public class StringPot implements LiveWindowSendable {
-    public final static double VAL_MAX_SAFE   = 2.86, // TODO: calibrate this
-                               VAL_NEAR       = 2.60,
+    public final static double VAL_MAX_SAFE   = 2.86,
+                               VAL_NEAR       = 2.56,
                                VAL_CENTER     = 2.44,
                                VAL_OPPAUTO    = 2.30,
                                VAL_FEEDER     = 2.20;

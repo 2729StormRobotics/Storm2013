@@ -36,6 +36,12 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser = new SendableChooser();
     Command autonomouse;
     
+    private void sendSensorData() {
+        SmartDashboard.putBoolean("Tomahawk forward?", tomahawk.isForward());
+        SmartDashboard.putBoolean("Tilter at top?", tilter.isTopLimitTriggered());
+        SmartDashboard.putNumber("String-pot", tilter.readStringPot());
+    }
+    
     /** Called on robot boot. */
     public void robotInit() {
         driveTrain = new DriveTrain();
@@ -71,11 +77,8 @@ public class Robot extends IterativeRobot {
         new Command("Sensor feedback") {
             protected void initialize() {}
             protected void execute() {
+                sendSensorData();
                 SmartDashboard.putNumber("Wheel Speed (RPM)", shooter.getSpeedRpm());
-//                SmartDashboard.putNumber("Wheel signal", shooter.getMotorValRaw());
-                SmartDashboard.putBoolean("Tomahawk forward?", tomahawk.isForward());
-                SmartDashboard.putBoolean("Tilter at top?", tilter.isTopLimitTriggered());
-                SmartDashboard.putNumber("String-pot", tilter.readStringPot());
             }
             protected boolean isFinished() {
                 return false;
@@ -165,5 +168,7 @@ public class Robot extends IterativeRobot {
      * (about every 1/50 of a second). We only have it overridden so we don't
      * get "Override me!" messages.
      */
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+        sendSensorData();
+    }
 }

@@ -37,7 +37,7 @@ public class Vision extends Subsystem {
     private static final Distance[] _distances = {
         Distance.NEAR,
         Distance.CENTER,
-        Distance.OPPONENT_AUTO,
+//        Distance.OPPONENT_AUTO,
         Distance.FEEDER
     };
     

@@ -49,10 +49,11 @@ public class SpinUp extends Command {
         }
     }
     protected boolean isFinished() {
-        return _onTargetTimer.get() > 0.5;
+        return _onTargetTimer.get() > 0.1;
     }
     protected void end() {
         lightCommand.cancel();
+        System.out.println(Robot.shooter.getSpeedRpm());
     }
     protected void interrupted() {
         end();

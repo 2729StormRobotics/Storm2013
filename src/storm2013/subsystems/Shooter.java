@@ -32,7 +32,7 @@ public class Shooter extends PIDSubsystem {
         _speedSensor.setMinSpeedRpm(200);
         _accelerator.setMinSpeed(0);
         getPIDController().setOutputRange(-2/OUTPUT_SCALE, 2/OUTPUT_SCALE);
-        setAbsoluteTolerance(25);
+        setAbsoluteTolerance(15);
         LiveWindow.addSensor("Shooter", "Speed Sensor", _speedSensor);
         LiveWindow.addActuator("Shooter", "PID Control", getPIDController());
     }

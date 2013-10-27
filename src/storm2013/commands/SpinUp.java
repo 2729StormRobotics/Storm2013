@@ -2,6 +2,7 @@ package storm2013.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import storm2013.Robot;
 import storm2013.commands.LEDcommands.SetModeSpinningUp;
 
@@ -13,9 +14,10 @@ import storm2013.commands.LEDcommands.SetModeSpinningUp;
  */
 public class SpinUp extends Command {
     public static final double SPEED_NORMAL    = 3400,
-                               SPEED_FULLCOURT = 4000; // tentative
-    private static final double SPEED_PID_MIN    = 2500,
-                                MOTORVAL_PID_MIN = -0.8; // TODO: configure this to match
+                               SPEED_FULLCOURT = 4000, // tentative
+                               SPEED_SLOW      = 2800;
+    private static final double SPEED_PID_MIN_FACTOR    = 2500.0/3400,
+                                MOTORVAL_PID_MIN_FACTOR = -0.8/3400; // TODO: configure this to match
     
     private final Timer _onTargetTimer = new Timer();
     private final Command lightCommand = new SetModeSpinningUp();
@@ -30,21 +32,28 @@ public class SpinUp extends Command {
     }
     
     protected void initialize() {
-        Robot.shooter.getPIDController().setSetpoint(_speed);
+        if(SmartDashboard.getBoolean("Lower shooter speed")) {
+            Robot.shooter.getPIDController().setSetpoint(SPEED_SLOW);
+        } else {
+            Robot.shooter.getPIDController().setSetpoint(_speed);
+        }
         Robot.shooter.enable();
         _onTargetTimer.start();
         _onTargetTimer.reset();
         lightCommand.start();
     }
+    
     protected void execute() {
         if(!Robot.shooter.onTarget()) {
             _onTargetTimer.reset();
         }
-        if(Robot.shooter.getSpeedRpm() < SPEED_PID_MIN) {
+        if(Robot.shooter.getSpeedRpm() < SPEED_PID_MIN_FACTOR
+                                         *Robot.shooter.getSetpoint()) {
             Robot.shooter.disable();
             Robot.shooter.setMotorValRaw(-1);
         } else if(!Robot.shooter.isEnabled()) {
-            Robot.shooter.setMotorValRaw(MOTORVAL_PID_MIN);
+            Robot.shooter.setMotorValRaw(MOTORVAL_PID_MIN_FACTOR
+                                         *Robot.shooter.getSetpoint());
             Robot.shooter.enable();
         }
     }

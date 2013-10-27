@@ -67,6 +67,7 @@ public class Robot extends IterativeRobot {
 
         // Put the Shooter PID on the dashboard so it can be enabled and stuff
         SmartDashboard.putData("Shooter PID",shooter.getPIDController());
+        SmartDashboard.putBoolean("Lower shooter speed",false);
         
         // To make sure the Accelerator is running
         shooter.enable();
